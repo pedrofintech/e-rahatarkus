@@ -170,13 +170,6 @@
    translateZ(0) was tried here first and broke exactly that, clipping every
    tooltip bubble to the sidebar's own bounds instead of the viewport. */
 #rt-hoius .rt-filters{position:sticky;top:var(--rt-sticky-top, 1.5rem);align-self:start;background:var(--white);border:1.5px solid var(--line);border-radius:1.25rem;max-height:calc(100vh - var(--rt-sticky-top, 1.5rem) - 1.5rem);display:flex;flex-direction:column;min-width:0;overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden}
-/* Toggled on only while actively scrolling (see bumpGpuLayer() in
-   initStickySidebar()) - transform is a stronger fast-scroll-lag fix than
-   backface-visibility alone, but it also makes this element the containing
-   block for position:fixed descendants, which would clip .rt-tip__bubble
-   right back to the sidebar. Scoping it to "currently scrolling" gets the
-   stronger fix exactly when it's needed without breaking tooltips at rest. */
-#rt-hoius .rt-filters--gpu{transform:translateZ(0);will-change:transform}
 #rt-hoius .rt-results{grid-column:2}
 #rt-hoius .rt-filters__head{display:flex;align-items:center;gap:.5rem;padding:1.125rem 1.25rem;border-bottom:1px solid var(--line-2)}
 #rt-hoius .rt-filters__head h2{font-family:var(--f-body);font-size:1rem;font-weight:600;letter-spacing:-.01em}
@@ -243,7 +236,12 @@
    it never overlaps the result cards next to it - see positionTipBubble.
    The real bubble only fades (opacity), it never slides - ours matches
    that, no transform. */
-#rt-hoius .rt-tip__bubble{position:fixed;width:22rem;max-width:88vw;background:var(--ink);color:var(--line-strong);font-size:.8125rem;line-height:1.5;padding:.75rem;border-radius:.75rem;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:9999;font-weight:600;text-align:left;letter-spacing:0;box-shadow:var(--sh-2);overflow-wrap:break-word}
+/* font-size/weight/line-height/letter-spacing match the real site's own
+   tooltip text classes (.text-size-small + .text-weight-medium, checked
+   live via Webflow MCP: 0.875rem/500/1.42857em/-0.014em) - this used to be
+   0.8125rem/600/1.5/0, which read noticeably smaller and bolder than the
+   rest of the site's text. */
+#rt-hoius .rt-tip__bubble{position:fixed;width:22rem;max-width:88vw;background:var(--ink);color:var(--line-strong);font-size:.875rem;line-height:1.42857em;padding:.75rem;border-radius:.75rem;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:9999;font-weight:500;text-align:left;letter-spacing:-.014em;box-shadow:var(--sh-2);overflow-wrap:break-word}
 /* Side mode (result cards): arrow is the real site's own 1rem x 1.4rem
    wedge on the bubble's edge, pointing back at the trigger. */
 #rt-hoius .rt-tip__bubble--side .rt-tip__arrow{position:absolute;left:0;width:1rem;height:1.4rem;background:var(--ink);transform:translate(-70%,-50%);clip-path:polygon(100% 0%,0% 50%,100% 100%)}
