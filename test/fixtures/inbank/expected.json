@@ -1,0 +1,42 @@
+{
+  "tiers": [
+    {
+      "months": 3,
+      "rateEur": 2.2
+    },
+    {
+      "months": 6,
+      "rateEur": 2.5
+    },
+    {
+      "months": 9,
+      "rateEur": 2.5
+    },
+    {
+      "months": 12,
+      "rateEur": 2.5
+    },
+    {
+      "months": 18,
+      "rateEur": 2.6
+    },
+    {
+      "months": 24,
+      "rateEur": 2.8
+    },
+    {
+      "months": 36,
+      "rateEur": 2.8
+    },
+    {
+      "months": 48,
+      "rateEur": 3
+    },
+    {
+      "months": 60,
+      "rateEur": 3
+    }
+  ],
+  "ratesEffectiveFrom": null,
+  "minDeposit": 500
+}

@@ -1,0 +1,27 @@
+{
+  "name": "e-rahatarkus-savings-comparator",
+  "version": "1.0.0",
+  "description": "Estonian term deposit (tähtajaline hoius) rate comparator with automated data refresh",
+  "type": "module",
+  "private": true,
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pedrofintech/e-rahatarkus.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "update": "node scripts/update-accounts.mjs",
+    "update:flexible": "node scripts/update-flexible-accounts.mjs",
+    "update:fintech": "node scripts/update-fintech-accounts.mjs",
+    "scrape": "node scripts/run-scraper.mjs",
+    "test": "node --test",
+    "capture-fixtures": "node scripts/capture-fixtures.mjs",
+    "build:web": "node scripts/build-web.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.49.0"
+  }
+}

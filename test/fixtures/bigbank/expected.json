@@ -1,0 +1,38 @@
+{
+  "tiers": [
+    {
+      "months": 2,
+      "rateEur": 2.15
+    },
+    {
+      "months": 5,
+      "rateEur": 2.2
+    },
+    {
+      "months": 6,
+      "rateEur": 2.3
+    },
+    {
+      "months": 11,
+      "rateEur": 2.5
+    },
+    {
+      "months": 23,
+      "rateEur": 2.6
+    },
+    {
+      "months": 47,
+      "rateEur": 2.6
+    },
+    {
+      "months": 119,
+      "rateEur": 2.7
+    },
+    {
+      "months": 120,
+      "rateEur": 2.75
+    }
+  ],
+  "ratesEffectiveFrom": "2026-05-27",
+  "minDeposit": 500
+}

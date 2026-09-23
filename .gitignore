@@ -1,0 +1,33 @@
+node_modules/
+
+# local env/secrets - never committed, see README "No secrets in this repo"
+.env
+.env.*
+
+# OS/editor cruft
+.DS_Store
+Thumbs.db
+*.code-workspace
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# Local-only design/reference material - not needed for the scraper
+# pipeline or the live widget, kept locally rather than pushed
+/design/
+/web/preview.html
+/web/css/
+/web/glossary.html
+/web/comparador-contas-remuneradas-prototipo*.html
+
+# Generated Webflow-embed/test HTML - regenerate locally with
+# `npm run build:web`. Only comparator.js + comparator.css (hand-edited
+# sources) and data/*.json are actually fetched live via jsDelivr; these
+# are copy-paste/local-preview convenience files, not needed for the repo
+# to be usable or for the live site to work.
+/web/webflow-embed-nocss-1.html
+/web/webflow-embed-nocss-2.html
+/web/webflow-head-css.html
+/web/self-contained-test.html

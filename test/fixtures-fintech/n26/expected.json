@@ -1,0 +1,18 @@
+{
+  "rateEur": 1.5,
+  "tiers": [
+    {
+      "plan": "Standard & Smart",
+      "rateEur": 0.3
+    },
+    {
+      "plan": "N26 Go",
+      "rateEur": 0.5
+    },
+    {
+      "plan": "Metal",
+      "rateEur": 1.5
+    }
+  ],
+  "ratesEffectiveFrom": "2025-06-11"
+}

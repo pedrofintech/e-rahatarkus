@@ -1,0 +1,515 @@
+/* ==========================================================================
+   Rahatarkus - Tähtajalise hoiuse võrdlus
+   All rules scoped under #rt-hoius (ID = specificity 1,0,0) so they beat both
+   Webflow's Client-First classes and our own resets, and don't leak out.
+   ========================================================================== */
+
+#rt-hoius{
+  --brand:#0072ce; --brand-600:#005bb5; --brand-tint:#eff4ff; --brand-soft:#d1e0ff;
+  --ink:#081c15; --ink-2:#3a4454; --ink-3:#4f5969; --ink-4:#697386;
+  --bg:#fcfcfd; --bg-2:#f9fafb; --bg-3:#f2f4f7; --bg-4:#e9ecf1; --white:#fff;
+  --line:#e6e9ef; --line-2:#eef1f5; --line-strong:#ced5df;
+  --green:#067647; --green-bg:#e7f5ed; --red:#b42318; --red-bg:#fef3f2;
+  --amber-bg:#fffaeb; --amber-fg:#93591a; --amber-line:#fedf89;
+  --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:22px;
+  --sh-1:0 1px 2px rgba(8,28,21,.04);
+  --sh-2:0 6px 24px rgba(8,28,21,.08);
+  --f-head:"Tiempos Headline","Source Serif 4",Georgia,serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-family:var(--f-body);color:var(--ink);font-size:16px;line-height:1.6;letter-spacing:-.01em;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+
+/* reset */
+#rt-hoius *,#rt-hoius *::before,#rt-hoius *::after{box-sizing:border-box}
+#rt-hoius h2,#rt-hoius h3,#rt-hoius h4{font-family:var(--f-head);font-weight:300;line-height:1.25;margin:0;letter-spacing:-.02em;color:var(--ink)}
+#rt-hoius p{margin:0}
+#rt-hoius ul{margin:0;padding:0;list-style:none}
+#rt-hoius a{color:var(--brand);text-decoration:none}
+#rt-hoius button{margin:0;padding:0;background:none;border:0;font:inherit;color:inherit;cursor:pointer;text-align:left}
+#rt-hoius input,#rt-hoius select{font:inherit;color:inherit}
+/* Webflow's own global stylesheet ships an unscoped `svg{width:100%}` rule.
+   The cascade is per-property, not per-rule, so our higher-specificity
+   #rt-hoius selectors below that only set flex/margin (never width) don't
+   block it - every icon (chevrons, checkmarks, alert/info glyphs) was
+   stretching to fill its flex container, squeezing sibling text to 0 width
+   and wrapping it. Declaring width/height:auto here wins on specificity and
+   reverts every svg to its own width="".../height="..." attributes. */
+#rt-hoius svg{display:block;width:auto;height:auto}
+#rt-hoius table{border-collapse:collapse;width:100%}
+#rt-hoius dl,#rt-hoius dd,#rt-hoius dt{margin:0}
+#rt-hoius :focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:6px}
+#rt-hoius input[type=number]{-moz-appearance:textfield;appearance:textfield}
+#rt-hoius input[type=number]::-webkit-inner-spin-button,#rt-hoius input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+
+/* buttons */
+#rt-hoius .rt-btn{display:inline-flex;align-items:center;justify-content:center;gap:.375rem;padding:.6875rem 1.25rem;border-radius:var(--r-md);border:1px solid transparent;font-size:.9375rem;font-weight:500;letter-spacing:-.0125em;line-height:1.2;white-space:nowrap;cursor:pointer;transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease;text-decoration:none}
+#rt-hoius a.rt-btn{text-decoration:none}
+#rt-hoius .rt-btn--brand,#rt-hoius a.rt-btn--brand{background:var(--brand);color:#fff;border-color:var(--brand)}
+#rt-hoius .rt-btn--brand:hover,#rt-hoius a.rt-btn--brand:hover{background:var(--brand-600);border-color:var(--brand-600);color:#fff}
+#rt-hoius .rt-btn--dark,#rt-hoius a.rt-btn--dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+#rt-hoius .rt-btn--dark:hover{background:#0d2b20;border-color:#0d2b20;color:#fff}
+#rt-hoius .rt-btn--ghost{background:var(--white);border-color:var(--line-strong);color:var(--ink-2)}
+#rt-hoius .rt-btn--ghost:hover{border-color:var(--ink);color:var(--ink)}
+#rt-hoius .rt-btn--sm{padding:.5rem .875rem;font-size:.875rem}
+#rt-hoius .rt-btn--text{background:none;border:0;padding:0;color:var(--ink-4);font-size:.8125rem;font-weight:500;text-decoration:underline;text-underline-offset:2px}
+#rt-hoius .rt-btn--text:hover{color:var(--brand)}
+#rt-hoius .rt-count-badge{display:inline-grid;place-items:center;min-width:1.25rem;height:1.25rem;padding:0 .375rem;border-radius:100vw;background:var(--brand);color:#fff;font-size:.75rem;font-weight:600}
+#rt-hoius .rt-count-badge[hidden]{display:none}
+
+/* winner/sponsored banner - white background, same 4px neutral border as
+   .rt-calc right below it on the page, so the two cards read as a matched
+   pair rather than two different border treatments stacked on top of each
+   other. */
+#rt-hoius .rt-winner{border:4px solid var(--bg-3);border-radius:1.25rem;background:var(--white);padding:1rem 1.25rem 1rem 2rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+#rt-hoius .rt-winner__tag{display:flex;align-items:center;gap:.4rem;font-size:.6875rem;font-weight:600;color:var(--brand-600);letter-spacing:.06em;text-transform:uppercase}
+/* "Reklaam" - same grey/uppercase/medium-weight treatment as the real
+   site's own ad label (text-color-quarterary/--ink-4, weight 500, 0.01em
+   tracking), but sized up from its literal 0.625rem to stay legible at this
+   banner's larger scale. */
+#rt-hoius .rt-winner__tag--sponsored{font-size:.8125rem;line-height:1.3;font-weight:500;color:var(--ink-4);letter-spacing:.01em;text-transform:uppercase}
+/* "Reklaam" sits above the logo, tightly grouped with it in its own
+   column, at a fixed gap - it moves together with the logo as one unit.
+   .rt-winner__id centers that column against .rt-winner__col2, so the two
+   columns are balanced against each other. */
+#rt-hoius .rt-winner__logo-col{display:flex;flex-direction:column;align-items:flex-start;gap:.375rem}
+/* Tall enough to visually span the full height of the row (logo + name +
+   rating + chips), like a real column separator, not a short tick mark.
+   Its own left/right margin (2rem, matching .rt-winner's own left padding)
+   controls the space right around the line itself, independent of the
+   wider gap .rt-winner__id keeps between the two columns overall. */
+#rt-hoius .rt-winner__divider{width:1px;align-self:stretch;background:var(--bg-4);flex:none;margin:0 2rem}
+#rt-hoius .rt-winner__id{display:flex;align-items:center;gap:0;min-width:0}
+#rt-hoius .rt-winner__col2{display:flex;flex-direction:column;gap:.3125rem;min-width:0}
+/* .rt-rating and .rt-conds each carry their own margin-top for use
+   elsewhere (details rows, result cards) - inside this flex column that
+   stacked on top of the column's own gap, doubling the space before each
+   row. Zeroed here so the column's gap is the only spacing. */
+#rt-hoius .rt-winner .rt-rating{margin-top:0}
+#rt-hoius .rt-winner .rt-conds{margin-top:0}
+#rt-hoius .rt-winner .rt-logo{width:4.25rem;height:3.75rem}
+#rt-hoius .rt-winner .rt-logo--square{width:3.75rem}
+/* CTA button + promo badge stacked, promo below the button - side by side
+   read as cramped/competing for attention at the card's width; stacked and
+   right-aligned lets the button stay the clear primary action with the
+   promo (e.g. "Kuni 100 € tasuta murdaktsiat/ETFi") as a quieter note
+   underneath it, still visually grouped with the button it belongs to. */
+#rt-hoius .rt-winner__cta{display:flex;flex-direction:column;align-items:flex-end;gap:.875rem;margin-left:auto}
+/* Not an h2-h4 element (a plain div), so it doesn't pick up the h2-h4 rule's
+   font-weight:300 above for free - has to be set explicitly to match every
+   other heading's weight on the real site. */
+#rt-hoius .rt-winner__name{font-family:var(--f-head);font-size:1.25rem;font-weight:300;line-height:1.25;letter-spacing:-.02em;color:var(--ink)}
+#rt-hoius .rt-rating{display:flex;align-items:baseline;gap:.5rem;margin-top:.25rem;font-size:.8125rem;color:var(--ink-4);flex-wrap:wrap}
+/* Actual figures (rates, earnings, this rating number) use the real site's
+   own .text-size-numbers treatment (queried via Webflow MCP), not the
+   h1-h6 heading treatment: font-weight 400 (regular) and near-zero
+   letter-spacing (-0.0056em), not the headings' light 300 weight and
+   tighter -0.02em - h1-h6 explicitly set weight 300, but .text-size-numbers
+   doesn't override it and so inherits the body's default 400. Same font
+   family (Tiempos Headline) either way. */
+#rt-hoius .rt-rating b{font-family:var(--f-head);font-size:1.375rem;color:var(--brand-600);font-weight:400;letter-spacing:-.006em}
+#rt-hoius .rt-winner .rt-alert{flex:1 1 100%;margin-top:0}
+
+/* calculator
+   Matches the real "calculadora-form_wrapper" card used on the site's other
+   calculator pages (queried live via Webflow MCP: 4px solid border in
+   colors/border-tertiary #f2f4f7 - same value as our own --bg-3 token,
+   border-radius 1.25rem, 2.5rem padding, no box-shadow at all). Our old
+   1.5px border + soft shadow read as a much softer, blended edge than the
+   flat, crisp-bordered look used everywhere else on the site. */
+#rt-hoius .rt-calc{margin-top:1.5rem;background:var(--white);border:4px solid var(--bg-3);border-radius:1.25rem;padding:2.5rem}
+#rt-hoius .rt-calc__title{font-size:1.5rem}
+#rt-hoius .rt-calc__sub{font-size:.9375rem;color:var(--ink-4);margin:.375rem 0 1.5rem}
+#rt-hoius .rt-calc__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) auto;gap:1.25rem;align-items:end}
+#rt-hoius .rt-field{min-width:0}
+#rt-hoius .rt-field label{display:block;font-size:.875rem;font-weight:600;margin-bottom:.25rem;color:var(--ink)}
+#rt-hoius .rt-field__help{font-size:.75rem;color:var(--ink-4);line-height:1.45;margin-bottom:.75rem}
+#rt-hoius .rt-input{position:relative}
+#rt-hoius .rt-input input{width:100%;min-height:2.75rem;border:1px solid var(--line-strong);border-radius:var(--r-md);padding:.25rem 3rem .25rem .75rem;font-size:1rem;color:var(--ink);background:var(--white);letter-spacing:-.01em}
+#rt-hoius .rt-input input:focus{outline:none;border-color:#84adff;box-shadow:0 0 0 4px #d1e0ff}
+#rt-hoius .rt-input__unit{position:absolute;right:.875rem;top:50%;transform:translateY(-50%);color:var(--ink-4);font-size:.875rem;pointer-events:none}
+#rt-hoius .rt-calc__actions{display:flex;align-items:stretch;gap:.5rem}
+#rt-hoius .rt-calc__actions .rt-btn{min-height:2.75rem}
+#rt-hoius .rt-calc__note{margin-top:1.125rem;font-size:.8125rem;color:var(--ink-4);line-height:1.55}
+
+/* layout
+   The sidebar sticks with plain CSS `position:sticky`, no JS scroll-handler
+   repositioning. That needs .rt-filters-cell (the actual grid item) to be
+   STRETCHED to the full row height (the default `align-items:stretch` - do
+   not add align-items:start here) so the sticky element has real room to
+   travel before it "runs out" of containing block and settles at the
+   bottom; .rt-filters itself keeps its own natural (unstretched) height via
+   align-self:start and is what actually gets `position:sticky`. Previously
+   this used JS to toggle position:fixed/absolute on every scroll tick,
+   which forced synchronous layout reads (getBoundingClientRect/offsetHeight)
+   on each frame and could visibly jump/desync the scrollbar. Native sticky
+   is jank-free and needs no scroll listener at all. */
+#rt-hoius .rt-layout{display:grid;grid-template-columns:17rem minmax(0,1fr);gap:1.5rem;margin-top:2.5rem;position:relative}
+#rt-hoius .rt-layout.is-collapsed{grid-template-columns:minmax(0,1fr)}
+#rt-hoius .rt-layout.is-collapsed .rt-filters-cell{display:none}
+#rt-hoius .rt-layout.is-collapsed .rt-results{grid-column:1}
+#rt-hoius .rt-panel-open{display:none}
+#rt-hoius .rt-layout.is-collapsed .rt-panel-open{display:inline-flex}
+
+/* filters */
+#rt-hoius .rt-filters-cell{min-width:0}
+/* JS-driven fallback for pages where an ancestor's non-visible overflow
+   (common on Webflow: sections wrapped in overflow:hidden for reveal/clip
+   effects) permanently blocks native position:sticky - see
+   initStickySidebar() in comparator.js. .rt-js-sticky is added only when
+   that's actually detected; ordinary pages never pay for this. The cell
+   needs position:relative as the containing block for the "settled"
+   (position:absolute, anchored past the end of the results column) state. */
+#rt-hoius .rt-js-sticky .rt-filters-cell{position:relative}
+#rt-hoius .rt-filters{position:sticky;top:var(--rt-sticky-top, 1.5rem);align-self:start;background:var(--white);border:1.5px solid var(--line);border-radius:1.25rem;max-height:calc(100vh - var(--rt-sticky-top, 1.5rem) - 1.5rem);display:flex;flex-direction:column;min-width:0;overflow:hidden}
+#rt-hoius .rt-results{grid-column:2}
+#rt-hoius .rt-filters__head{display:flex;align-items:center;gap:.5rem;padding:1.125rem 1.25rem;border-bottom:1px solid var(--line-2)}
+#rt-hoius .rt-filters__head h2{font-family:var(--f-body);font-size:1rem;font-weight:600;letter-spacing:-.01em}
+#rt-hoius .rt-filters__head .rt-n{margin-left:auto;font-size:.75rem;color:var(--ink-4);font-weight:500;white-space:nowrap}
+#rt-hoius .rt-filters__scroll{overflow-y:auto;overflow-x:hidden;padding:.5rem 1.25rem .75rem;flex:1;overscroll-behavior:contain}
+#rt-hoius .rt-filters__foot{padding:1rem 1.25rem;border-top:1px solid var(--line-2);display:flex;gap:.5rem;justify-content:space-between;align-items:center;flex-wrap:wrap}
+#rt-hoius .rt-active{padding:.625rem 0;border-bottom:1px solid var(--line-2);font-size:.8125rem;color:var(--ink-4);display:flex;flex-wrap:wrap;gap:.375rem;align-items:center}
+#rt-hoius .rt-active:empty{display:none}
+/* Weight/tracking/colour match the real site's own pill "badge" component
+   (queried live via Webflow MCP): font-weight 500 (not 600), letter-spacing
+   -0.02em, neutral text colour #4f5969 = our --ink-3 (not --ink-2). Applies
+   below to .rt-cond and .rt-promo too - both are the same pill shape, just
+   different content. */
+#rt-hoius .rt-chip{display:inline-flex;align-items:center;gap:.25rem;background:var(--bg-3);color:var(--ink-3);border-radius:100vw;padding:.25rem .5rem .25rem .625rem;font-size:.75rem;font-weight:500;letter-spacing:-.02em;max-width:100%}
+#rt-hoius .rt-chip button{color:var(--ink-4);padding:0 .125rem;font-size:1rem;line-height:1;flex:none}
+#rt-hoius .rt-chip button:hover{color:var(--brand-600)}
+#rt-hoius .rt-group{border-bottom:1px solid var(--line-2);padding:.625rem 0 1rem}
+#rt-hoius .rt-group:last-child{border-bottom:0}
+#rt-hoius .rt-group__head{position:relative;width:100%;display:flex;justify-content:space-between;align-items:center;gap:.5rem;padding:.625rem 0;font-weight:600;font-size:.8125rem;color:var(--ink);letter-spacing:-.01em;text-align:left}
+#rt-hoius .rt-group__head span{min-width:0;flex:1 1 auto}
+#rt-hoius .rt-group__head svg{transition:transform .2s ease;flex:0 0 auto;margin-left:auto;color:var(--ink-4)}
+#rt-hoius .rt-group[data-open="false"] .rt-group__head svg{transform:rotate(-90deg)}
+#rt-hoius .rt-group[data-open="false"] .rt-group__body{display:none}
+#rt-hoius .rt-check{display:flex;align-items:flex-start;gap:.625rem;padding:.5rem 0;font-size:.8125rem;cursor:pointer;color:var(--ink-2);line-height:1.4}
+#rt-hoius .rt-check input{position:absolute;opacity:0;width:0;height:0}
+#rt-hoius .rt-check__box{width:1.125rem;height:1.125rem;margin-top:.0625rem;border:1px solid var(--line-strong);border-radius:6px;flex:none;display:grid;place-items:center;background:var(--white);transition:background-color .15s ease,border-color .15s ease}
+#rt-hoius .rt-check__box svg{opacity:0;stroke:#fff;width:12px;height:12px}
+#rt-hoius .rt-check input:checked+.rt-check__box{background:var(--brand);border-color:var(--brand)}
+#rt-hoius .rt-check input:checked+.rt-check__box svg{opacity:1}
+#rt-hoius .rt-check input:focus-visible+.rt-check__box{outline:2px solid var(--brand);outline-offset:2px}
+#rt-hoius .rt-check__text{flex:1;min-width:0}
+#rt-hoius .rt-static{display:flex;align-items:center;gap:.375rem;font-size:.8125rem;font-weight:500;padding:.875rem 0 .625rem;color:var(--ink-3)}
+#rt-hoius .rt-num{margin:.25rem 0 1rem;max-width:8rem}
+#rt-hoius .rt-num input{min-height:2.25rem;font-size:.875rem;padding-right:1.75rem}
+#rt-hoius .rt-num .rt-input__unit{right:.75rem}
+
+/* tooltip */
+#rt-hoius .rt-tip{position:relative;display:inline-flex;flex:none;margin-left:auto}
+#rt-hoius .rt-row__label .rt-tip,#rt-hoius .rt-static .rt-tip,#rt-hoius .rt-check__text .rt-tip{margin-left:.25rem}
+#rt-hoius .rt-tip__btn{width:1rem;height:1rem;border-radius:100vw;border:0;background:none;padding:0;color:#96a0b0;display:grid;place-items:center;flex:none}
+#rt-hoius .rt-tip__btn svg{width:100%;height:100%}
+#rt-hoius .rt-tip__btn:hover{color:var(--ink)}
+/* position:fixed (not absolute) and positioned via JS (positionTipBubble in
+   comparator.js), not CSS left/top - an absolute bubble is clipped by any
+   ancestor with non-visible overflow, e.g. the filters sidebar's own
+   scroll container, so a tip near the edge of that list would render
+   cropped. Fixed positioning escapes that the same way the sticky sidebar
+   does. Stays nested inside .rt-tip and scoped under #rt-hoius - moving it
+   to <body> was tried and reverted, because #rt-hoius declares every one
+   of the widget's colour/shadow tokens (--ink, --line-strong, --sh-2, ...)
+   as custom properties on itself; those only inherit down the DOM tree, so
+   a bubble living outside #rt-hoius lost all of them (no background, no
+   text colour, no shadow). CSS still owns show/hide (opacity/pointer-events)
+   so hover alone keeps working without JS having to run on every mouse
+   move. Width/radius/padding/arrow are copied from the real site's own
+   tooltip component (read directly from its exported CSS,
+   devlink-test/webflow/css/classes.css: .help-text_wrapper + .triangle-tip):
+   bubble sits beside the trigger, vertically centred on it, width 22rem,
+   radius 0.75rem, padding 0.75rem; the arrow is a 1rem x 1.4rem wedge
+   (clip-path polygon(100% 0%, 0% 50%, 100% 100%)) at the bubble's edge,
+   same background colour, shifted outward with translate(-70%, -50%) so it
+   points back at the trigger. In the filters sidebar the bubble instead
+   opens above/below and is clamped (by JS) to the sidebar's own width, so
+   it never overlaps the result cards next to it - see positionTipBubble.
+   The real bubble only fades (opacity), it never slides - ours matches
+   that, no transform. */
+#rt-hoius .rt-tip__bubble{position:fixed;width:22rem;max-width:88vw;background:var(--ink);color:var(--line-strong);font-size:.8125rem;line-height:1.5;padding:.75rem;border-radius:.75rem;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:9999;font-weight:600;text-align:left;letter-spacing:0;box-shadow:var(--sh-2)}
+/* Side mode (result cards): arrow is the real site's own 1rem x 1.4rem
+   wedge on the bubble's edge, pointing back at the trigger. */
+#rt-hoius .rt-tip__bubble--side .rt-tip__arrow{position:absolute;left:0;width:1rem;height:1.4rem;background:var(--ink);transform:translate(-70%,-50%);clip-path:polygon(100% 0%,0% 50%,100% 100%)}
+#rt-hoius .rt-tip__bubble--side.rt-tip__bubble--flip-left .rt-tip__arrow{left:auto;right:0;transform:translate(70%,-50%);clip-path:polygon(0% 0%,100% 50%,0% 100%)}
+/* Top mode (filters sidebar): arrow flips to a same-colour wedge on the
+   bubble's top/bottom edge instead, since a side-opening bubble there
+   would run out over the result cards. */
+#rt-hoius .rt-tip__bubble--top .rt-tip__arrow{position:absolute;top:100%;width:1rem;height:.7rem;background:var(--ink);transform:translate(-50%,-30%);clip-path:polygon(0% 0%,100% 0%,50% 100%)}
+#rt-hoius .rt-tip__bubble--top.rt-tip__bubble--below .rt-tip__arrow{top:auto;bottom:100%;transform:translate(-50%,30%);clip-path:polygon(50% 0%,0% 100%,100% 100%)}
+/* Hover-capable devices (real mice/trackpads) show the bubble on :hover
+   ONLY, matching the real site exactly (it has zero IX3 interactions -
+   verified live via Webflow MCP - so its tooltip is pure CSS :hover, full
+   stop). :focus-within alone used to keep it open after a click, because
+   clicking a <button> moves browser focus to it regardless of what our own
+   click handler does - a separate mechanism from the is-open class, and the
+   actual cause of "stays open after clicking." .is-open and :focus-within
+   are scoped to (hover:none) below instead, so touch devices (which have no
+   hover at all) keep a way to reach the tooltip content. */
+#rt-hoius .rt-tip:hover .rt-tip__bubble{opacity:1;pointer-events:auto}
+@media (hover:none){
+  #rt-hoius .rt-tip.is-open .rt-tip__bubble,#rt-hoius .rt-tip:focus-within .rt-tip__bubble{opacity:1;pointer-events:auto}
+}
+
+/* toolbar */
+#rt-hoius .rt-toolbar{display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;flex-wrap:wrap;min-height:2.75rem}
+#rt-hoius .rt-results-count{font-weight:600;color:var(--ink)}
+#rt-hoius .rt-filters-open{display:none}
+/* Custom dropdown (not a native <select> - an open native select's option
+   list is OS-rendered and cannot be restyled by CSS in any browser, so it
+   can never visually match a real Webflow dropdown component). */
+#rt-hoius .rt-select{position:relative;margin-left:auto}
+/* min-width must fit the LONGEST option label ("Suurim tulu (simulatsioon)"),
+   not just whichever one happens to be selected - the option list's own
+   width follows the toggle's (see .rt-select__list below), so a toggle
+   sized to a short label like "Kõrgeim intress" made the longer label wrap
+   inside the list once opened. */
+#rt-hoius .rt-select__toggle{display:flex;align-items:center;justify-content:space-between;gap:.75rem;min-height:2.75rem;min-width:15.5rem;border:1px solid var(--line-strong);border-radius:var(--r-md);padding:.25rem .75rem;font-size:1rem;font-weight:400;color:var(--ink);background:var(--white);cursor:pointer}
+#rt-hoius .rt-select__toggle span{white-space:nowrap}
+#rt-hoius .rt-select__toggle svg{flex:none;color:var(--ink-4);transition:transform .2s ease}
+#rt-hoius .rt-select.is-open .rt-select__toggle svg{transform:rotate(180deg)}
+/* Colors/weights below are pulled from the live palgakalkulaator dropdown's
+   actual computed styles (default/active/:hover), not guessed - see
+   web/README.md. Notably: the active/selected option is NOT bold (still
+   font-weight:400, only its color changes), the panel has no box-shadow,
+   and hover changes BOTH the background and the text color together. */
+#rt-hoius .rt-select__list{display:none;position:absolute;top:calc(100% + .25rem);right:0;left:0;background:var(--white);border:1px solid #e9ecf1;border-radius:var(--r-md);padding:.25rem;z-index:30}
+#rt-hoius .rt-select.is-open .rt-select__list{display:block}
+#rt-hoius .rt-select__option{padding:.625rem .875rem;border-radius:var(--r-sm);font-size:1rem;font-weight:400;color:#222;cursor:pointer;white-space:nowrap}
+#rt-hoius .rt-select__option.is-active{color:var(--brand)}
+#rt-hoius .rt-select__option:hover{background:#f9fafb;color:var(--brand)}
+#rt-hoius .rt-select__option.is-disabled{color:var(--ink-4);cursor:not-allowed}
+#rt-hoius .rt-select__option.is-disabled:hover{background:none;color:var(--ink-4)}
+
+/* profile */
+#rt-hoius .rt-profile{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;background:var(--brand-tint);border:1px solid var(--brand-soft);border-radius:var(--r-md);padding:.75rem .875rem;margin-bottom:1rem;font-size:.8125rem;color:var(--ink-3)}
+#rt-hoius .rt-profile b{font-weight:600;color:var(--ink)}
+
+/* cards - three top-aligned zones: identity+CTA, hero result, compact facts.
+   This replaces a single vertically-centered 3-column grid whose "interest"
+   metric was much taller than its siblings, which is what made the top card
+   look lopsided next to the shorter ones below it. Every card now has the
+   same hero+facts skeleton regardless of rank, so heights stay consistent. */
+/* Radius matches the real site's "regulador_component" list-card (the
+   closest live analog: a bordered card in a comparison list) - queried live
+   via Webflow MCP: 1.25rem radius, no box-shadow. Border weight/color match
+   the filters sidebar (.rt-filters) instead of the 4px reference border -
+   4px read as too heavy for a whole column of stacked result cards.
+   .rt-card--top keeps its own brand-colored border (this card being the top
+   pick is a real, deliberate accent). */
+#rt-hoius .rt-card{position:relative;background:var(--white);border:1.5px solid var(--line);border-radius:1.25rem;margin-bottom:1rem}
+#rt-hoius .rt-card--top{border-color:var(--brand)}
+#rt-hoius .rt-card__ribbon{position:absolute;top:-.7rem;left:1.5rem;background:var(--brand);color:#fff;font-size:.6875rem;font-weight:600;padding:.1875rem .625rem;border-radius:100vw;letter-spacing:.02em;box-shadow:var(--sh-1)}
+
+#rt-hoius .rt-card__top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding:1.5rem 1.5rem 0}
+#rt-hoius .rt-id{display:flex;gap:.75rem;align-items:center;min-width:0}
+#rt-hoius .rt-rank{font-family:var(--f-head);font-size:1.125rem;color:var(--ink-4);width:1.25rem;flex:none;text-align:center}
+#rt-hoius .rt-logo{position:relative;overflow:hidden;width:4rem;height:3.5rem;border-radius:var(--r-md);display:grid;place-items:center;font-family:var(--f-head);font-size:1rem;color:#fff;flex:none;letter-spacing:0}
+#rt-hoius .rt-logo--sm{width:1.75rem;height:1.5rem;font-size:.625rem;border-radius:6px}
+/* A real logo/favicon gets a plain white backing, not the brand colour -
+   the colour chip is only for the initials fallback (see logoHtml() in
+   comparator.js, which also restores it via onerror if the image fails). */
+#rt-hoius .rt-logo--img{background:#fff}
+/* The favicon <img> sits on top of the initials and covers them completely
+   once loaded (see logoHtml()'s onerror handling for the failure case).
+   object-fit:contain (not cover) so a non-square logo is never cropped -
+   it shows whole, centred on the white backing, like a card. */
+#rt-hoius .rt-logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:15%;box-sizing:border-box}
+/* Bare logos (see logoHtml()'s `bare: true`) skip the chip's own white
+   backing and padding entirely - the source image is already a complete,
+   self-contained icon (own background, own margin), so no frame-around-a-
+   frame. Shown exactly as-is, still contained to the same chip footprint. */
+#rt-hoius .rt-logo--bare img{padding:0}
+/* Matches the chip's width to its height - for a square source logo shown
+   bare/unmodified, our normally wider chip would otherwise leave empty
+   transparent strips on either side (showing whatever's behind it, e.g.
+   the sponsored card's own tinted background) instead of the mark filling
+   the chip corner to corner. */
+#rt-hoius .rt-logo--square{width:3.5rem}
+#rt-hoius .rt-logo--sm.rt-logo--square{width:1.5rem}
+/* Wordmark logo (e.g. the sponsored banner's "Lightyear" text mark) -
+   much wider than the standard icon chip so it isn't squeezed down to an
+   illegible sliver by object-fit:contain. */
+#rt-hoius .rt-logo--wide{width:8rem}
+#rt-hoius .rt-card__name{font-family:var(--f-body);font-weight:600;font-size:1.0625rem;line-height:1.3;letter-spacing:-.01em}
+#rt-hoius .rt-type{font-size:.8125rem;color:var(--ink-4);margin-top:.125rem}
+
+#rt-hoius .rt-top-actions{display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;flex:none}
+#rt-hoius .rt-top-actions .rt-btn{white-space:nowrap}
+#rt-hoius .rt-compare{display:flex;align-items:center;gap:.375rem;font-size:.75rem;color:var(--ink-3);cursor:pointer;white-space:nowrap}
+#rt-hoius .rt-compare input{position:absolute;opacity:0;width:0;height:0}
+#rt-hoius .rt-compare .rt-check__box{width:1rem;height:1rem;border:1px solid var(--line-strong);border-radius:5px;flex:none;display:grid;place-items:center;background:var(--white);transition:background-color .15s ease,border-color .15s ease}
+#rt-hoius .rt-compare .rt-check__box svg{opacity:0;stroke:#fff;width:10px;height:10px}
+#rt-hoius .rt-compare input:checked+.rt-check__box{background:var(--brand);border-color:var(--brand)}
+#rt-hoius .rt-compare input:checked+.rt-check__box svg{opacity:1}
+#rt-hoius .rt-compare input:focus-visible+.rt-check__box{outline:2px solid var(--brand);outline-offset:2px}
+
+#rt-hoius .rt-card__hero{margin:1rem 1.5rem 0;background:var(--brand-tint);border:1px solid var(--brand-soft);border-radius:var(--r-md);padding:1rem 1.125rem;display:flex;flex-wrap:wrap;gap:.75rem 1.5rem;align-items:center;justify-content:space-between}
+#rt-hoius .rt-hero-rate{display:flex;flex-direction:column;gap:.125rem;min-width:0}
+#rt-hoius .rt-hero-num{font-family:var(--f-head);font-size:2rem;font-weight:400;letter-spacing:-.006em;color:var(--brand-600);line-height:1.1}
+#rt-hoius .rt-hero-sub{font-size:.75rem;color:var(--ink-3)}
+/* Groups the promo badge with the net-earnings figure on the right side of
+   the hero box, so it reads as part of "what you get," not a separate ad.
+   Not a link (info only - the badge's own tooltip explains the offer, the
+   card's one outbound click stays the "Loe lähemalt" button). White fill
+   with a brand-colored border/text, like .rt-btn--ghost - the hero box's
+   own background is already a light brand-tint, so a solid brand-colored
+   fill read as too heavy/loud there; white lifts the badge off that tint
+   while the brand-colored border and text keep it clearly on-brand. */
+#rt-hoius .rt-hero-side{display:flex;flex-direction:column;align-items:flex-end;gap:.375rem}
+#rt-hoius .rt-promo{display:inline-flex;align-items:center;gap:.375rem;background:var(--white);color:var(--brand-600);border:1px solid var(--brand-soft);border-radius:100vw;padding:.3125rem .75rem;font-size:.75rem;font-weight:500;letter-spacing:-.02em;line-height:1.3}
+/* Inside the (now white-backed) sponsored banner, the white-fill treatment
+   above has nothing to lift off of - it just reads as a faint outline.
+   Filled with the brand tint instead so it actually stands out as a badge.
+   Padding left untouched from the shared .rt-promo rule on purpose. */
+#rt-hoius .rt-winner .rt-promo{background:var(--brand-tint);border-color:var(--brand-soft)}
+#rt-hoius .rt-hero-net{display:flex;flex-direction:column;align-items:flex-end;gap:.125rem;text-align:right}
+#rt-hoius .rt-hero-net span{font-size:.75rem;color:var(--ink-3)}
+#rt-hoius .rt-hero-net b{font-family:var(--f-head);font-size:1.25rem;font-weight:400;letter-spacing:-.006em;color:var(--ink)}
+#rt-hoius .rt-sim{font-size:.8125rem;color:var(--ink-3);line-height:1.45}
+#rt-hoius .rt-sim--warn{color:var(--amber-fg);width:100%}
+
+#rt-hoius .rt-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:min-content;column-gap:.5rem;row-gap:.375rem;margin:1rem 1.5rem 1.5rem;min-width:0}
+#rt-hoius .rt-metric{background:var(--bg-3);border-radius:var(--r-md);padding:.625rem .75rem;min-width:0;overflow-wrap:break-word}
+#rt-hoius .rt-metric dt{font-size:.6875rem;color:var(--ink-4);line-height:1.35;text-transform:uppercase;letter-spacing:.03em;font-weight:500}
+#rt-hoius .rt-metric dd{margin:.25rem 0 0;font-weight:600;font-size:.9375rem;line-height:1.3;color:var(--ink)}
+#rt-hoius .rt-metric dd small{display:block;font-size:.6875rem;font-weight:400;color:var(--ink-4);margin-top:.25rem;line-height:1.35;text-transform:none;letter-spacing:0}
+
+/* rate presets (filter sidebar quick buttons) */
+#rt-hoius .rt-presets{display:flex;flex-wrap:wrap;gap:.375rem;margin:.25rem 0 .75rem}
+#rt-hoius .rt-preset{border:1.5px solid var(--line-strong);border-radius:100vw;padding:.3125rem .75rem;font-size:.75rem;font-weight:500;letter-spacing:-.02em;color:var(--ink-2);background:var(--white)}
+#rt-hoius .rt-preset:hover{border-color:var(--ink)}
+#rt-hoius .rt-preset.is-on{background:var(--brand);border-color:var(--brand);color:#fff}
+
+/* compare: sticky tray + side-by-side table */
+#rt-hoius .rt-compare-tray{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--white);border-top:1.5px solid var(--line);box-shadow:0 -6px 24px rgba(8,28,21,.08)}
+#rt-hoius .rt-compare-tray__inner{max-width:1220px;margin:0 auto;padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+#rt-hoius .rt-compare-tray__chips{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+#rt-hoius .rt-compare-tray__hint{font-size:.75rem;color:var(--ink-4)}
+#rt-hoius .rt-compare-tray__actions{display:flex;align-items:center;gap:1rem}
+#rt-hoius .rt-compare-chip{display:inline-flex;align-items:center;gap:.4375rem;background:var(--bg-3);border-radius:100vw;padding:.25rem .5rem .25rem .375rem;font-size:.8125rem;font-weight:500;color:var(--ink-2)}
+#rt-hoius .rt-compare-chip button{display:grid;place-items:center;width:1.125rem;height:1.125rem;color:var(--ink-4);flex:none}
+#rt-hoius .rt-compare-chip button svg{width:9px;height:9px}
+#rt-hoius .rt-compare-chip button:hover{color:var(--red)}
+#rt-hoius .rt-compare-panel{margin-top:1.5rem;background:var(--white);border:4px solid var(--bg-4);border-radius:1.25rem;overflow:hidden}
+#rt-hoius .rt-compare-panel[hidden]{display:none}
+#rt-hoius .rt-compare-panel__head{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--line-2)}
+#rt-hoius .rt-compare-panel__head h2{font-size:1.25rem}
+#rt-hoius .rt-compare-scroll{overflow-x:auto}
+#rt-hoius .rt-compare-table{font-size:.875rem;min-width:32rem}
+#rt-hoius .rt-compare-table th,#rt-hoius .rt-compare-table td{padding:.75rem 1.5rem;text-align:left;border-bottom:1px solid var(--line-2);vertical-align:middle}
+#rt-hoius .rt-compare-table tbody th{color:var(--ink-3);font-weight:500;white-space:nowrap}
+#rt-hoius .rt-compare-table thead th{background:var(--bg-2);white-space:nowrap;font-weight:600}
+#rt-hoius .rt-compare-table thead th .rt-logo--sm{margin-right:.5rem;vertical-align:middle}
+#rt-hoius .rt-compare-table td{font-weight:600;color:var(--ink)}
+#rt-hoius .rt-compare-table tr:last-child th,#rt-hoius .rt-compare-table tr:last-child td{border-bottom:0}
+
+/* toggle + details */
+#rt-hoius .rt-toggle{position:relative;width:100%;border-top:1px solid var(--line-2);padding:.875rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:.5rem;font-weight:600;font-size:.875rem;color:var(--ink-2);border-radius:0 0 1.25rem 1.25rem;transition:color .18s ease,background-color .18s ease}
+/* When expanded, .rt-details (not the toggle) owns the card's bottom
+   corners - the toggle sits in the middle of the card at that point, so
+   its own bottom radius was showing as a stray rounded notch cut into the
+   details panel whenever it was hovered while open. */
+#rt-hoius .rt-toggle[aria-expanded="true"]{border-radius:0}
+#rt-hoius .rt-toggle span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rt-hoius .rt-toggle svg{flex:none;color:var(--ink-4);transition:transform .2s ease}
+#rt-hoius .rt-toggle:hover{color:var(--brand);background:var(--bg-2)}
+#rt-hoius .rt-toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+#rt-hoius .rt-details{border-top:1px solid var(--line-2);padding:0 1.5rem;background:var(--bg-2);border-radius:0 0 1.25rem 1.25rem}
+#rt-hoius .rt-dgroup{font-size:.6875rem;color:var(--ink-4);font-weight:600;padding:1.125rem 0 .375rem;text-transform:uppercase;letter-spacing:.05em}
+#rt-hoius .rt-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:1rem;padding:.6875rem 0;border-bottom:1px solid var(--line-2);font-size:.875rem;align-items:center}
+#rt-hoius .rt-row:last-child{border-bottom:0}
+#rt-hoius .rt-row__label{color:var(--ink-3);display:flex;align-items:center;gap:.375rem;min-width:0}
+#rt-hoius .rt-row__value{font-weight:600;display:flex;align-items:center;justify-content:flex-end;gap:.5rem;flex-wrap:wrap;text-align:right;color:var(--ink);min-width:0}
+#rt-hoius .rt-yes,#rt-hoius .rt-no{display:inline-grid;place-items:center;width:1.25rem;height:1.25rem;border-radius:100vw;flex:none}
+#rt-hoius .rt-yes{background:var(--green-bg);color:var(--green)}
+#rt-hoius .rt-no{background:var(--red-bg);color:var(--red)}
+#rt-hoius .rt-soft{color:var(--ink-4);font-weight:400;margin-left:.375rem}
+#rt-hoius .rt-flag b{background:var(--brand-tint);color:var(--brand-600);padding:.1875rem .5rem;border-radius:100vw;font-size:.75rem;font-weight:600}
+#rt-hoius .rt-tierwrap{padding:.375rem 0 .625rem}
+#rt-hoius .rt-tiertable{font-size:.875rem;background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;table-layout:fixed}
+#rt-hoius .rt-tiertable th,#rt-hoius .rt-tiertable td{padding:.75rem 1.25rem}
+#rt-hoius .rt-tiertable th:first-child,#rt-hoius .rt-tiertable td:first-child{width:50%}
+#rt-hoius .rt-tiertable th:last-child,#rt-hoius .rt-tiertable td:last-child{width:50%;text-align:right}
+#rt-hoius .rt-tiertable th{text-align:left;font-weight:600;color:var(--ink-4);font-size:.6875rem;text-transform:uppercase;letter-spacing:.03em;background:var(--bg-3)}
+#rt-hoius .rt-tiertable td{border-top:1px solid var(--line-2);color:var(--ink)}
+#rt-hoius .rt-tiertable td:last-child{font-weight:600}
+#rt-hoius .rt-noteswrap{padding:.375rem 0 .75rem}
+#rt-hoius .rt-notestext{font-size:.875rem;color:var(--ink-3);line-height:1.6}
+#rt-hoius .rt-details__foot{display:flex;justify-content:center;padding:1rem 0}
+#rt-hoius .rt-details__sticky{display:none}
+
+/* more / empty / source */
+#rt-hoius .rt-more{display:flex;justify-content:center;margin-top:.75rem}
+#rt-hoius .rt-empty{background:var(--white);border:1.5px dashed var(--line-strong);border-radius:var(--r-lg);padding:2.5rem 1.25rem;text-align:center;color:var(--ink-3);line-height:1.55}
+#rt-hoius .rt-empty .rt-btn{margin-top:1rem}
+#rt-hoius .rt-fonte{margin-top:1.5rem;font-size:.75rem;color:var(--ink-4);line-height:1.6}
+
+/* conditions + alerts */
+#rt-hoius .rt-conds{display:flex;flex-wrap:wrap;gap:.375rem;margin-top:.5rem}
+#rt-hoius .rt-cond{display:inline-flex;align-items:center;gap:.25rem;border-radius:100vw;padding:.1875rem .5rem;font-size:.6875rem;font-weight:500;letter-spacing:-.02em;background:var(--bg-3);color:var(--ink-3)}
+#rt-hoius .rt-cond--req{background:var(--amber-bg);color:var(--amber-fg);box-shadow:inset 0 0 0 1px var(--amber-line)}
+#rt-hoius .rt-cond--free{background:var(--green-bg);color:var(--green)}
+#rt-hoius .rt-cond--warn{background:var(--amber-bg);color:var(--amber-fg)}
+/* Same amber treatment as --req/--warn (not the brand-tint used before) -
+   the winner card now has a flat brand-tint background of its own, which
+   made a brand-tint badge on top of it nearly invisible. Amber also reads
+   correctly as "a condition to be aware of," which fits a locked term
+   better than the brand color. */
+#rt-hoius .rt-cond--info{background:var(--amber-bg);color:var(--amber-fg);box-shadow:inset 0 0 0 1px var(--amber-line)}
+#rt-hoius .rt-alert{display:flex;gap:.5rem;align-items:flex-start;background:var(--amber-bg);color:var(--amber-fg);border:1px solid var(--amber-line);border-radius:var(--r-md);padding:.625rem .75rem;font-size:.75rem;line-height:1.5;margin:.625rem 1.5rem 0}
+#rt-hoius .rt-winner .rt-alert{margin-left:0;margin-right:0}
+#rt-hoius .rt-alert svg{flex:none;margin-top:.0625rem}
+#rt-hoius .rt-card.is-out{opacity:.6}
+#rt-hoius .rt-card.is-out .rt-btn--brand{background:var(--bg-3);color:var(--ink-4);border-color:var(--bg-3)}
+
+/* responsive */
+#rt-hoius .rt-x{display:none}
+#rt-hoius #rtDrawerApply{display:none}
+@media (max-width:1080px){
+  #rt-hoius .rt-facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  #rt-hoius .rt-card__top{flex-direction:column;align-items:stretch}
+  #rt-hoius .rt-top-actions{flex-direction:row-reverse;justify-content:space-between;align-items:center;width:100%}
+  #rt-hoius .rt-top-actions .rt-btn{flex:1}
+  #rt-hoius .rt-card__hero{flex-direction:column;align-items:stretch}
+  #rt-hoius .rt-hero-net{align-items:flex-start;text-align:left}
+  #rt-hoius .rt-compare-tray__inner{flex-direction:column;align-items:stretch}
+  #rt-hoius .rt-compare-tray__actions{justify-content:space-between}
+}
+@media (max-width:900px){
+  #rt-hoius .rt-layout{grid-template-columns:minmax(0,1fr);margin-top:1.75rem}
+  #rt-hoius .rt-results{grid-column:1}
+  #rt-hoius .rt-filters{position:fixed;inset:0;height:100dvh;z-index:9999;border-radius:0;max-height:none;transform:translateY(100%);transition:transform .25s ease;visibility:hidden;border:0}
+  body.rt-drawer-open #rt-hoius .rt-filters{transform:none;visibility:visible}
+  body.rt-drawer-open{overflow:hidden}
+  #rt-hoius .rt-filters-open{display:inline-flex}
+  #rt-hoius .rt-collapse,#rt-hoius .rt-panel-open{display:none!important}
+  #rt-hoius #rtDrawerApply{display:inline-flex}
+  #rt-hoius .rt-x{display:grid;place-items:center;width:2.25rem;height:2.25rem;border-radius:var(--r-md);border:1.5px solid var(--line-strong);background:var(--white);flex:none;color:var(--ink-2)}
+  #rt-hoius .rt-calc__grid{grid-template-columns:1fr 1fr}
+  #rt-hoius .rt-calc__actions{grid-column:1/-1}
+  #rt-hoius .rt-calc__actions .rt-btn{flex:1}
+}
+@media (max-width:600px){
+  #rt-hoius .rt-calc{padding:1.25rem}
+  #rt-hoius .rt-calc__grid{grid-template-columns:1fr}
+  #rt-hoius .rt-card__top,#rt-hoius .rt-card__hero,#rt-hoius .rt-facts,#rt-hoius .rt-card>.rt-alert{margin-left:1.25rem;margin-right:1.25rem}
+  #rt-hoius .rt-card__top{padding-top:1.25rem;padding-left:0;padding-right:0}
+  #rt-hoius .rt-facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #rt-hoius .rt-row{grid-template-columns:1fr;gap:.1875rem}
+  #rt-hoius .rt-details{padding:0 1.25rem}
+  #rt-hoius .rt-details__sticky{display:flex;position:sticky;bottom:0;background:var(--bg-2);padding:.75rem 0;border-top:1px solid var(--line-2);margin-top:.25rem;gap:.625rem;align-items:center;z-index:2}
+  #rt-hoius .rt-details__sticky .rt-btn{flex:1}
+  #rt-hoius .rt-details__sticky span{font-size:.8125rem;color:var(--ink-3);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #rt-hoius .rt-winner{padding:1.125rem}
+  #rt-hoius .rt-winner__divider{margin:0 .75rem}
+  #rt-hoius .rt-winner__logo-col{gap:.25rem}
+  #rt-hoius .rt-winner__col2{gap:.25rem}
+  #rt-hoius .rt-winner__cta{margin-left:0;width:100%;flex-direction:column;align-items:stretch;gap:.5rem}
+  #rt-hoius .rt-winner .rt-btn{width:100%}
+  #rt-hoius .rt-select{margin-left:0;width:100%}
+}
+@media (prefers-reduced-motion:reduce){#rt-hoius *{transition:none!important}}

@@ -1,0 +1,101 @@
+name: Update deposit rates
+
+# Scrapes term deposits, flexible savings accounts, and fintech platforms
+# weekly, and commits whichever of the three data files actually moved. A
+# checkedOn-only change is not committed: this workflow's own run history
+# already records that we looked and nothing had changed.
+
+on:
+  schedule:
+    # 05:30 UTC every Monday (07:30 EET / 08:30 EEST). Rates move rarely and
+    # banks publish changes with effective dates in advance, so weekly is
+    # enough; bump this back to daily later if that ever proves too slow.
+    - cron: '30 5 * * 1'
+  workflow_dispatch:
+
+# Never let two runs write to the same branch at once.
+concurrency:
+  group: update-rates
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Offline parser tests. If a parser is broken, stop before writing
+      # anything rather than committing whatever it produced.
+      - name: Run parser tests
+        run: npm test
+
+      # Only some bank/platform pages need a browser; the rest are plain
+      # fetches. Chromium alone keeps this step as short as possible.
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      # Each pipeline exits non-zero only if every account in it failed,
+      # which fails the job and notifies. A single bank/platform being down
+      # leaves its stored data untouched and that pipeline's run succeeds.
+      # continue-on-error keeps one pipeline's total-failure from skipping the
+      # other two - the final "Fail if every pipeline failed" step below is
+      # what actually fails the job when that happens.
+      - name: Scrape term deposits (data/data.json)
+        id: scrape_term
+        continue-on-error: true
+        run: node scripts/update-accounts.mjs
+
+      - name: Scrape flexible savings accounts (data/flexible-accounts.json)
+        id: scrape_flexible
+        continue-on-error: true
+        run: node scripts/update-flexible-accounts.mjs
+
+      - name: Scrape fintech platforms (data/fintech-accounts.json)
+        id: scrape_fintech
+        continue-on-error: true
+        run: node scripts/update-fintech-accounts.mjs
+
+      - name: Fail if every pipeline failed
+        if: steps.scrape_term.outcome == 'failure' && steps.scrape_flexible.outcome == 'failure' && steps.scrape_fintech.outcome == 'failure'
+        run: |
+          echo "All three scrape pipelines failed - something systemic is broken."
+          exit 1
+
+      - name: Commit updated rates
+        if: steps.scrape_term.outputs.changes == 'true' || steps.scrape_flexible.outputs.changes == 'true' || steps.scrape_fintech.outputs.changes == 'true'
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/data.json data/flexible-accounts.json data/fintech-accounts.json
+          git commit -m 'chore(data): refresh savings account rates'
+          git push
+
+      # jsDelivr caches the raw file, so the widget keeps serving the old rates
+      # until the CDN copy is purged. Only worth doing when we actually pushed.
+      - name: Purge jsDelivr cache
+        if: steps.scrape_term.outputs.changes == 'true' || steps.scrape_flexible.outputs.changes == 'true' || steps.scrape_fintech.outputs.changes == 'true'
+        run: |
+          for FILE in data.json flexible-accounts.json fintech-accounts.json; do
+            PURGE_URL="https://purge.jsdelivr.net/gh/${{ github.repository }}@${{ github.ref_name }}/data/$FILE"
+            echo "Purging $PURGE_URL"
+            STATUS=$(curl -sS -o /tmp/purge.json -w '%{http_code}' "$PURGE_URL")
+            cat /tmp/purge.json
+            echo
+            if [ "$STATUS" != "200" ]; then
+              echo "jsDelivr purge returned HTTP $STATUS for $FILE"
+              exit 1
+            fi
+          done
