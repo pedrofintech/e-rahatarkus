@@ -170,6 +170,13 @@
    translateZ(0) was tried here first and broke exactly that, clipping every
    tooltip bubble to the sidebar's own bounds instead of the viewport. */
 #rt-hoius .rt-filters{position:sticky;top:var(--rt-sticky-top, 1.5rem);align-self:start;background:var(--white);border:1.5px solid var(--line);border-radius:1.25rem;max-height:calc(100vh - var(--rt-sticky-top, 1.5rem) - 1.5rem);display:flex;flex-direction:column;min-width:0;overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+/* Toggled on only while actively scrolling (see bumpGpuLayer() in
+   initStickySidebar()) - transform is a stronger fast-scroll-lag fix than
+   backface-visibility alone, but it also makes this element the containing
+   block for position:fixed descendants, which would clip .rt-tip__bubble
+   right back to the sidebar. Scoping it to "currently scrolling" gets the
+   stronger fix exactly when it's needed without breaking tooltips at rest. */
+#rt-hoius .rt-filters--gpu{transform:translateZ(0);will-change:transform}
 #rt-hoius .rt-results{grid-column:2}
 #rt-hoius .rt-filters__head{display:flex;align-items:center;gap:.5rem;padding:1.125rem 1.25rem;border-bottom:1px solid var(--line-2)}
 #rt-hoius .rt-filters__head h2{font-family:var(--f-body);font-size:1rem;font-weight:600;letter-spacing:-.01em}
@@ -448,12 +455,18 @@
 #rt-hoius .rt-details__foot{display:flex;justify-content:center;padding:1rem 0}
 #rt-hoius .rt-details__sticky{display:none}
 
-/* loading placeholder - shown immediately on init(), before the data fetch
-   even starts, so the mount point never sits blank/unstyled while waiting. */
-#rt-hoius .rt-loading{display:flex;align-items:center;justify-content:center;gap:.625rem;padding:3.5rem 1rem;color:var(--ink-4);font-size:.9375rem}
-#rt-hoius .rt-loading__spinner{width:1.125rem;height:1.125rem;border-radius:100vw;border:2px solid var(--line-strong);border-top-color:var(--brand);flex:none;animation:rt-spin .7s linear infinite}
-@keyframes rt-spin{to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion:reduce){#rt-hoius .rt-loading__spinner{animation:none}}
+/* Reserves roughly the widget's real height while #rt-hoius is still
+   literally empty (before init() has written anything into it - a brief
+   window covering the data fetch), so native Webflow content below it (a
+   Sõnastik section, footer, etc.) doesn't jump up into the empty space and
+   then get shoved back down once the widget finishes rendering. No visible
+   loading text/spinner - that read as worse than just holding the space
+   silently, since it only ever flashes for a moment. Stops applying the
+   instant real content lands, since #rt-hoius is then no longer :empty.
+   These are rough estimates (a filtered/short result list can still be
+   shorter than this), not a pixel-exact match. */
+#rt-hoius:empty{min-height:1500px}
+@media (max-width:900px){#rt-hoius:empty{min-height:1800px}}
 
 /* more / empty / source */
 #rt-hoius .rt-more{display:flex;justify-content:center;margin-top:.75rem}
