@@ -161,7 +161,15 @@
    needs position:relative as the containing block for the "settled"
    (position:absolute, anchored past the end of the results column) state. */
 #rt-hoius .rt-js-sticky .rt-filters-cell{position:relative}
-#rt-hoius .rt-filters{position:sticky;top:var(--rt-sticky-top, 1.5rem);align-self:start;background:var(--white);border:1.5px solid var(--line);border-radius:1.25rem;max-height:calc(100vh - var(--rt-sticky-top, 1.5rem) - 1.5rem);display:flex;flex-direction:column;min-width:0;overflow:hidden}
+/* backface-visibility:hidden promotes the sidebar to its own GPU compositor
+   layer, same WebKit/Safari fast-scroll-lag fix as transform:translateZ(0)
+   - but unlike transform (or will-change:transform), it does NOT redefine
+   the containing block for position:fixed descendants. .rt-tip__bubble
+   inside this sidebar relies on position:fixed being relative to the real
+   viewport to escape .rt-filters' own overflow:hidden/auto clipping -
+   translateZ(0) was tried here first and broke exactly that, clipping every
+   tooltip bubble to the sidebar's own bounds instead of the viewport. */
+#rt-hoius .rt-filters{position:sticky;top:var(--rt-sticky-top, 1.5rem);align-self:start;background:var(--white);border:1.5px solid var(--line);border-radius:1.25rem;max-height:calc(100vh - var(--rt-sticky-top, 1.5rem) - 1.5rem);display:flex;flex-direction:column;min-width:0;overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 #rt-hoius .rt-results{grid-column:2}
 #rt-hoius .rt-filters__head{display:flex;align-items:center;gap:.5rem;padding:1.125rem 1.25rem;border-bottom:1px solid var(--line-2)}
 #rt-hoius .rt-filters__head h2{font-family:var(--f-body);font-size:1rem;font-weight:600;letter-spacing:-.01em}
@@ -228,7 +236,7 @@
    it never overlaps the result cards next to it - see positionTipBubble.
    The real bubble only fades (opacity), it never slides - ours matches
    that, no transform. */
-#rt-hoius .rt-tip__bubble{position:fixed;width:22rem;max-width:88vw;background:var(--ink);color:var(--line-strong);font-size:.8125rem;line-height:1.5;padding:.75rem;border-radius:.75rem;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:9999;font-weight:600;text-align:left;letter-spacing:0;box-shadow:var(--sh-2)}
+#rt-hoius .rt-tip__bubble{position:fixed;width:22rem;max-width:88vw;background:var(--ink);color:var(--line-strong);font-size:.8125rem;line-height:1.5;padding:.75rem;border-radius:.75rem;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:9999;font-weight:600;text-align:left;letter-spacing:0;box-shadow:var(--sh-2);overflow-wrap:break-word}
 /* Side mode (result cards): arrow is the real site's own 1rem x 1.4rem
    wedge on the bubble's edge, pointing back at the trigger. */
 #rt-hoius .rt-tip__bubble--side .rt-tip__arrow{position:absolute;left:0;width:1rem;height:1.4rem;background:var(--ink);transform:translate(-70%,-50%);clip-path:polygon(100% 0%,0% 50%,100% 100%)}
@@ -440,6 +448,13 @@
 #rt-hoius .rt-details__foot{display:flex;justify-content:center;padding:1rem 0}
 #rt-hoius .rt-details__sticky{display:none}
 
+/* loading placeholder - shown immediately on init(), before the data fetch
+   even starts, so the mount point never sits blank/unstyled while waiting. */
+#rt-hoius .rt-loading{display:flex;align-items:center;justify-content:center;gap:.625rem;padding:3.5rem 1rem;color:var(--ink-4);font-size:.9375rem}
+#rt-hoius .rt-loading__spinner{width:1.125rem;height:1.125rem;border-radius:100vw;border:2px solid var(--line-strong);border-top-color:var(--brand);flex:none;animation:rt-spin .7s linear infinite}
+@keyframes rt-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){#rt-hoius .rt-loading__spinner{animation:none}}
+
 /* more / empty / source */
 #rt-hoius .rt-more{display:flex;justify-content:center;margin-top:.75rem}
 #rt-hoius .rt-empty{background:var(--white);border:1.5px dashed var(--line-strong);border-radius:var(--r-lg);padding:2.5rem 1.25rem;text-align:center;color:var(--ink-3);line-height:1.55}
@@ -508,7 +523,13 @@
   #rt-hoius .rt-winner__divider{margin:0 .75rem}
   #rt-hoius .rt-winner__logo-col{gap:.25rem}
   #rt-hoius .rt-winner__col2{gap:.25rem}
-  #rt-hoius .rt-winner__cta{margin-left:0;width:100%;flex-direction:column;align-items:stretch;gap:.5rem}
+  #rt-hoius .rt-winner__cta{margin-left:0;margin-top:.875rem;width:100%;flex-direction:column;align-items:stretch;gap:.5rem}
+  /* max-width matches the 20px screen-edge margin positionTipBubble() now
+     uses on phones (see comparator.js) - CSS-only floor for the plain
+     "side" mode path, where JS clears its own inline max-width and lets
+     this apply. Longer explanations wrap onto more lines and the box grows
+     taller instead of running wider than this. */
+  #rt-hoius .rt-tip__bubble{max-width:calc(100vw - 40px)}
   #rt-hoius .rt-winner .rt-btn{width:100%}
   #rt-hoius .rt-select{margin-left:0;width:100%}
 }
