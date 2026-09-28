@@ -1,23 +1,23 @@
 {
-  "lastUpdated": "2026-09-23",
+  "lastUpdated": "2026-09-28",
   "accounts": [
     {
       "bank": "LHV",
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-23",
+      "checkedOn": "2026-09-28",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "fetch",
       "tiers": [
         { "months": 1,  "rateEur": 1.90, "rateUsd": 1.00 },
         { "months": 3,  "rateEur": 2.15, "rateUsd": 1.50 },
-        { "months": 6,  "rateEur": 2.35, "rateUsd": 1.60 },
-        { "months": 9,  "rateEur": 2.35, "rateUsd": 1.50 },
-        { "months": 12, "rateEur": 2.45, "rateUsd": 1.50 },
-        { "months": 15, "rateEur": 2.45, "rateUsd": 1.40 },
-        { "months": 18, "rateEur": 2.45, "rateUsd": 1.30 },
-        { "months": 24, "rateEur": 2.45, "rateUsd": 1.30 }
+        { "months": 6,  "rateEur": 2.35, "rateUsd": 1.75 },
+        { "months": 9,  "rateEur": 2.35, "rateUsd": 2.00 },
+        { "months": 12, "rateEur": 2.45, "rateUsd": 2.25 },
+        { "months": 15, "rateEur": 2.45, "rateUsd": 2.25 },
+        { "months": 18, "rateEur": 2.45, "rateUsd": 2.25 },
+        { "months": 24, "rateEur": 2.45, "rateUsd": 2.25 }
       ],
       "minDeposit": 100,
       "minDepositUsd": 500,
@@ -39,7 +39,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-23",
+      "checkedOn": "2026-09-28",
       "ratesEffectiveFrom": "2026-09-16",
       "scrapeMethod": "fetch",
       "tiers": [
@@ -73,7 +73,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-23",
+      "checkedOn": "2026-09-28",
       "ratesEffectiveFrom": "2026-09-22",
       "scrapeMethod": "fetch",
       "tiers": [
@@ -105,7 +105,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-23",
+      "checkedOn": "2026-09-28",
       "ratesEffectiveFrom": "2026-09-22",
       "scrapeMethod": "fetch",
       "tiers": [
@@ -139,7 +139,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-23",
+      "checkedOn": "2026-09-28",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "playwright",
       "tiers": [
@@ -148,10 +148,10 @@
         { "months": 9,  "rateEur": 2.50 },
         { "months": 12, "rateEur": 2.50 },
         { "months": 18, "rateEur": 2.60 },
-        { "months": 24, "rateEur": 2.80 },
-        { "months": 36, "rateEur": 2.80 },
-        { "months": 48, "rateEur": 3.00 },
-        { "months": 60, "rateEur": 3.00 }
+        { "months": 24, "rateEur": 3.00 },
+        { "months": 36, "rateEur": 3.00 },
+        { "months": 48, "rateEur": 3.20 },
+        { "months": 60, "rateEur": 3.20 }
       ],
       "minDeposit": 500,
       "salaryRequired": false,
@@ -172,7 +172,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-23",
+      "checkedOn": "2026-09-28",
       "ratesEffectiveFrom": "2026-09-15",
       "scrapeMethod": "playwright",
       "tiers": [
@@ -203,7 +203,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-23",
+      "checkedOn": "2026-09-28",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "fetch",
       "tiers": [
@@ -233,7 +233,7 @@
       "bank": "Luminor",
       "product": "Tähtajaline hoius",
       "status": "confirmed",
-      "consecutiveFailures": 1,
+      "consecutiveFailures": 2,
       "checkedOn": "2026-09-21",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "playwright",
@@ -266,7 +266,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-23",
+      "checkedOn": "2026-09-28",
       "ratesEffectiveFrom": "2026-08-21",
       "scrapeMethod": "fetch",
       "tiers": [
