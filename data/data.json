@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2026-09-28",
+  "lastUpdated": "2026-10-05",
   "accounts": [
     {
       "bank": "LHV",
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-28",
+      "checkedOn": "2026-10-05",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "fetch",
       "tiers": [
@@ -39,7 +39,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-28",
+      "checkedOn": "2026-10-05",
       "ratesEffectiveFrom": "2026-09-16",
       "scrapeMethod": "fetch",
       "tiers": [
@@ -73,7 +73,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-28",
+      "checkedOn": "2026-10-05",
       "ratesEffectiveFrom": "2026-09-22",
       "scrapeMethod": "fetch",
       "tiers": [
@@ -105,20 +105,20 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-28",
-      "ratesEffectiveFrom": "2026-09-22",
+      "checkedOn": "2026-10-05",
+      "ratesEffectiveFrom": null,
       "scrapeMethod": "fetch",
       "tiers": [
-        { "months": 2,   "rateEur": 2.50 },
-        { "months": 5,   "rateEur": 2.60 },
-        { "months": 8,   "rateEur": 2.70 },
-        { "months": 11,  "rateEur": 2.80 },
-        { "months": 17,  "rateEur": 2.90 },
-        { "months": 23,  "rateEur": 2.90 },
-        { "months": 35,  "rateEur": 3.00 },
-        { "months": 47,  "rateEur": 3.00 },
-        { "months": 59,  "rateEur": 3.20 },
-        { "months": 60,  "rateEur": 3.20 }
+        { "months": 2,   "rateEur": 3.30 },
+        { "months": 5,   "rateEur": 3.30 },
+        { "months": 8,   "rateEur": 3.30 },
+        { "months": 11,  "rateEur": 3.30 },
+        { "months": 17,  "rateEur": 3.30 },
+        { "months": 23,  "rateEur": 3.30 },
+        { "months": 35,  "rateEur": 3.30 },
+        { "months": 47,  "rateEur": 3.30 },
+        { "months": 59,  "rateEur": 3.30 },
+        { "months": 60,  "rateEur": 3.30 }
       ],
       "minDeposit": 100,
       "salaryRequired": false,
@@ -139,7 +139,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-28",
+      "checkedOn": "2026-10-05",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "playwright",
       "tiers": [
@@ -172,7 +172,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-28",
+      "checkedOn": "2026-10-05",
       "ratesEffectiveFrom": "2026-09-15",
       "scrapeMethod": "playwright",
       "tiers": [
@@ -203,7 +203,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-28",
+      "checkedOn": "2026-10-05",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "fetch",
       "tiers": [
@@ -232,8 +232,8 @@
     {
       "bank": "Luminor",
       "product": "Tähtajaline hoius",
-      "status": "confirmed",
-      "consecutiveFailures": 2,
+      "status": "stale",
+      "consecutiveFailures": 3,
       "checkedOn": "2026-09-21",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "playwright",
@@ -266,7 +266,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-09-28",
+      "checkedOn": "2026-10-05",
       "ratesEffectiveFrom": "2026-08-21",
       "scrapeMethod": "fetch",
       "tiers": [
