@@ -1381,6 +1381,14 @@
     injectStyles();
   }
 
+  // init() calls injectStyles(), which reads STYLES - a `var` assigned at the very
+  // end of this IIFE. A `defer` script (the Webflow loader) runs with readyState
+  // 'interactive', so calling init() synchronously here used to read STYLES
+  // while still undefined and inject an EMPTY <style id=rt-comparator-css>, which
+  // then also made every later injectStyles() call bail out. The page only looked
+  // right because the same CSS was pasted separately into the Webflow head, so
+  // any CSS change in this repo silently never reached the live page. A
+  // microtask runs after the IIFE has finished, i.e. after STYLES is assigned.
   function init() {
     var root = document.getElementById(MOUNT_ID);
     if (!root) return;
@@ -1422,7 +1430,7 @@
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  else Promise.resolve().then(init);
 
   /* ---------- styles (Rahatarkus tokens) ---------- */
   function injectStyles() {
