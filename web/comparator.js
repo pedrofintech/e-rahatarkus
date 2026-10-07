@@ -102,8 +102,16 @@
       a.tiers.forEach(function (t) { if (t.months < shortest.months) shortest = t; });
       return { rate: shortest.rateEur, months: shortest.months, shorter: true };
     }
+    // On a tie in rate, take the LONGER term: it is closer to what the user
+    // asked for and earns for more of it. Without this a flat table (Holm
+    // Bank: 3.30% at 2, 5, 8, 11 ... months) always resolved to its shortest
+    // tier, so a 12-month request was priced as 2 months and showed the
+    // "pikemad tähtajad kas puuduvad või annavad vähem" alert even though the
+    // 11-month tier pays exactly the same.
     var pick = eligible[0];
-    eligible.forEach(function (t) { if (t.rateEur > pick.rateEur) pick = t; });
+    eligible.forEach(function (t) {
+      if (t.rateEur > pick.rateEur || (t.rateEur === pick.rateEur && t.months > pick.months)) pick = t;
+    });
     return { rate: pick.rate != null ? pick.rate : pick.rateEur, months: pick.months, shorter: false };
   }
   // Rate that applies for a chosen term, for ANY product kind. Term deposits
@@ -560,7 +568,7 @@
   function termAlert(s, pf) {
     if (!s || s.blocked) return '';
     if (s.longer) {
-      return 'Sinu valitud ' + pf.months + ' kuu jaoks on parim saadaolev intress tegelikult ' + s.rateTermMonths + ' kuu tähtajal (pikemad tähtajad kas puuduvad või annavad vähem). Arvutus eeldab raha paigutamist ' + s.rateTermMonths + ' kuuks, mitte ' + pf.months + ' kuuks.';
+      return 'Sinu valitud ' + pf.months + ' kuu jaoks on parim saadaolev intress tegelikult ' + s.rateTermMonths + ' kuu tähtajal (pikemad tähtajad kas puuduvad või ei anna rohkem). Arvutus eeldab raha paigutamist ' + s.rateTermMonths + ' kuuks, mitte ' + pf.months + ' kuuks.';
     }
     return '';
   }
