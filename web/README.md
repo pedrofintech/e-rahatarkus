@@ -168,6 +168,18 @@ the same bank can appear twice (its term deposit and its flexible product).
   ever writes to the DOM on an actual flow→pinned→settled transition, never
   on every scroll frame, which is what keeps it jitter-free. Ordinary pages
   without a clipping ancestor never load this fallback at all.
+  **Preferred fix: keep the embed out of the overflow:hidden section.** The
+  JS fallback still polls every animation frame and visibly lags on fast
+  scrolls, native sticky doesn't. So the HTML Embed should live in a plain
+  section/div with no `overflow` set (and no `padding-global` /
+  `container-large` inside it). Because that drops the wrappers that gave the
+  embed its side padding and width, `#rt-hoius` in comparator.css now draws
+  that box itself: `padding-left/right` 5rem (2.5rem <=991px, 1.5rem <=767px)
+  and `max-width: 80rem` of content, centred - the same numbers as Webflow's
+  `.padding-global` + `.container-large`. Don't nest it back inside those
+  classes or the padding doubles. Section-level spacing (the hero's top/bottom
+  padding, background colour) belongs to whichever Webflow section holds the
+  embed.
 - **Tooltip bubbles clipped inside the filters sidebar**: `.rt-tip__bubble`
   used to be `position:absolute`, which got clipped by
   `.rt-filters__scroll`'s own `overflow-y:auto` for any tip near the bottom

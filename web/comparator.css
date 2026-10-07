@@ -20,6 +20,24 @@
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
 }
 
+/* page layout
+   The embed sits directly in a plain Webflow section instead of inside the
+   hero's `padding-global` > `container-large` wrappers, because that hero
+   section is overflow:hidden, which permanently disables native
+   position:sticky for the filters sidebar (it forced the JS fallback in
+   initStickySidebar(), which lags on fast scrolls). So the embed now draws
+   those two wrappers' box itself, same numbers as the site's Webflow classes
+   (queried live via Webflow MCP):
+     .padding-global   padding-left/right 5rem, 2.5rem <=991px, 1.5rem <=767px
+     .container-large  width 100%, max-width 80rem, centred
+   max-width adds the padding back in because the single box is border-box;
+   the content column therefore stays exactly 80rem wide at the widest.
+   The embed must NOT also be placed inside a padding-global/container-large
+   block, or the padding doubles. */
+#rt-hoius{--rt-pad:5rem;box-sizing:border-box;width:100%;max-width:calc(80rem + 2 * var(--rt-pad));margin-left:auto;margin-right:auto;padding-left:var(--rt-pad);padding-right:var(--rt-pad)}
+@media (max-width:991px){#rt-hoius{--rt-pad:2.5rem}}
+@media (max-width:767px){#rt-hoius{--rt-pad:1.5rem}}
+
 /* reset */
 #rt-hoius *,#rt-hoius *::before,#rt-hoius *::after{box-sizing:border-box}
 #rt-hoius h2,#rt-hoius h3,#rt-hoius h4{font-family:var(--f-head);font-weight:300;line-height:1.25;margin:0;letter-spacing:-.02em;color:var(--ink)}
