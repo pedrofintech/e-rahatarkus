@@ -53,20 +53,37 @@ jobs:
       # continue-on-error keeps one pipeline's total-failure from skipping the
       # other two - the final "Fail if every pipeline failed" step below is
       # what actually fails the job when that happens.
+      # Screenshots + HTML of every browser-rendered page, uploaded below, so a
+      # page that renders differently on the runner than locally can be seen.
       - name: Scrape term deposits (data/data.json)
         id: scrape_term
+        env:
+          SCRAPE_DEBUG_DIR: scrape-debug
         continue-on-error: true
         run: node scripts/update-accounts.mjs
 
       - name: Scrape flexible savings accounts (data/flexible-accounts.json)
         id: scrape_flexible
+        env:
+          SCRAPE_DEBUG_DIR: scrape-debug
         continue-on-error: true
         run: node scripts/update-flexible-accounts.mjs
 
       - name: Scrape fintech platforms (data/fintech-accounts.json)
         id: scrape_fintech
+        env:
+          SCRAPE_DEBUG_DIR: scrape-debug
         continue-on-error: true
         run: node scripts/update-fintech-accounts.mjs
+
+      - name: Upload scrape debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-debug
+          path: scrape-debug
+          if-no-files-found: ignore
+          retention-days: 14
 
       - name: Fail if every pipeline failed
         if: steps.scrape_term.outcome == 'failure' && steps.scrape_flexible.outcome == 'failure' && steps.scrape_fintech.outcome == 'failure'
