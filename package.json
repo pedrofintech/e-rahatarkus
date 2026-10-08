@@ -16,6 +16,7 @@
     "update": "node scripts/update-accounts.mjs",
     "update:flexible": "node scripts/update-flexible-accounts.mjs",
     "update:fintech": "node scripts/update-fintech-accounts.mjs",
+    "update:local": "node scripts/update-local.mjs",
     "scrape": "node scripts/run-scraper.mjs",
     "test": "node --test",
     "capture-fixtures": "node scripts/capture-fixtures.mjs",

@@ -233,10 +233,11 @@
       "bank": "Luminor",
       "product": "Tähtajaline hoius",
       "status": "confirmed",
-      "consecutiveFailures": 1,
-      "checkedOn": "2026-10-07",
+      "consecutiveFailures": 0,
+      "checkedOn": "2026-10-08",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "playwright",
+      "scrapeLocalOnly": true,
       "tiers": [
         { "months": 1,  "rateEur": 0.00 },
         { "months": 3,  "rateEur": 2.20 },

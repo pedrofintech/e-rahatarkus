@@ -65,6 +65,24 @@ npm test                                      # offline parser tests against tes
 
 Node 22 (see the GitHub Action for the pinned version).
 
+## Accounts CI can't scrape (run locally)
+
+Luminor, Trading 212 and Revolut sit behind a Cloudflare bot check that blocks
+GitHub Actions' shared datacenter IPs (the `scrape-debug` artifact shows the
+"Verify you are human" page instead of the rates). They load fine from a normal
+home connection, so they are flagged `"scrapeLocalOnly": true` in the data files:
+CI skips them (`lib/local-only.mjs`) and you refresh them yourself, about weekly:
+
+```
+npm run update:local            # scrape everything from this machine, show the diff
+npm run update:local -- --push  # ...and commit, pull --rebase, push, purge the CDN
+```
+
+If they go 14 days without a check, CI marks them stale ("Kontrollimata" on the
+card) so old numbers never pass as current. We deliberately do not try to get
+around the bot check; the longer-term fix is an official data feed from the
+provider (Revolut and Trading 212 are partners).
+
 ## Running a scraper locally
 
 ```

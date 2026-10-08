@@ -16,6 +16,7 @@
 import { appendFile, readFile, writeFile } from 'node:fs/promises';
 import { SCRAPERS, slugFor } from '../scrapers/index.mjs';
 import { detectEol, measureTierWidths, serializeAccounts } from '../lib/serialize.mjs';
+import { ageOutLocalOnly, shouldSkipInCi } from '../lib/local-only.mjs';
 
 const DATA_PATH = new URL('../data/data.json', import.meta.url);
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -29,7 +30,7 @@ const STALE_AFTER_FAILURES = 3;
 // than being appended to the end of the object.
 const KEY_ORDER = [
   'bank', 'product', 'status', 'consecutiveFailures', 'checkedOn', 'ratesEffectiveFrom',
-  'scrapeMethod', 'tiers', 'minDeposit', 'minDepositUsd', 'salaryRequired', 'monthlyFee',
+  'scrapeMethod', 'scrapeLocalOnly', 'tiers', 'minDeposit', 'minDepositUsd', 'salaryRequired', 'monthlyFee',
   'guaranteeScheme', 'taxNote', 'sourceUrl', 'notes',
 ];
 
@@ -96,6 +97,7 @@ const snapshotBefore = commitWorthySnapshot(data);
 
 let updatedCount = 0;
 let failureCount = 0;
+let skippedCount = 0;
 const warnings = [];
 
 for (const [index, storedAccount] of data.accounts.entries()) {
@@ -105,6 +107,12 @@ for (const [index, storedAccount] of data.accounts.entries()) {
   storedAccount.ratesEffectiveFrom ??= null;
   const account = orderKeys(storedAccount);
   data.accounts[index] = account;
+
+  if (shouldSkipInCi(account)) {
+    skippedCount += 1;
+    ageOutLocalOnly(account, TODAY, account.bank, log);
+    continue;
+  }
 
   const slug = slugFor(account.bank);
   const loadScraper = SCRAPERS[slug];
@@ -184,11 +192,11 @@ for (const [index, storedAccount] of data.accounts.entries()) {
   for (const change of changes) log(`    ${change}`);
 }
 
-const scrapedOk = data.accounts.length - failureCount;
+const scrapedOk = data.accounts.length - failureCount - skippedCount;
 log('');
 for (const warning of warnings) log(`WARNING: ${warning}`);
 if (warnings.length > 0) log('');
-log(`Summary: ${scrapedOk}/${data.accounts.length} scraped, ${updatedCount} updated, ${failureCount} failed`);
+log(`Summary: ${scrapedOk}/${data.accounts.length} scraped, ${updatedCount} updated, ${failureCount} failed${skippedCount ? `, ${skippedCount} skipped in CI` : ''}`);
 
 if (failureCount === data.accounts.length) {
   log('Every bank failed - not writing data/data.json.');

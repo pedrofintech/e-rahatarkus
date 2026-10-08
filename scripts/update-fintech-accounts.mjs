@@ -24,6 +24,7 @@
 
 import { appendFile, readFile, writeFile } from 'node:fs/promises';
 import { SCRAPERS, slugFor } from '../scrapers/fintech/index.mjs';
+import { ageOutLocalOnly, shouldSkipInCi } from '../lib/local-only.mjs';
 
 const DATA_PATH = new URL('../data/fintech-accounts.json', import.meta.url);
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -48,9 +49,16 @@ const snapshotBefore = commitWorthySnapshot(data);
 
 let updatedCount = 0;
 let failureCount = 0;
+let skippedCount = 0;
 
 for (const account of data.accounts) {
   account.consecutiveFailures ??= 0;
+
+  if (shouldSkipInCi(account)) {
+    skippedCount += 1;
+    ageOutLocalOnly(account, TODAY, `${account.platform} ${account.product}`, log);
+    continue;
+  }
 
   const slug = slugFor(account.platform);
   const loadScraper = SCRAPERS[slug];
@@ -116,9 +124,9 @@ for (const account of data.accounts) {
   for (const change of changes) log(`    ${change}`);
 }
 
-const scrapedOk = data.accounts.length - failureCount;
+const scrapedOk = data.accounts.length - failureCount - skippedCount;
 log('');
-log(`Summary: ${scrapedOk}/${data.accounts.length} scraped, ${updatedCount} updated, ${failureCount} failed`);
+log(`Summary: ${scrapedOk}/${data.accounts.length} scraped, ${updatedCount} updated, ${failureCount} failed${skippedCount ? `, ${skippedCount} skipped in CI` : ''}`);
 
 if (failureCount === data.accounts.length) {
   log('Every platform failed - not writing data/fintech-accounts.json.');
