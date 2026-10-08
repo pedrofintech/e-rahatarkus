@@ -253,13 +253,15 @@
    opens above/below and is clamped (by JS) to the sidebar's own width, so
    it never overlaps the result cards next to it - see positionTipBubble.
    The real bubble only fades (opacity), it never slides - ours matches
-   that, no transform. */
+   that, no transform. Measured live on the site frame by frame: a linear
+   200ms opacity fade in and out, and no box-shadow, so ours is
+   `opacity .2s linear` and has no shadow either. */
 /* font-size/weight/line-height/letter-spacing match the real site's own
    tooltip text classes (.text-size-small + .text-weight-medium, checked
    live via Webflow MCP: 0.875rem/500/1.42857em/-0.014em) - this used to be
    0.8125rem/600/1.5/0, which read noticeably smaller and bolder than the
    rest of the site's text. */
-#rt-hoius .rt-tip__bubble{position:fixed;width:22rem;max-width:88vw;background:var(--ink);color:var(--line-strong);font-size:.875rem;line-height:1.42857em;padding:.75rem;border-radius:.75rem;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:9999;font-weight:500;text-align:left;letter-spacing:-.014em;box-shadow:var(--sh-2);overflow-wrap:break-word}
+#rt-hoius .rt-tip__bubble{position:fixed;width:22rem;max-width:88vw;background:var(--ink);color:var(--line-strong);font-size:.875rem;line-height:1.42857em;padding:.75rem;border-radius:.75rem;opacity:0;pointer-events:none;transition:opacity .2s linear;z-index:9999;font-weight:500;text-align:left;letter-spacing:-.014em;box-shadow:none;overflow-wrap:break-word}
 /* Side mode (result cards): arrow is the real site's own 1rem x 1.4rem
    wedge on the bubble's edge, pointing back at the trigger. */
 #rt-hoius .rt-tip__bubble--side .rt-tip__arrow{position:absolute;left:0;width:1rem;height:1.4rem;background:var(--ink);transform:translate(-70%,-50%);clip-path:polygon(100% 0%,0% 50%,100% 100%)}
