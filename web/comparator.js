@@ -1438,17 +1438,23 @@
     // being unreachable should not blank out the other two - and init()
     // only fails outright when EVERY dataset failed to load.
     //
-    // No explicit `cache` option: the previous `cache:'no-cache'` forced the
-    // browser to revalidate with jsDelivr on every single page load, adding
-    // a network round-trip even for a visitor whose cached copy was still
-    // perfectly correct. Rates only change weekly, and the GitHub Action
-    // already explicitly purges jsDelivr's CDN cache whenever data actually
-    // changes (see update-rates.yml) - so the default cache behavior is
-    // both faster and still correct.
+    // `cache: 'no-cache'` makes the browser revalidate the file with jsDelivr
+    // (a tiny conditional request, normally a 304 with no body) instead of
+    // trusting a stored copy. This is NOT optional: jsDelivr serves @main files
+    // with max-age=7 days, and purging the CDN (update-rates.yml does it after
+    // every data change) only clears the CDN - never a visitor's browser. Without
+    // it a returning visitor can see up to a week of stale rates, or, right
+    // after a data-model change, new code reading old data.
+    //
+    // A request that never answers (one jsDelivr file hung for ~10s once) must
+    // not hold the whole tool hostage, so each fetch gives up after 15s and the
+    // dataset is treated like any other failed load.
     function get(url) {
-      return fetch(url)
-        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-        .catch(function (e) { return { accounts: [], lastUpdated: null, _error: e }; });
+      var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 15000) : null;
+      return fetch(url, ctrl ? { cache: 'no-cache', signal: ctrl.signal } : { cache: 'no-cache' })
+        .then(function (r) { if (timer) clearTimeout(timer); if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .catch(function (e) { if (timer) clearTimeout(timer); return { accounts: [], lastUpdated: null, _error: e }; });
     }
     Promise.all([get(DATA_URL), get(FLEXIBLE_DATA_URL), get(FINTECH_DATA_URL)]).then(function (results) {
       var termData = results[0], flexData = results[1], finData = results[2];
