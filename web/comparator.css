@@ -130,6 +130,8 @@
 #rt-hoius .rt-input__unit{position:absolute;right:.875rem;top:50%;transform:translateY(-50%);color:var(--ink-4);font-size:.875rem;pointer-events:none}
 #rt-hoius .rt-calc__actions{display:flex;align-items:stretch;gap:.5rem}
 #rt-hoius .rt-calc__actions .rt-btn{min-height:2.75rem}
+#rt-hoius .rt-calc__tax{display:flex;width:fit-content;margin-top:.75rem;padding:.25rem 0}
+#rt-hoius .rt-calc__tax .rt-check__text{flex:none}
 #rt-hoius .rt-calc__note{margin-top:1.125rem;font-size:.8125rem;color:var(--ink-4);line-height:1.55}
 
 /* layout
