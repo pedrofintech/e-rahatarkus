@@ -45,6 +45,10 @@ Three JSON files, merged at runtime by `mergeAccounts()` in
 `web/comparator.js`:
 
 - **`data/data.json`** - Estonian term deposits (locked, tiered by month).
+  A tier is `{ months, rateEur }`. Banks that publish term RANGES (Coop Pank,
+  Holm Bank, Bigbank: "12 - 17 kuud") also carry `fromMonths`: `months` is the
+  range's end and `fromMonths` its start, and the rate applies to every term in
+  between. Banks with discrete terms (6, 12, 24 months) have no `fromMonths`.
 - **`data/flexible-accounts.json`** - Estonian flexible savings accounts
   (kogumiskonto/kogumishoius, one flat variable rate).
 - **`data/fintech-accounts.json`** - foreign fintech platforms (Trade

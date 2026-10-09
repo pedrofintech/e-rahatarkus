@@ -50,7 +50,7 @@ function orderKeys(account) {
 function formatRates(tier) {
   return Object.entries(tier)
     .filter(([key]) => key !== 'months')
-    .map(([key, value]) => `${key}=${value.toFixed(2)}`)
+    .map(([key, value]) => `${key}=${key === 'fromMonths' ? value : value.toFixed(2)}`)
     .join(' ');
 }
 
@@ -69,8 +69,9 @@ function diffTiers(storedTiers = [], scrapedTiers = []) {
     const keys = new Set([...Object.keys(previous), ...Object.keys(next)].filter((key) => key !== 'months'));
     for (const key of keys) {
       if (previous[key] !== next[key]) {
-        const before = previous[key] === undefined ? '(none)' : previous[key].toFixed(2);
-        const after = next[key] === undefined ? '(none)' : next[key].toFixed(2);
+        const fmt = (v) => (v === undefined ? '(none)' : key === 'fromMonths' ? String(v) : v.toFixed(2));
+        const before = fmt(previous[key]);
+        const after = fmt(next[key]);
         changes.push([months, `~ ${months}m ${key}: ${before} -> ${after}`]);
       }
     }

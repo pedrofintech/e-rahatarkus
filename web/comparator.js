@@ -89,8 +89,14 @@
   function bestTermMonths(a) {
     var best = a.tiers[0];
     a.tiers.forEach(function (t) { if (t.rateEur > best.rateEur) best = t; });
-    return best.months;
+    return tierFrom(best);
   }
+  // First term (months) a tier applies to. Banks that publish RANGES ("12 - 17
+  // kuud": Coop Pank, Holm Bank, Bigbank) store the range's end as `months` and
+  // its start as `fromMonths`: the rate holds for every term in between. Banks
+  // with discrete terms (6, 12, 24 months) have no fromMonths, so start == end.
+  function tierFrom(t) { return t.fromMonths != null ? t.fromMonths : t.months; }
+  function tierLabel(t) { return tierFrom(t) < t.months ? tierFrom(t) + '–' + t.months + ' kuud' : t.months + ' kuud'; }
   // A table where every term pays the same rate (Holm Bank: 3.30% from 2 to 60
   // months). "Parim 2 kuu juures" would read as if longer terms were worse, so
   // callers say the rate applies on any term instead.
@@ -110,12 +116,20 @@
   // <= the requested months (you can always place money for a shorter term).
   // If the requested term is shorter than the shortest tier, use the shortest.
   function rateForTerm(a, months) {
-    var eligible = a.tiers.filter(function (t) { return t.months <= months; });
+    // 1) A tier whose band contains the requested term prices exactly that term
+    //    (12 months at Coop Pank sits in "12 - 17 kuud", so it earns that rate for
+    //    12 months). 2) A tier that ENDS before the requested term is the
+    //    "longest shorter term" fallback and is priced for its own end.
+    var eligible = [];
+    a.tiers.forEach(function (t) {
+      if (tierFrom(t) <= months && months <= t.months) eligible.push({ rateEur: t.rateEur, months: months });
+      else if (t.months < months) eligible.push({ rateEur: t.rateEur, months: t.months });
+    });
     if (!eligible.length) {
       // requested term shorter than any offered tier -> use shortest tier
       var shortest = a.tiers[0];
-      a.tiers.forEach(function (t) { if (t.months < shortest.months) shortest = t; });
-      return { rate: shortest.rateEur, months: shortest.months, shorter: true };
+      a.tiers.forEach(function (t) { if (tierFrom(t) < tierFrom(shortest)) shortest = t; });
+      return { rate: shortest.rateEur, months: tierFrom(shortest), shorter: true };
     }
     // On a tie in rate, take the LONGER term: it is closer to what the user
     // asked for and earns for more of it. Without this a flat table (Holm
@@ -225,7 +239,7 @@
     noSalary: function (a) { return !a.salaryRequired; },
     noFee: function (a) { return !a.monthlyFee; },
     lowMin: function (a) { return a.minDeposit <= 100; },
-    shortTerm: function (a) { return a.kind === 'term' && a.tiers.some(function (t) { return t.months <= 3; }); },
+    shortTerm: function (a) { return a.kind === 'term' && a.tiers.some(function (t) { return tierFrom(t) <= 3; }); },
     longTerm: function (a) { return a.kind === 'term' && a.tiers.some(function (t) { return t.months > 60; }); }
   };
 
@@ -452,7 +466,7 @@
   // accept the {min:0,max:0} fallback, which callers that DO check never see).
   function termRange(a) {
     if (!a.tiers || a.kind !== 'term') return { min: 0, max: 0 };
-    var min = a.tiers.reduce(function (m, x) { return Math.min(m, x.months); }, Infinity);
+    var min = a.tiers.reduce(function (m, x) { return Math.min(m, tierFrom(x)); }, Infinity);
     var max = a.tiers.reduce(function (m, x) { return Math.max(m, x.months); }, 0);
     return { min: min, max: max };
   }
@@ -477,7 +491,7 @@
   function guaranteeSub(a) { return a.guaranteeCountry ? 'kuni 100 000 €' : 'kuni 20 000 €'; }
   function tierTable(a) {
     var rows = a.tiers.map(function (t) {
-      return '<tr><td>' + t.months + ' kuud</td><td>' + pct(t.rateEur) + (t.rateUsd != null ? '<span class="rt-soft"> (USD ' + pct(t.rateUsd) + ')</span>' : '') + '</td></tr>';
+      return '<tr><td>' + tierLabel(t) + '</td><td>' + pct(t.rateEur) + (t.rateUsd != null ? '<span class="rt-soft"> (USD ' + pct(t.rateUsd) + ')</span>' : '') + '</td></tr>';
     }).join('');
     return '<table class="rt-tiertable"><thead><tr><th>Tähtaeg</th><th>Intress aastas</th></tr></thead><tbody>' + rows + '</tbody></table>';
   }

@@ -17,7 +17,8 @@ export function parseRates({ html }) {
     const period = parsePeriod(periodCell);
     const rateEur = parseRate(rateCell);
     if (!period || rateEur === null) continue;
-    tiers.push({ months: period.months, rateEur });
+    // Ranges ("12-23 kuud") apply to every term inside them; single terms ("6 kuud") carry no fromMonths.
+    tiers.push({ months: period.months, rateEur, ...(period.fromMonths !== undefined ? { fromMonths: period.fromMonths } : {}) });
   }
 
   assertPlausibleTiers(BANK, tiers, { minCount: 6 });

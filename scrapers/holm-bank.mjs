@@ -25,7 +25,8 @@ export function parseRates({ html }) {
     const period = parsePeriod(`${periodRow[column]} kuud`);
     const rateEur = parseRate(rateRow[column]);
     if (!period || rateEur === null) continue;
-    tiers.push({ months: period.months, rateEur });
+    // "12-17" is a range: the rate applies to every term from 12 to 17 months.
+    tiers.push({ months: period.months, rateEur, ...(period.fromMonths !== undefined ? { fromMonths: period.fromMonths } : {}) });
   }
 
   assertPlausibleTiers(BANK, tiers, { minCount: 8 });

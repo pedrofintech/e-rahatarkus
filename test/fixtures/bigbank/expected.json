@@ -2,11 +2,13 @@
   "tiers": [
     {
       "months": 2,
-      "rateEur": 2.15
+      "rateEur": 2.15,
+      "fromMonths": 1
     },
     {
       "months": 5,
-      "rateEur": 2.2
+      "rateEur": 2.2,
+      "fromMonths": 3
     },
     {
       "months": 6,
@@ -14,19 +16,23 @@
     },
     {
       "months": 11,
-      "rateEur": 2.5
+      "rateEur": 2.5,
+      "fromMonths": 7
     },
     {
       "months": 23,
-      "rateEur": 2.6
+      "rateEur": 2.6,
+      "fromMonths": 12
     },
     {
       "months": 47,
-      "rateEur": 2.6
+      "rateEur": 2.6,
+      "fromMonths": 24
     },
     {
       "months": 119,
-      "rateEur": 2.7
+      "rateEur": 2.7,
+      "fromMonths": 48
     },
     {
       "months": 120,

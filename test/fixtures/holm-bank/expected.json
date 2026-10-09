@@ -2,39 +2,48 @@
   "tiers": [
     {
       "months": 2,
-      "rateEur": 2.3
+      "rateEur": 2.3,
+      "fromMonths": 1
     },
     {
       "months": 5,
-      "rateEur": 2.4
+      "rateEur": 2.4,
+      "fromMonths": 3
     },
     {
       "months": 8,
-      "rateEur": 2.5
+      "rateEur": 2.5,
+      "fromMonths": 6
     },
     {
       "months": 11,
-      "rateEur": 2.6
+      "rateEur": 2.6,
+      "fromMonths": 9
     },
     {
       "months": 17,
-      "rateEur": 2.7
+      "rateEur": 2.7,
+      "fromMonths": 12
     },
     {
       "months": 23,
-      "rateEur": 2.7
+      "rateEur": 2.7,
+      "fromMonths": 18
     },
     {
       "months": 35,
-      "rateEur": 2.8
+      "rateEur": 2.8,
+      "fromMonths": 24
     },
     {
       "months": 47,
-      "rateEur": 2.8
+      "rateEur": 2.8,
+      "fromMonths": 36
     },
     {
       "months": 59,
-      "rateEur": 3
+      "rateEur": 3,
+      "fromMonths": 48
     },
     {
       "months": 60,

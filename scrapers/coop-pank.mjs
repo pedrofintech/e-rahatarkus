@@ -1,5 +1,6 @@
 // Coop Pank - server-rendered rates page, one EUR table of month ranges.
-// Ranges are stored by their upper bound ("1 - 2 kuud" -> 2 months).
+// Ranges are stored by their upper bound ("1 - 2 kuud" -> months: 2) AND their
+// start (fromMonths: 1): the rate applies to every term inside the range.
 //
 // The rates page quotes only a per-client maximum, so the minimum deposit is
 // read from the product page instead.
@@ -26,7 +27,8 @@ export function parseRates({ ratesHtml, productHtml }) {
     const period = parsePeriod(periodCell);
     const rateEur = parseRate(rateCell);
     if (!period || rateEur === null) continue;
-    tiers.push({ months: period.openEnded ? OPEN_ENDED_MONTHS : period.months, rateEur });
+    const months = period.openEnded ? OPEN_ENDED_MONTHS : period.months;
+    tiers.push({ months, rateEur, ...(period.fromMonths !== undefined && period.fromMonths < months ? { fromMonths: period.fromMonths } : {}) });
   }
 
   assertPlausibleTiers(BANK, tiers, { minCount: 8 });
