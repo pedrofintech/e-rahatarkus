@@ -39,6 +39,10 @@
   if (typeof window !== 'undefined' && window.RT_FLEXIBLE_DATA_URL_OVERRIDE) FLEXIBLE_DATA_URL = window.RT_FLEXIBLE_DATA_URL_OVERRIDE;
   if (typeof window !== 'undefined' && window.RT_FINTECH_DATA_URL_OVERRIDE) FINTECH_DATA_URL = window.RT_FINTECH_DATA_URL_OVERRIDE;
   var TAX = 0.22; // Estonian income tax on interest (tulumaks)
+  // Private persons pay it on interest; a company (OÜ) does not pay tax on
+  // retained profit, so the toggle lets investors via an OÜ see gross figures.
+  function taxRate() { return state.tax ? TAX : 0; }
+  function netLabel(withTax, without) { return state.tax ? withTax : without; }
   var PAGE = 8;
 
   /* ---------- formatting helpers ---------- */
@@ -154,7 +158,8 @@
     return { rate: a.rateEur, months: months, shorter: false, longer: false };
   }
 
-  // Simulate: simple interest over the applicable term, net of 22% tax.
+  // Simulate: simple interest over the applicable term, net of 22% tax
+  // (unless the user switched tax off for an OÜ).
   // Term deposits pay a fixed rate for the whole term. Flexible/fintech
   // products pay today's variable rate projected forward - the UI must make
   // clear this is an estimate that assumes the rate holds (see the
@@ -180,7 +185,7 @@
     if (r.shorter) { res.blocked = 'term'; return res; }
     var years = r.months / 12;
     var gross = pf.amount * (r.rate / 100) * years;
-    var net = gross * (1 - TAX);
+    var net = gross * (1 - taxRate());
     res.rate = r.rate;
     res.rateTermMonths = r.months;
     res.longer = r.months < pf.months;
@@ -361,7 +366,7 @@
   var ACCOUNTS = [];
   var META = {};
   var COMPARE_MAX = 3;
-  var state = { on: {}, minRate: null, profile: null, sort: 'rate', visible: PAGE, expanded: {}, compare: {}, compareOpen: false };
+  var state = { tax: true, on: {}, minRate: null, profile: null, sort: 'rate', visible: PAGE, expanded: {}, compare: {}, compareOpen: false };
 
   function compareKeys() { return Object.keys(state.compare).filter(function (k) { return state.compare[k]; }); }
   // Keyed by a.id, not a.bank - several banks sell both a term deposit and a
@@ -415,9 +420,18 @@
       (type === 'radio' ? 'name="' + name + '" value="' + val + '"' : 'data-k="' + i.k + '"') + (on ? ' checked' : '') +
       '><span class="rt-check__box">' + CHECK + '</span><span class="rt-check__text">' + esc(i.l) + '</span>' + tip(i.tip) + '</label>';
   }
+  // Not a filter (it changes the figures, not which accounts are listed), so
+  // it lives outside state.on and is untouched by "Lähtesta".
+  function taxGroupHtml() {
+    return '<div class="rt-group" data-open="true"><button type="button" class="rt-group__head" aria-expanded="true"><span>Maksustamine</span>' + CHEV + '</button><div class="rt-group__body">' +
+      '<label class="rt-check"><input type="checkbox" id="rtTax"' + (state.tax ? ' checked' : '') + '><span class="rt-check__box">' + CHECK + '</span><span class="rt-check__text">Arvesta tulumaksu (22%)</span>' +
+      tip('Eraisikule makstud intressilt peetakse tulumaks (22%) kinni. Eesti äriühingult (nt OÜ) pank tulumaksu kinni ei pea: intress kuulub ettevõtte kasumisse ja tulumaksustatakse (22/78) alles kasumi jaotamisel, näiteks dividendina. Kuvatud intressimäärad on eraisiku tingimustel, äriühingule võivad pakkumised erineda.') + '</label>' +
+      '</div></div>';
+  }
   function renderFilters(root) {
     var h = '';
     GROUPS.forEach(function (g) {
+      if (g.id === 'safety') h += taxGroupHtml();
       h += '<div class="rt-group" data-open="true"><button type="button" class="rt-group__head" aria-expanded="true"><span>' + esc(g.title) + '</span>' + CHEV + '</button><div class="rt-group__body">';
       if (g.id === 'rate') {
         h += '<div class="rt-presets">' + RATE_PRESETS.map(function (p) {
@@ -531,7 +545,7 @@
     var h = '<div class="rt-dgroup">Intressimäärad tähtaja järgi</div>';
     h += '<div class="rt-tierwrap">' + tierTable(a) + '</div>';
     h += row('Kõrgeim intress (bruto)', pct(bestRate(a)) + '<span class="rt-soft">' + (isFlatRate(a) ? 'igal tähtajal' : bestTermMonths(a) + ' kuu juures') + '</span>');
-    h += row('Netointress kohe pärast maksu', pct(bestRate(a) * (1 - TAX)), 'Kui tulumaks tasutakse kohe. Investeerimiskonto kaudu avatud hoiusel saab maksu tasumist edasi lükata, mitte seda vältida.');
+    h += row(netLabel('Netointress kohe pärast maksu', 'Intress ilma tulumaksuta'), pct(bestRate(a) * (1 - taxRate())), 'Kui tulumaks tasutakse kohe. Investeerimiskonto kaudu avatud hoiusel saab maksu tasumist edasi lükata, mitte seda vältida.');
     h += '<div class="rt-dgroup">Tingimused</div>';
     h += row('Miinimumsumma', a.minDeposit === 0 ? 'Miinimumita' : eur(a.minDeposit));
     if (a.maxDeposit) h += row('Maksimumsumma', eur(a.maxDeposit));
@@ -549,7 +563,7 @@
   function detailsFlexible(a) {
     var h = '<div class="rt-dgroup">Intress</div>';
     h += row('Praegune intress (bruto)', pct(a.rateEur), 'Muutuv määr, kehtib kogu hoiusel olevale summale ja võib igal ajal muutuda.');
-    h += row('Netointress kohe pärast maksu', pct(a.rateEur * (1 - TAX)), 'Kui tulumaks tasutakse kohe. Investeerimiskonto kaudu avatud kontol saab maksu tasumist edasi lükata, mitte seda vältida.');
+    h += row(netLabel('Netointress kohe pärast maksu', 'Intress ilma tulumaksuta'), pct(a.rateEur * (1 - taxRate())), 'Kui tulumaks tasutakse kohe. Investeerimiskonto kaudu avatud kontol saab maksu tasumist edasi lükata, mitte seda vältida.');
     h += '<div class="rt-dgroup">Tingimused</div>';
     h += row('Miinimumsumma', a.minDeposit === 0 ? 'Miinimumita' : eur(a.minDeposit));
     if (a.maxDeposit) h += row('Maksimumsumma', eur(a.maxDeposit));
@@ -571,7 +585,7 @@
     }
     var rateLabel = a.rateEurMin != null ? pct(a.rateEurMin) + '\u2013' + pct(a.rateEur) : pct(a.rateEur);
     h += row('Praegune intress (bruto)', rateLabel, a.rateNote);
-    h += row('Netointress kohe pärast maksu', pct(a.rateEur * (1 - TAX)), 'Kõrgeima avaldatud määra põhjal, kui tulumaks tasutakse kohe.');
+    h += row(netLabel('Netointress kohe pärast maksu', 'Intress ilma tulumaksuta'), pct(a.rateEur * (1 - taxRate())), 'Kõrgeima avaldatud määra põhjal, kui tulumaks tasutakse kohe.');
     h += '<div class="rt-dgroup">Tingimused</div>';
     h += row('Miinimumsumma', a.minDeposit === 0 ? 'Miinimumita' : eur(a.minDeposit));
     h += row('Raha kättesaadavus', esc(a.withdrawalSpeed || 'Kohe'), 'Välismaised platvormid ei ole tähtajalised hoiused - raha ei ole lukku pandud.');
@@ -612,7 +626,7 @@
     if (pf && s && !s.blocked) {
       heroRate = pct(s.rate);
       heroSub = locked ? (s.rateTermMonths + ' kuu tähtajaga · brutointress') : planSub(a);
-      heroNet = '<div class="rt-hero-net"><span>' + (locked ? 'Teenid tähtaja lõpus neto' : 'Teenid selle aja jooksul hinnanguliselt neto') +
+      heroNet = '<div class="rt-hero-net"><span>' + (locked ? netLabel('Teenid tähtaja lõpus neto', 'Teenid tähtaja lõpus (tulumaksuta)') : netLabel('Teenid selle aja jooksul hinnanguliselt neto', 'Teenid selle aja jooksul hinnanguliselt (tulumaksuta)')) +
         '</span><b>' + eur2(s.net) + '</b></div>';
     } else {
       heroRate = pct(bestRate(a));
@@ -720,7 +734,7 @@
     var heroRate, heroSub;
     if (pf && s && !s.blocked) {
       heroRate = pct(s.rate);
-      heroSub = 'hinnanguline neto ' + eur2(s.net);
+      heroSub = netLabel('hinnanguline neto ', 'hinnanguliselt tulumaksuta ') + eur2(s.net);
     } else {
       heroRate = pct(bestRate(sp));
       heroSub = rateSummary(sp);
@@ -789,7 +803,7 @@
     }
     var rows = [
       { l: pf ? 'Intress sinu perioodiga (bruto)' : 'Kõrgeim intress (bruto)', v: fmtRate },
-      { l: 'Netotulu kohe pärast maksu', v: fmtNet },
+      { l: netLabel('Netotulu kohe pärast maksu', 'Tulu ilma tulumaksuta'), v: fmtNet },
       { l: 'Miinimumsumma', v: function (a) { return a.minDeposit === 0 ? 'Miinimumita' : eur(a.minDeposit); } },
       { l: 'Kapitali tagatis', v: function (a) { return esc(a.guaranteeScheme); } },
       { l: 'Raha kättesaadavus', v: function (a) { return a.kind === 'term' ? 'Tähtaja lõpus' : esc(a.withdrawalSpeed || 'Kohe'); } },
@@ -1104,6 +1118,11 @@
     var filters = root.querySelector('#rtFilters');
     filters.addEventListener('change', function (e) {
       var t = e.target;
+      if (t.id === 'rtTax') {
+        state.tax = t.checked;
+        renderList(root); renderSponsored(root); refreshCompare(root);
+        return;
+      }
       if (t.matches('input[type="checkbox"][data-k]')) { if (t.checked) state.on[t.getAttribute('data-k')] = true; else delete state.on[t.getAttribute('data-k')]; }
       state.visible = PAGE; render(root);
     });
@@ -1324,7 +1343,7 @@
             '</div>' +
           '</div>' +
         '</form>' +
-        '<p class="rt-calc__note">Arvutus on ligikaudne: lihtintress, pärast 22% tulumaksu. Tähtajaliste hoiuste puhul kehtib fikseeritud intress kogu tähtaja jooksul. Paindlike hoiuste ja kontode puhul eeldab arvutus, et praegune muutuv intressimäär püsib kogu perioodi muutumatuna - tegelik tulu võib erineda. Ei sisalda panga ümardusi ega investeerimiskonto edasilükkamist. See ei ole finantsnõustamine.</p>' +
+        '<p class="rt-calc__note">Arvutus on ligikaudne: lihtintress, tulumaksu lülitiga valitud viisil (vaikimisi pärast 22% tulumaksu). Tähtajaliste hoiuste puhul kehtib fikseeritud intress kogu tähtaja jooksul. Paindlike hoiuste ja kontode puhul eeldab arvutus, et praegune muutuv intressimäär püsib kogu perioodi muutumatuna - tegelik tulu võib erineda. Ei sisalda panga ümardusi ega investeerimiskonto edasilükkamist. See ei ole finantsnõustamine.</p>' +
       '</section>' +
 
       '<section class="rt-compare-panel" id="rtComparePanel" aria-label="Panga võrdlus" hidden></section>' +
