@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="et">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Maaklerite võrdlus - eelvaade</title>
+<!-- Local preview without Webflow. From the repo root: `python3 -m http.server 8080`,
+     then open http://localhost:8080/brokers/preview.html
+     Reads data/brokers.json from this folder (data-src), so data edits show up before they are pushed. -->
+<style>
+  /* Two of Webflow's global rules, so the preview shows what the embed has to survive */
+  svg{width:100%}
+  label{display:block;margin-bottom:5px;font-weight:bold}
+  body{margin:0;background:#fcfcfd;font-family:Inter,system-ui,sans-serif;color:#081c15}
+  .wrap{max-width:1120px;margin:0 auto;padding:32px 20px 80px}
+  h1{font-family:"Tiempos Headline",Georgia,serif;font-weight:300;font-size:40px;line-height:1.2;margin:0 0 8px}
+  .lead{color:#4f5969;margin:0 0 6px}
+  #rt-last-updated{color:#697386;font-size:14px;margin:0 0 24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Parimad maaklerid Eestis</h1>
+  <p class="lead">Võrdle Eesti pankade ja välismaaklerite tasusid oma summadega.</p>
+  <div id="rt-last-updated">Viimati uuendatud</div>
+  <div id="rt-bc" data-src="data/brokers.json"></div>
+</div>
+<script src="broker-comparator.js" defer></script>
+</body>
+</html>
