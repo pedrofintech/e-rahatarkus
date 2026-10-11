@@ -30,6 +30,8 @@ Each broker in `data/brokers.json` has:
 - `t` with one entry per table row: `{"v": "value", "s": "small note under it"}`.
   Add `"c": true` to show the yellow "Kinnitamata" tag. A row missing from `t` shows only that tag.
 - `cta.href` for the "Ava konto" button (affiliate links get `rel="sponsored"`, add `"plain": true` for a normal link).
+  `cta.probe` and `cta.fallback`: if the probe URL is blocked in the reader's browser (ad blockers block
+  Impact's `sjv.io`), the button uses the fallback instead. Only Trade Republic needs this today.
 - `offer` for the blue sign-up box: `{"t": "text", "c": "CODE", "a": "link to the article"}`.
 - `review` for the "Loe ülevaadet" link, `src` for the price list link in the Allikad row.
 - `verified`: date shown under the price list link.
@@ -77,5 +79,9 @@ From the repo root: `python3 -m http.server 8080`, then open
 - SEB interest on the current account is not in the data (shows "Kinnitamata").
 - Revolut's commission for Estonia, Interactive Brokers' Baltic fee and Bitpanda as an
   investeerimiskonto are marked "Kinnitamata".
-- Trade Republic, DEGIRO and eToro buttons use EU Personal Finance links. Swap in Rahatarkus links when there are any.
+- Affiliate links: Trade Republic and eToro use the same tracking links as the Rahatarkus articles.
+  DEGIRO and Interactive Brokers use the EU Personal Finance tracking links (`/kulasta/ib` lands on
+  IBKR with no tracking code).
+- Sign-up offers left out on purpose: DEGIRO's fee refund (sign-ups until 31.10.2026) and XTB's free
+  share. Neither is confirmed for Estonian residents. Trade Republic has no sign-up offer.
 - Trading 212: the data shows both entities (EU GmbH and Markets Ltd). Check which one serves Estonian clients.

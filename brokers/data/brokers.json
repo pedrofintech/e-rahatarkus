@@ -1,6 +1,6 @@
 {
  "verified": "28.09.-10.10.2026",
- "lastUpdated": "2026-10-10",
+ "lastUpdated": "2026-10-11",
  "assumptions": {"USD_EUR": 0.85, "ETF_PRICE": 100, "US_PRICE_USD": 200, "VAT": 0.24},
  "pairs": {"trading212|xtb": "xtb-vs-trading-212", "revolut|traderepublic": "trade-republic-vs-revolut"},
  "brokers": [
@@ -98,7 +98,7 @@
     "bonds": {"v": "Jah", "s": "Eurodes võlakirjad 1 € orderi kohta"}
    }},
   {"id": "ibkr", "name": "Interactive Brokers", "short": "IB", "color": "#D81222", "type": "Maakler", "hasPlan": true, "verified": "02.10.2026",
-   "cta": {"href": "https://www.e-rahatarkus.ee/kulasta/ib"},
+   "cta": {"href": "https://www.interactivebrokers.ie/mkt/?src=iitww1&url=%2Fen%2Fwhyib%2Foverview.php"},
    "risk": "Investeerimisega kaasneb kaotuse risk.",
    "review": "https://www.e-rahatarkus.ee/artiklid/interactive-brokers-eesti-ulevaade",
    "src": "https://www.interactivebrokers.ie/en/pricing/commissions-stocks-europe.php",
@@ -170,7 +170,7 @@
     "bonds": {"v": "Ei", "c": true}
    }},
   {"id": "traderepublic", "name": "Trade Republic", "short": "TR", "color": "#000000", "type": "Pank", "verified": "02.10.2026",
-   "cta": {"href": "https://www.eupersonalfinance.eu/visit/trade-republic", "fallback": "https://traderepublic.com/en", "probe": "https://traderepublicbank.sjv.io/"},
+   "cta": {"href": "https://traderepublicbank.sjv.io/c/2822659/2134424/23226?productName=BROKERAGE&countryCode=IE", "fallback": "https://traderepublic.com/en", "probe": "https://traderepublicbank.sjv.io/"},
    "risk": "Investeerimisega kaasneb kaotuse risk.",
    "review": "https://www.e-rahatarkus.ee/artiklid/kas-trade-republic-on-turvaline",
    "src": "https://traderepublic.com/en-de/interest",
@@ -217,7 +217,7 @@
     "bonds": {"v": "Jah"}
    }},
   {"id": "degiro", "name": "DEGIRO", "short": "DG", "color": "#00A6E0", "type": "Maakler", "verified": "02.10.2026",
-   "cta": {"href": "https://www.eupersonalfinance.eu/visit/degiro"},
+   "cta": {"href": "https://www.degiro.com/?tap_a=56340-8d2ff5&tap_s=636409-a2bfc8"},
    "risk": "Investeerimisega kaasneb kaotuse risk.",
    "src": "https://www.degiro.ie/fees",
    "t": {
@@ -239,10 +239,11 @@
     "bonds": {"v": "Jah"}
    }},
   {"id": "etoro", "name": "eToro", "short": "eT", "color": "#13C636", "type": "Maakler", "verified": "02.10.2026",
-   "cta": {"href": "https://www.eupersonalfinance.eu/visit/etoro"},
+   "cta": {"href": "https://med.etoro.com/aw.aspx?A=96559&Task=Click&TargetURL=https%3A%2F%2Fgo.etoro.com%2Fen%2Fdeposit%2Ftiered-bonus&SubAffiliateID=HelpMeChoose"},
    "risk": "51% jaeinvestorite kontodest kaotab selle teenusepakkujaga CFD-dega kaubeldes raha.",
    "review": "https://www.e-rahatarkus.ee/artiklid/etoro-eesti-ulevaade",
    "src": "https://www.etoro.com/trading/fees/",
+   "offer": {"t": "Tasuta aktsia või krüptovara väärtusega kuni 500 $. Summa sõltub esimesest sissemaksest, mis peab olema vähemalt 500 $ ja jääma kontole 90 päevaks", "a": "https://www.e-rahatarkus.ee/artiklid/etoro-eesti-ulevaade"},
    "t": {
     "etfFee": {"v": "0%"},
     "usFee": {"v": "1 $", "s": "Orderi kohta avamisel ja sulgemisel. 1 $ või 2 $ sõltuvalt elukohariigist ja börsist"},
