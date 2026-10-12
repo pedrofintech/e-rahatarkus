@@ -234,7 +234,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-09",
+      "checkedOn": "2026-10-12",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "playwright",
       "scrapeLocalOnly": true,
