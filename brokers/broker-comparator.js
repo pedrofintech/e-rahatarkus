@@ -74,91 +74,91 @@
      Return {v: cost in €, s: short explanation, extra: shown after the number and excludes the cell
      from "Odavaim" (use it when part of the cost is not published), c: true to show "Kinnitamata"}. */
   var CALC = {
-    /* LHV hinnakiri: Euroopa ja USA aktsiad internetis 0,14% (min 5 €). Kasvukonto: ost 0,5%, alla 26 tasuta.
-       Välisväärtpaberite hoiutasu 0 € kuni 100 000 €, üle selle osalt 0,01% kuus + KM. */
+    /* LHV hinnakiri: Euroopa ja USA aktsiad internetis 0,14% (min 5€). Kasvukonto: ost 0,5%, alla 26 tasuta.
+       Välisväärtpaberite hoiutasu 0€ kuni 100 000€, üle selle osalt 0,01% kuus + KM. */
     'lhv': {
       etf: function(a){ var vp=Math.max(5,a*0.0014), kk=a*0.005;
-          return kk<vp ? {v:kk, s:'Kasvukontol 0,5% ostult, alla 26-aastastele tasuta'} : {v:vp, s:'Väärtpaberikontol 0,14% (min 5 €)'}; },
-      us: function(a){ return {v:Math.max(5,a*0.0014), s:'0,14% (min 5 €). Valuuta vahetatakse panga kursiga', extra:FX}; },
+          return kk<vp ? {v:kk, s:'Kasvukontol 0,5% ostult, alla 26-aastastele tasuta'} : {v:vp, s:'Väärtpaberikontol 0,14% (min 5€)'}; },
+      us: function(a){ return {v:Math.max(5,a*0.0014), s:'0,14% (min 5€). Valuuta vahetatakse panga kursiga', extra:FX}; },
       plan: function(m){ var vp=Math.max(5,m*0.0014), kk=m*0.005;
-          return kk<vp ? {v:12*kk, s:'Kasvukonto püsimakse: 0,5% ostult, alla 26-aastastele tasuta'} : {v:12*vp, s:'12 ostu väärtpaberikontol, 0,14% (min 5 €)'}; },
-      custody: function(p){ return {v:Math.max(0,p-100000)*0.0001*12*(1+VAT), s:'0 € kuni 100 000 €. Üle selle 0,01% kuus + KM'}; }
+          return kk<vp ? {v:12*kk, s:'Kasvukonto püsimakse: 0,5% ostult, alla 26-aastastele tasuta'} : {v:12*vp, s:'12 ostu väärtpaberikontol, 0,14% (min 5€)'}; },
+      custody: function(p){ return {v:Math.max(0,p-100000)*0.0001*12*(1+VAT), s:'0€ kuni 100 000€. Üle selle 0,01% kuus + KM'}; }
     },
-    /* Swedbank hinnakiri: välisaktsiad ja ETF-id internetipangas 0,14% (min 3,90 €).
-       Hoiutasu 0 € kuni 100 000 €, üle selle osalt 0,008% kuus (max 8 €) + KM. */
+    /* Swedbank hinnakiri: välisaktsiad ja ETF-id internetipangas 0,14% (min 3,90€).
+       Hoiutasu 0€ kuni 100 000€, üle selle osalt 0,008% kuus (max 8€) + KM. */
     'swedbank': {
-      etf: function(a){ return {v:Math.max(3.9,a*0.0014), s:'Internetipangas 0,14% (min 3,90 €)'}; },
-      us: function(a){ return {v:Math.max(3.9,a*0.0014), s:'0,14% (min 3,90 €). Valuuta vahetatakse panga kursiga', extra:FX}; },
-      plan: function(m){ return {v:12*Math.max(3.9,m*0.0014), s:'ETF-ide püsiostu ei ole: 12 käsitsi ostu (min 3,90 €). Swedbanki fondides on regulaarne märkimine tasuta'}; },
-      custody: function(p){ return {v:Math.min(8,Math.max(0,p-100000)*0.00008)*12*(1+VAT), s:'0 € kuni 100 000 €. Üle selle 0,008% kuus (max 8 €) + KM'}; }
+      etf: function(a){ return {v:Math.max(3.9,a*0.0014), s:'Internetipangas 0,14% (min 3,90€)'}; },
+      us: function(a){ return {v:Math.max(3.9,a*0.0014), s:'0,14% (min 3,90€). Valuuta vahetatakse panga kursiga', extra:FX}; },
+      plan: function(m){ return {v:12*Math.max(3.9,m*0.0014), s:'ETF-ide püsiostu ei ole: 12 käsitsi ostu (min 3,90€). Swedbanki fondides on regulaarne märkimine tasuta'}; },
+      custody: function(p){ return {v:Math.min(8,Math.max(0,p-100000)*0.00008)*12*(1+VAT), s:'0€ kuni 100 000€. Üle selle 0,008% kuus (max 8€) + KM'}; }
     },
-    /* SEB hinnakiri: Euroopa aktsiad 0,14% (min 5 €), USA 0,14% (min 5 €, vähemalt 0,015 $ aktsia kohta).
-       Mikroinvesteerimine: 13 euro-ETF-i, 0,5% ilma miinimumtasuta, ühekordselt või kord kuus. Hoiutasu eraisikule 0 €. */
+    /* SEB hinnakiri: Euroopa aktsiad 0,14% (min 5€), USA 0,14% (min 5€, vähemalt 0,015$ aktsia kohta).
+       Mikroinvesteerimine: 13 euro-ETF-i, 0,5% ilma miinimumtasuta, ühekordselt või kord kuus. Hoiutasu eraisikule 0€. */
     'seb': {
       etf: function(a){ var vp=Math.max(5,a*0.0014), mi=a*0.005;
-          return mi<vp ? {v:mi, s:'Mikroinvesteerimises 0,5% ilma miinimumtasuta (13 ETF-i valikust)'} : {v:vp, s:'Internetipangas 0,14% (min 5 €)'}; },
-      us: function(a){ var sh=Math.ceil(a/USD_EUR/US_PRICE_USD); return {v:Math.max(5,a*0.0014,0.015*sh*USD_EUR), s:'0,14% (min 5 €). Valuuta vahetatakse panga kursiga', extra:FX}; },
+          return mi<vp ? {v:mi, s:'Mikroinvesteerimises 0,5% ilma miinimumtasuta (13 ETF-i valikust)'} : {v:vp, s:'Internetipangas 0,14% (min 5€)'}; },
+      us: function(a){ var sh=Math.ceil(a/USD_EUR/US_PRICE_USD); return {v:Math.max(5,a*0.0014,0.015*sh*USD_EUR), s:'0,14% (min 5€). Valuuta vahetatakse panga kursiga', extra:FX}; },
       plan: function(m){ var vp=Math.max(5,m*0.0014), mi=m*0.005;
-          return mi<vp ? {v:12*mi, s:'Mikroinvesteerimine kord kuus: 0,5% ilma miinimumtasuta'} : {v:12*vp, s:'12 ostu internetipangas, 0,14% (min 5 €)'}; },
+          return mi<vp ? {v:12*mi, s:'Mikroinvesteerimine kord kuus: 0,5% ilma miinimumtasuta'} : {v:12*vp, s:'12 ostu internetipangas, 0,14% (min 5€)'}; },
       custody: function(p){ return {v:0, s:'Eraisikule tasuta'}; }
     },
     'bitpanda': {
-      etf: function(a){ return {v:1, s:'1 € orderi kohta. Lisanduda võib hinnavahe'}; },
-      us: function(a){ return {v:1, s:'1 € orderi kohta. Kaubeldakse eurodes, valuutatasu ei ole avaldatud'}; },
-      plan: function(m){ return {v:0, s:'Paljudes ETF-ides praeguse kampaania ajal tasuta (muidu 1 € orderi kohta)'}; },
+      etf: function(a){ return {v:1, s:'1€ orderi kohta. Lisanduda võib hinnavahe'}; },
+      us: function(a){ return {v:1, s:'1€ orderi kohta. Kaubeldakse eurodes, valuutatasu ei ole avaldatud'}; },
+      plan: function(m){ return {v:0, s:'Paljudes ETF-ides praeguse kampaania ajal tasuta (muidu 1€ orderi kohta)'}; },
       custody: function(p){ return {v:0}; }
     },
     'degiro': {
-      etf: function(a){ return {v:1, s:'ETF Core Selection Tradegate\'is: 0 € vahendustasu + 1 € käsitlustasu'}; },
-      us: function(a){ return {v:2+a*0.0025, s:'1 € + 1 € käsitlustasu + 0,25% AutoFX'}; },
-      plan: function(m){ return {v:12, s:'12 orderit ETF Core Selectionis, igaüks 1 €'}; },
-      custody: function(p){ return {v:2.5, s:'Üks välisbörs. 0 €, kui hoiad ainult ETF Core Selectioni fonde'}; }
+      etf: function(a){ return {v:1, s:'ETF Core Selection Tradegate\'is: 0€ vahendustasu + 1€ käsitlustasu'}; },
+      us: function(a){ return {v:2+a*0.0025, s:'1€ + 1€ käsitlustasu + 0,25% AutoFX'}; },
+      plan: function(m){ return {v:12, s:'12 orderit ETF Core Selectionis, igaüks 1€'}; },
+      custody: function(p){ return {v:2.5, s:'Üks välisbörs. 0€, kui hoiad ainult ETF Core Selectioni fonde'}; }
     },
     'etoro': {
       etf: function(a){ return {v:0, s:'ETF-idel vahendustasu ei ole, eurokonto'}; },
-      us: function(a){ return {v:1*USD_EUR+a*0.0075, s:'1 $ vahendustasu + 0,75% EUR/USD vahetus'}; },
+      us: function(a){ return {v:1*USD_EUR+a*0.0075, s:'1$ vahendustasu + 0,75% EUR/USD vahetus'}; },
       plan: function(m){ return {v:0, s:'Korduvad investeeringud ilma vahendustasuta'}; },
       custody: function(p){ return {v:0}; }
     },
     'freedom24': {
-      etf: function(a){ var u=Math.ceil(a/ETF_PRICE); return {v:2+0.02*u, s:'Smart plaan: 2 € orderi kohta + 0,02 € aktsia kohta'}; },
-      us: function(a){ var sh=Math.ceil(a/USD_EUR/US_PRICE_USD); return {v:(2+0.02*sh)*USD_EUR, s:'Smart plaan: 2 $ + 0,02 $ aktsia kohta. Valuutatasu ei ole avaldatud', extra:FX}; },
+      etf: function(a){ var u=Math.ceil(a/ETF_PRICE); return {v:2+0.02*u, s:'Smart plaan: 2€ orderi kohta + 0,02€ aktsia kohta'}; },
+      us: function(a){ var sh=Math.ceil(a/USD_EUR/US_PRICE_USD); return {v:(2+0.02*sh)*USD_EUR, s:'Smart plaan: 2$ + 0,02$ aktsia kohta. Valuutatasu ei ole avaldatud', extra:FX}; },
       plan: function(m){ return {v:0, s:'0% ainult korduva ETF-i investeerimisplaani sees'}; },
       custody: function(p){ return {v:0}; }
     },
     'ibkr': {
       etf: function(a,plan){
-          if(plan==='tiered'){ return {v:ibXetra(a), s:'Tiered Xetras: 0,05% (min 1,25 €, max 29 €) + kliiringu- ja regulatiivsed tasud'}; }
-          return {v:Math.max(3,a*0.0005), s:'Fixed Xetras: 0,05% (min 3 €), tasud sees'}; },
+          if(plan==='tiered'){ return {v:ibXetra(a), s:'Tiered Xetras: 0,05% (min 1,25€, max 29€) + kliiringu- ja regulatiivsed tasud'}; }
+          return {v:Math.max(3,a*0.0005), s:'Fixed Xetras: 0,05% (min 3€), tasud sees'}; },
       us: function(a,plan){ var sh=Math.ceil(a/USD_EUR/US_PRICE_USD);
-          if(plan==='tiered'){ var com=Math.max(0.35,0.0035*sh); return {v:(com+0.003*sh+0.0002*sh+0.000003*sh+0.000735*com)*USD_EUR+a*0.0003, s:'Tiered: 0,0035 $/aktsia (min 0,35 $) + börsi-, kliiringu- ja regulatiivsed tasud (turuorder) + 0,03% valuutavahetus'}; }
-          return {v:Math.max(1,0.005*sh)*USD_EUR+a*0.0003, s:'Fixed: 0,005 $/aktsia (min 1 $) + 0,03% valuutavahetus'}; },
+          if(plan==='tiered'){ var com=Math.max(0.35,0.0035*sh); return {v:(com+0.003*sh+0.0002*sh+0.000003*sh+0.000735*com)*USD_EUR+a*0.0003, s:'Tiered: 0,0035$/aktsia (min 0,35$) + börsi-, kliiringu- ja regulatiivsed tasud (turuorder) + 0,03% valuutavahetus'}; }
+          return {v:Math.max(1,0.005*sh)*USD_EUR+a*0.0003, s:'Fixed: 0,005$/aktsia (min 1$) + 0,03% valuutavahetus'}; },
       plan: function(m,plan){
           if(plan==='tiered'){ return {v:12*ibXetra(m), s:'12 orderit Xetras koos kliiringu- ja regulatiivsete tasudega'}; }
-          return {v:12*Math.max(3,m*0.0005), s:'12 orderit, igaüks vähemalt 3 €'}; },
+          return {v:12*Math.max(3,m*0.0005), s:'12 orderit, igaüks vähemalt 3€'}; },
       custody: function(p){ return {v:0}; }
     },
     'lightyear': {
       etf: function(a){ return {v:0, s:'ETF-idel vahendustasu ei ole'}; },
-      us: function(a){ var usd=a/USD_EUR; return {v:Math.min(1,Math.max(0.1,usd*0.001))*USD_EUR+a*0.0035, s:'0,1% (min 0,10 $, max 1 $) + 0,35% valuutavahetus'}; },
+      us: function(a){ var usd=a/USD_EUR; return {v:Math.min(1,Math.max(0.1,usd*0.001))*USD_EUR+a*0.0035, s:'0,1% (min 0,10$, max 1$) + 0,35% valuutavahetus'}; },
       plan: function(m){ return {v:0, s:'ETF-ide plaanid ilma vahendustasuta'}; },
       custody: function(p){ return {v:0}; }
     },
     'revolut': {
-      etf: function(a){ return {v:1, s:'1 € orderi kohta Standard plaanis. Vahendustasu sõltub riigist', c:true}; },
-      us: function(a){ var fx=Math.max(0,a-1000)*0.01; return {v:1+fx, s:'1 € + tasuta valuutavahetus kuni 1000 € kuus (üle selle 1%), tööpäevadel', c:true}; },
+      etf: function(a){ return {v:1, s:'1€ orderi kohta Standard plaanis. Vahendustasu sõltub riigist', c:true}; },
+      us: function(a){ var fx=Math.max(0,a-1000)*0.01; return {v:1+fx, s:'1€ + tasuta valuutavahetus kuni 1000€ kuus (üle selle 1%), tööpäevadel', c:true}; },
       plan: function(m){ return {v:0, s:'Valitud ETF-ide plaanid ilma vahendustasuta'}; },
       custody: function(p){ return {v:0}; }
     },
     'saxo': {
-      etf: function(a){ return {v:Math.max(2,a*0.0008), s:'Classic tase Euronextis: 0,08% (min 2 €)'}; },
-      us: function(a){ var usd=a/USD_EUR; return {v:Math.max(1,usd*0.0008)*USD_EUR+a*0.0025, s:'Classic tase: 0,08% (min 1 $) + 0,25% valuutavahetus'}; },
-      plan: function(m){ return {v:12*Math.max(2,m*0.0008), s:'Säästuplaane ei ole: 12 käsitsi orderit (min 2 €)'}; },
+      etf: function(a){ return {v:Math.max(2,a*0.0008), s:'Classic tase Euronextis: 0,08% (min 2€)'}; },
+      us: function(a){ var usd=a/USD_EUR; return {v:Math.max(1,usd*0.0008)*USD_EUR+a*0.0025, s:'Classic tase: 0,08% (min 1$) + 0,25% valuutavahetus'}; },
+      plan: function(m){ return {v:12*Math.max(2,m*0.0008), s:'Säästuplaane ei ole: 12 käsitsi orderit (min 2€)'}; },
       custody: function(p){ return {v:p*0.0015*1.25, s:'0,15% aastas + Taani KM 25% (Classic tase)'}; }
     },
     'traderepublic': {
-      etf: function(a){ return {v:1, s:'1 € orderi kohta'}; },
-      us: function(a){ return {v:1, s:'1 € orderi kohta. USA aktsiatega kaubeldakse eurodes'}; },
+      etf: function(a){ return {v:1, s:'1€ orderi kohta'}; },
+      us: function(a){ return {v:1, s:'1€ orderi kohta. USA aktsiatega kaubeldakse eurodes'}; },
       plan: function(m){ return {v:0, s:'Tasuta säästuplaanid'}; },
       custody: function(p){ return {v:0}; }
     },
@@ -169,10 +169,10 @@
       custody: function(p){ return {v:0}; }
     },
     'xtb': {
-      etf: function(a){ return {v:a<=100000?0:Math.max(10,(a-100000)*0.002), s:'0% kuni 100 000 € kuukäibe juures'}; },
+      etf: function(a){ return {v:a<=100000?0:Math.max(10,(a-100000)*0.002), s:'0% kuni 100 000€ kuukäibe juures'}; },
       us: function(a){ return {v:a*0.005, s:'0% vahendustasu + 0,5% valuutavahetus'}; },
       plan: function(m){ return {v:0, s:'Investeerimisplaanid ilma vahendustasuta'}; },
-      custody: function(p){ return {v:Math.max(0,p-250000)*0.0002, s:'0 € kuni 250 000 € (üle selle 0,02% aastas)'}; }
+      custody: function(p){ return {v:Math.max(0,p-250000)*0.0002, s:'0€ kuni 250 000€ (üle selle 0,02% aastas)'}; }
     }
   };
 
@@ -290,12 +290,16 @@
     function maxSel(){ return isMobile()?2:3; }
     function byId(id){ for(var i=0;i<B.length;i++){ if(B[i].id===id) return B[i]; } return null; }
 
-    /* ---------- Estonian number format: 1 000 and 3,90 € ---------- */
-    function fmtInt(n){ return Math.round(n).toLocaleString(LOC); }
+    /* ---------- Number format: 1 000 and 3,90€ ----------
+       Thousands grouped from 1 000 up (the et-EE locale leaves 4-digit numbers ungrouped) with a
+       non-breaking space, so a number never splits across lines. The € sign sits right after the number. */
     var NBSP=String.fromCharCode(160);
-    function fmtEurInt(n){ return fmtInt(n)+NBSP+'€'; }
-    function fmtEur(n){ return (Math.round(n*100)/100).toLocaleString(LOC,{minimumFractionDigits:2,maximumFractionDigits:2})+NBSP+'€'; }
-    /* Accepts 1 000, 1000,50 and 1.000 so a reader can type either way. */
+    function group(s){ return s.replace(/\B(?=(\d{3})+(?!\d))/g,NBSP); }
+    function fmtInt(n){ return group(String(Math.round(n))); }
+    function fmtEurInt(n){ return fmtInt(n)+'€'; }
+    function fmtEur(n){ var c=Math.round(n*100), neg=c<0; c=Math.abs(c);
+      return (neg?'-':'')+group(String(Math.floor(c/100)))+','+('0'+(c%100)).slice(-2)+'€'; }
+    /* Accepts 1 000, 1000,50 and 1.000 so a reader can type either way. */
     function parseNum(v){
       var t=String(v).replace(/[\s€]/g,'');
       var lc=t.lastIndexOf(','), ld=t.lastIndexOf('.');
@@ -345,7 +349,7 @@
     function logo(b,size){
       var st=(size?'width:'+size+'px;height:'+size+'px;':'');
       var src=b.logo||LOGOS[b.id];
-      if(src) return '<span class="cc-logo has-img'+(b.logoBare?' is-bare':'')+'" style="'+st+'" data-short="'+esc(b.short)+'" data-color="'+esc(b.color)+'" aria-hidden="true"><img src="'+esc(src)+'" alt=""></span>';
+      if(src) return '<span class="cc-logo has-img'+(b.logoBare?' is-bare':'')+'" style="'+st+'" data-short="'+esc(b.short)+'" data-color="'+esc(b.color)+'" aria-hidden="true"><img src="'+esc(src)+'" alt="'+esc(b.name)+'"></span>';
       return '<span class="cc-logo" style="background:'+esc(b.color)+';'+st+'" aria-hidden="true">'+esc(b.short)+'</span>'; }
     /* A logo that fails to load falls back to the broker's initials on its brand colour */
     root.addEventListener('error',function(e){
@@ -378,7 +382,7 @@
           '<button type="button" class="cc-switch" id="cc-diff" aria-pressed="false"><i></i>'+T.diffOnly+'</button></div>'+
         '<div class="cc-table" id="cc-table"></div>'+
         '<div class="cc-pairs" id="cc-pairs"></div>'+
-        notesHtml()+
+        '<div class="cc-notes" id="cc-notes"></div>'+
         '<div class="cc-mini" id="cc-mini"></div>';
     }
 
@@ -443,6 +447,7 @@
       var sel=S.sel.map(byId).filter(Boolean);
       var t=document.getElementById('cc-table');
       document.getElementById('cc-count').textContent = sel.length? nSelected(sel.length) : '';
+      document.getElementById('cc-notes').innerHTML=notesHtml(sel);
       if(!sel.length){ t.innerHTML='<div class="cc-empty">'+T.emptyPick+'</div>'; document.getElementById('cc-pairs').innerHTML=''; renderMini(sel); return; }
       root.style.setProperty('--cc-cols','minmax(180px,1.1fr) repeat('+sel.length+',minmax(0,1fr))');
       root.style.setProperty('--cc-n',sel.length);
@@ -527,8 +532,8 @@
         if(!t||!h||!m) { if(m) m.classList.remove('is-on'); return; }
         var tr=t.getBoundingClientRect(), hr=h.getBoundingClientRect();
         var show=hr.bottom<top && tr.bottom>top+(m.classList.contains('has-cta')?160:80);
-        if(isMobile()){ m.style.left=''; m.style.width=''; m.style.right=''; }
-        else { m.style.left=Math.round(tr.left)+'px'; m.style.width=Math.round(tr.width)+'px'; m.style.right='auto'; }
+        /* The bar takes the table's left edge and width, on mobile too, so it lines up with the card below */
+        m.style.left=Math.round(tr.left)+'px'; m.style.width=Math.round(tr.width)+'px'; m.style.right='auto';
         m.classList.toggle('is-on',show);
       });
     }
@@ -551,17 +556,18 @@
       document.getElementById('cc-pairs').innerHTML=out.join('');
     }
 
-    function notesHtml(){
+    /* General notes always show. The bank and broker notes only show when that bank or broker is in the comparison. */
+    function notesHtml(sel){
       var a=function(href,txt){ return '<a href="'+href+'" target="_blank" rel="noopener">'+txt+'</a>'; };
-      return '<div class="cc-notes">'+
-        '<p><b>Kuidas me kulud arvutame:</b> iga stsenaarium kasutab odavaimat viisi, mida pakkuja selle toote jaoks pakub, koos vahendustasu, fikseeritud tasude ja valuutavahetuse kuluga. Dollaritasud arvestame kursiga 1 $ = '+String(USD_EUR).replace('.',',')+' €. Tükitasude puhul eeldame, et ETF-i osak maksab '+ETF_PRICE+' € ja USA aktsia '+US_PRICE_USD+' $. Turu hinnavahet (spread), ETF-i enda kulusid (TER) ega makse ei ole arvestatud. Välismaakleritel võivad tasud elukohariigiti erineda: tabel näitab pakkumist enamikule ELi klientidele.</p>'+
-        '<p><b>Eesti pangad:</b> LHV, Swedbank ja SEB vahetavad valuutat panga kursiga ega avalda hinnakirjas marginaali. Seepärast on nende USA aktsiate kulul märge „+ valuutavahetus” ja neid ei arvestata „Odavaim” märgi juures. Väikeste ETF-i ostude puhul on odavaim viis LHV Kasvukonto või SEB mikroinvesteerimine (0,5% ilma miinimumtasuta). Pankade hoiutasudele lisandub käibemaks '+Math.round(VAT*100)+'%.</p>'+
+      var has=function(ids){ return sel.some(function(b){ return ids.indexOf(b.id)>-1; }); };
+      return ''+
+        '<p><b>Kuidas me kulud arvutame:</b> iga stsenaarium kasutab odavaimat viisi, mida pakkuja selle toote jaoks pakub, koos vahendustasu, fikseeritud tasude ja valuutavahetuse kuluga. Dollaritasud arvestame kursiga 1$ = '+String(USD_EUR).replace('.',',')+'€. Tükitasude puhul eeldame, et ETF-i osak maksab '+ETF_PRICE+'€ ja USA aktsia '+US_PRICE_USD+'$. Turu hinnavahet (spread), ETF-i enda kulusid (TER) ega makse ei ole arvestatud. Välismaakleritel võivad tasud elukohariigiti erineda: tabel näitab pakkumist enamikule ELi klientidele.</p>'+
+        (has(['lhv','swedbank','seb'])?'<p><b>Eesti pangad:</b> LHV, Swedbank ja SEB vahetavad valuutat panga kursiga ega avalda hinnakirjas marginaali. Seepärast on nende USA aktsiate kulul märge „+ valuutavahetus” ja neid ei arvestata „Odavaim” märgi juures. Väikeste ETF-i ostude puhul on odavaim viis LHV Kasvukonto või SEB mikroinvesteerimine (0,5% ilma miinimumtasuta). Pankade hoiutasudele lisandub käibemaks '+Math.round(VAT*100)+'%.</p>':'')+
         '<p><b>Investeerimiskonto:</b> „Jah” tähendab, et pakkuja avab sulle investeerimiskonto. „Võimalik” tähendab, et konto võib vastata Maksu- ja Tolliameti tingimustele, kui ostad finantsvara ainult selle konto rahaga ja deklareerid konto tuludeklaratsiooni tabelis 6.5. Loe '+a(EMTA,'Maksu- ja Tolliameti juhendit')+' ja meie artiklit '+a(SITE+'/artiklid/investeerimiskonto-deklareerimine','investeerimiskonto deklareerimisest')+'.</p>'+
-        '<p><b>Interactive Brokers:</b> kasuta veeru ülaosas valikut Fixed/Tiered. Tiered puhul lisame Interactive Brokersi tabelist kliiringu- ja regulatiivsed tasud. Xetras ei võeta börsitasu jaeinvestorite orderitelt, mis suunatakse SmartRoutingu kaudu. USA aktsiate puhul eeldame turuorderit, millele börsitasu lisandub.</p>'+
-        '<p><b>Trading 212:</b> sponsitud link. Investeerides on sinu kapital riskis ja võid tagasi saada vähem, kui investeerisid. Varasem tootlus ei taga tulevast tootlust. Kehtida võivad muud tasud, vaata '+a('https://www.trading212.com/terms/invest','tingimusi ja tasusid')+'. Kui lülitad intressi sisse, hoiab Trading 212 sinu raha nõuetele vastavates rahaturufondides ja pankades. Muul juhul hoitakse sinu raha ainult pankades. Intress kehtib Trading 212 Invest-kontol oleval rahal. Kehtivad tingimused. Näidatud määrad ei pruugi olla enam ajakohased: vaata kehtivaid määrasid tingimuste ja tasude lehelt.</p>'+
-        '<p><b>Freedom24:</b> 0% vahendustasu ETF-i investeerimisplaanis kehtib ainult korduva investeerimise funktsioonis. Muud tehingud järgivad Freedom24 hinnakirja.</p>'+
-        '<p>Andmed on kontrollitud '+esc(VERIFIED)+'. Tasud muutuvad, seega kontrolli tingimusi enne konto avamist alati pakkuja enda lehel.</p>'+
-      '</div>';
+        (has(['ibkr'])?'<p><b>Interactive Brokers:</b> kasuta veeru ülaosas valikut Fixed/Tiered. Tiered puhul lisame Interactive Brokersi tabelist kliiringu- ja regulatiivsed tasud. Xetras ei võeta börsitasu jaeinvestorite orderitelt, mis suunatakse SmartRoutingu kaudu. USA aktsiate puhul eeldame turuorderit, millele börsitasu lisandub.</p>':'')+
+        (has(['trading212'])?'<p><b>Trading 212:</b> sponsitud link. Investeerides on sinu kapital riskis ja võid tagasi saada vähem, kui investeerisid. Varasem tootlus ei taga tulevast tootlust. Kehtida võivad muud tasud, vaata '+a('https://www.trading212.com/terms/invest','tingimusi ja tasusid')+'. Kui lülitad intressi sisse, hoiab Trading 212 sinu raha nõuetele vastavates rahaturufondides ja pankades. Muul juhul hoitakse sinu raha ainult pankades. Intress kehtib Trading 212 Invest-kontol oleval rahal. Kehtivad tingimused. Näidatud määrad ei pruugi olla enam ajakohased: vaata kehtivaid määrasid tingimuste ja tasude lehelt.</p>':'')+
+        (has(['freedom24'])?'<p><b>Freedom24:</b> 0% vahendustasu ETF-i investeerimisplaanis kehtib ainult korduva investeerimise funktsioonis. Muud tehingud järgivad Freedom24 hinnakirja.</p>':'')+
+        '<p>Andmed on kontrollitud '+esc(VERIFIED)+'. Tasud muutuvad, seega kontrolli tingimusi enne konto avamist alati pakkuja enda lehel.</p>';
     }
 
     /* ---------- Events ---------- */

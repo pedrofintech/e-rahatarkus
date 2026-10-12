@@ -85,3 +85,9 @@ From the repo root: `python3 -m http.server 8080`, then open
 - Sign-up offers left out on purpose: DEGIRO's fee refund (sign-ups until 31.10.2026) and XTB's free
   share. Neither is confirmed for Estonian residents. Trade Republic has no sign-up offer.
 - Trading 212: the data shows both entities (EU GmbH and Markets Ltd). Check which one serves Estonian clients.
+
+## Logo files
+
+Two logos are embedded as data URIs in `data/brokers.json` (WebP): Swedbank's oak-tree coin,
+cut from the logo on swedbank.ee (80 px), and Lightyear's app icon at 96 px instead of the
+765 px original, not otherwise changed.
