@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2026-10-09",
+  "lastUpdated": "2026-10-12",
   "accounts": [
     {
       "bank": "LHV",
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-09",
+      "checkedOn": "2026-10-12",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "fetch",
       "tiers": [
@@ -39,7 +39,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-09",
+      "checkedOn": "2026-10-12",
       "ratesEffectiveFrom": "2026-09-16",
       "scrapeMethod": "fetch",
       "tiers": [
@@ -73,7 +73,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-09",
+      "checkedOn": "2026-10-12",
       "ratesEffectiveFrom": "2026-09-22",
       "scrapeMethod": "fetch",
       "tiers": [
@@ -105,7 +105,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-09",
+      "checkedOn": "2026-10-12",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "fetch",
       "tiers": [
@@ -139,7 +139,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-09",
+      "checkedOn": "2026-10-12",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "playwright",
       "tiers": [
@@ -172,7 +172,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-09",
+      "checkedOn": "2026-10-12",
       "ratesEffectiveFrom": "2026-09-15",
       "scrapeMethod": "playwright",
       "tiers": [
@@ -203,7 +203,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-09",
+      "checkedOn": "2026-10-12",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "fetch",
       "tiers": [
@@ -267,7 +267,7 @@
       "product": "Tähtajaline hoius",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-09",
+      "checkedOn": "2026-10-12",
       "ratesEffectiveFrom": "2026-08-21",
       "scrapeMethod": "fetch",
       "tiers": [
