@@ -23,16 +23,19 @@
 #rt-bc .cc-hint{font-size:13px;line-height:18px;color:var(--g500);margin:0 0 14px}
 #rt-bc .cc-picker{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
 #rt-bc .cc-pick{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px 10px;border:1px solid var(--g300);border-radius:12px;background:#fff;font-size:12.5px;font-weight:500;line-height:16px;color:var(--g700);text-align:center;position:relative;transition:border-color .15s ease,box-shadow .15s ease}
-#rt-bc .cc-pick:hover{border-color:var(--g700)}
+#rt-bc .cc-pick:hover{border-color:var(--blue300);background:var(--brand50)}
 #rt-bc .cc-pick:focus-visible,#rt-bc .cc-btn:focus-visible,#rt-bc .cc-sec-h:focus-visible,#rt-bc .cc-pill:focus-visible,#rt-bc .cc-switch:focus-visible,#rt-bc .cc-more:focus-visible,#rt-bc .cc-scen-toggle:focus-visible{outline:none;box-shadow:0 0 0 4px var(--blue100)}
 #rt-bc .cc-pick.is-on{border-color:var(--brand500);box-shadow:inset 0 0 0 1px var(--brand500);background:var(--brand50)}
 #rt-bc .cc-pick.is-on::after{content:"";position:absolute;top:6px;right:6px;width:16px;height:16px;border-radius:50%;background:var(--brand500) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") no-repeat center/10px}
-#rt-bc .cc-pick-t{font-size:11px;font-weight:400;color:var(--g500)}
+#rt-bc .cc-pick-t{font-size:11.5px;font-weight:400;color:var(--g500)}
 #rt-bc .cc-more{display:none}
 #rt-bc .cc-logo{width:36px;height:36px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;letter-spacing:0;color:#fff;flex-shrink:0;overflow:hidden}
-#rt-bc .cc-logo.has-img{background:#fff;border:1px solid var(--g200)}
+/* Every logo sits in the same white frame with the same inner margin, so app icons with their own
+   background (eToro, XTB, Swedbank) and plain marks on white (SEB, DEGIRO) read as one set */
+#rt-bc .cc-logo.has-img{background:#fff;border:1px solid var(--g200);padding:3px}
+#rt-bc .cc-logo.has-img:not(.is-bare) img{border-radius:6px}
 #rt-bc .cc-logo img{width:100%;height:100%;object-fit:contain;display:block;max-width:none}
-#rt-bc .cc-logo.has-img.is-bare{background:transparent;border:0;border-radius:0;overflow:visible}
+#rt-bc .cc-logo.has-img.is-bare{background:transparent;border:0;border-radius:0;overflow:visible;padding:0}
 #rt-bc .cc-divider{height:1px;background:var(--g200);margin:22px 0 18px}
 #rt-bc .cc-scen{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 #rt-bc .cc-label{display:block;font-size:14px;font-weight:600;line-height:20px;color:var(--g900);margin:0 0 6px}
@@ -64,12 +67,12 @@
 #rt-bc .cc-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;text-align:center;width:100%;padding:10px 12px;border-radius:12px;background:var(--brand500);color:#fff!important;font-size:14px;font-weight:500;line-height:20px;text-decoration:none!important;border:1px solid var(--brand500);transition:background-color .18s ease,border-color .18s ease}
 #rt-bc .cc-btn:hover{background:var(--brand600);border-color:var(--brand600)}
 #rt-bc .cc-btn svg{width:16px;height:16px}
-#rt-bc .cc-risk{display:block;font-size:10.5px;line-height:14px;color:var(--g500)}
+#rt-bc .cc-risk{display:block;font-size:12px;line-height:16px;color:var(--g500)}
 #rt-bc .cc-offer{display:block;margin-top:2px;padding:8px 10px;border-radius:10px;background:var(--brand50);border:1px solid var(--blue100);text-align:left}
-#rt-bc .cc-offer-b{display:block;margin-bottom:2px;font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--brand600)}
-#rt-bc .cc-offer-t{display:block;font-size:11.5px;line-height:16px;color:var(--g700)}
+#rt-bc .cc-offer-b{display:block;margin-bottom:2px;font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--brand600)}
+#rt-bc .cc-offer-t{display:block;font-size:12px;line-height:17px;color:var(--g700)}
 #rt-bc .cc-offer-t b{font-weight:600;color:var(--g900)}
-#rt-bc .cc-offer-a{display:inline-block;margin-top:3px;font-size:11.5px;line-height:16px;color:var(--brand600);text-decoration:underline;text-underline-offset:2px}
+#rt-bc .cc-offer-a{display:inline-block;margin-top:3px;font-size:12px;line-height:16px;color:var(--brand600);text-decoration:underline;text-underline-offset:2px}
 #rt-bc .cc-review{font-size:12px;color:var(--g600);text-decoration:underline;text-decoration-color:var(--g300);text-underline-offset:2px}
 #rt-bc .cc-review:hover{color:var(--brand600)}
 #rt-bc .cc-hextra{width:100%}
@@ -91,7 +94,7 @@
 #rt-bc .cc-v.is-big{font-family:var(--f-head);font-weight:400;font-size:20px;line-height:26px;letter-spacing:-.006em}
 #rt-bc .cc-extra{font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--g500);letter-spacing:-.01em;white-space:nowrap}
 #rt-bc .cc-s{display:block;font-size:12px;line-height:17px;color:var(--g500);margin-top:3px}
-#rt-bc .cc-tag{display:inline-block;margin-top:6px;margin-right:4px;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:500;line-height:16px}
+#rt-bc .cc-tag{display:inline-block;margin-top:6px;margin-right:4px;padding:1px 8px;border-radius:999px;font-size:11.5px;font-weight:500;line-height:16px}
 #rt-bc .cc-tag.is-best{background:var(--ok50);color:var(--ok700);border:1px solid var(--ok200)}
 #rt-bc .cc-tag.is-conf{background:var(--warn50);color:var(--warn700);border:1px solid var(--warn200)}
 #rt-bc .cc-v+.cc-tag{margin-left:6px}
@@ -107,24 +110,25 @@
 #rt-bc .cc-pair:hover{border-color:var(--g700)}
 #rt-bc .cc-pair b{font-weight:600}
 #rt-bc .cc-pair span:last-child{color:var(--brand600);font-weight:500;white-space:nowrap}
-#rt-bc .cc-notes{margin:20px 0 0;font-size:12px;line-height:18px;color:var(--g600)}
+#rt-bc .cc-notes{margin:20px 0 0;max-width:760px;font-size:13px;line-height:20px;color:var(--g600)}
 #rt-bc .cc-notes p{margin:0 0 8px}
 #rt-bc .cc-notes b{font-weight:600;color:var(--g700)}
 #rt-bc .cc-notes a{color:var(--brand600);text-decoration:underline;text-underline-offset:2px}
-#rt-bc .cc-mini{display:none;position:fixed;left:0;right:0;top:var(--cc-top,0px);z-index:20;background:#fff;border-bottom:1px solid var(--g200);box-shadow:0 6px 24px rgba(8,28,21,.08)}
-#rt-bc .cc-mini-in{display:grid;gap:0;padding:8px 16px}
-#rt-bc .cc-mini-c{display:flex;flex-direction:column;gap:8px;min-width:0;font-size:13px;line-height:18px}
-#rt-bc .cc-mini-c+.cc-mini-c{padding-left:12px;border-left:1px solid var(--g200)}
+#rt-bc .cc-mini{display:none;position:fixed;left:0;right:0;top:var(--cc-top,0px);z-index:20;background:#fff;border:1px solid var(--g200);border-top:0;border-radius:0 0 12px 12px;overflow:hidden;box-shadow:0 6px 24px rgba(8,28,21,.08)}
+#rt-bc .cc-mini-in{display:grid;gap:0;padding:8px 0}
+#rt-bc .cc-mini-c{display:flex;flex-direction:column;gap:8px;min-width:0;padding:0 14px;font-size:13px;line-height:18px}
+#rt-bc .cc-mini-c+.cc-mini-c{border-left:1px solid var(--g200)}
 #rt-bc .cc-mini-n{display:flex;align-items:center;gap:8px;min-width:0}
 #rt-bc .cc-mini-c b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #rt-bc .cc-mini-c .cc-btn{padding:6px 10px;background:#fff;color:var(--g700)!important;border:1px solid var(--g300)}
 #rt-bc .cc-mini-c .cc-btn:hover{background:#fff;border-color:var(--g700)}
 #rt-bc .cc-mini-c .cc-risk{margin-top:-4px}
 #rt-bc .cc-mini-c .cc-logo{border-radius:6px}
+#rt-bc .cc-mini-c .cc-logo.has-img:not(.is-bare){padding:2px}
+#rt-bc .cc-mini-c .cc-logo.has-img:not(.is-bare) img{border-radius:4px}
 #rt-bc .cc-mini.is-on{display:block}
 @media (min-width:768px){
  #rt-bc .cc-head{position:static}
- #rt-bc .cc-mini{border:1px solid var(--g200);border-top:0;border-radius:0 0 12px 12px;overflow:hidden}
  #rt-bc .cc-mini-in{padding:0}
  #rt-bc .cc-mini-c,#rt-bc .cc-mini-c+.cc-mini-c{padding:10px 14px;border-left:1px solid var(--g200);font-size:14px;line-height:20px}
 }
@@ -140,6 +144,7 @@
  #rt-bc .cc-picker{grid-template-columns:repeat(3,minmax(0,1fr))}
  #rt-bc .cc-pick{padding:10px 4px 8px;font-size:12px}
  #rt-bc .cc-pick .cc-logo{width:28px;height:28px;border-radius:8px}
+ #rt-bc .cc-pick .cc-logo.has-img:not(.is-bare){padding:2px}
  #rt-bc .cc-pick-t{display:none}
  #rt-bc .cc-picker:not(.is-open) .cc-pick.is-extra{display:none}
  #rt-bc .cc-more{display:block;width:100%;margin-top:8px;padding:10px 12px;border:1px solid var(--g300);border-radius:12px;background:#fff;font-size:13px;font-weight:500;line-height:18px;color:var(--brand600);text-align:center}
@@ -160,7 +165,6 @@
  #rt-bc .cc-cell+.cc-cell{border-left:1px solid var(--g200)}
  #rt-bc .cc-hcell{padding:12px}
  #rt-bc .cc-head{position:static}
- #rt-bc .cc-mini.has-cta .cc-mini-c:not(:last-child){padding-right:12px}
  #rt-bc .cc-hcell:nth-child(2){border-left:0}
  #rt-bc .cc-hname b{font-size:14px}
  #rt-bc .cc-v.is-big{font-size:18px;line-height:24px}
