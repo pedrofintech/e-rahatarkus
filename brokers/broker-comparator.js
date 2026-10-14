@@ -352,7 +352,7 @@
     function offerHtml(b){
       var o=b.offer; if(!o) return '';
       return '<div class="cc-offer"><span class="cc-offer-b">'+T.offerBadge+'</span>'
-        +'<span class="cc-offer-t">'+esc(o.t)+'.'+(o.c?' '+T.useCode+' <b>'+esc(o.c)+'</b>.':'')+'</span>'
+        +'<span class="cc-offer-t">'+esc(o.t)+'.'+(o.c?' '+T.useCode+' <b>'+esc(o.c)+'</b>.':'')+(o.n?' '+esc(o.n)+'.':'')+'</span>'
         +'<a class="cc-offer-a" href="'+esc(o.a)+'" target="_blank" rel="noopener">'+T.howItWorks+'</a></div>';
     }
 

@@ -33,6 +33,7 @@ Each broker in `data/brokers.json` has:
   `cta.probe` and `cta.fallback`: if the probe URL is blocked in the reader's browser (ad blockers block
   Impact's `sjv.io`), the button uses the fallback instead. Only Trade Republic needs this today.
 - `offer` for the blue sign-up box: `{"t": "text", "c": "CODE", "a": "link to the article"}`.
+  Optional `"n"`: a sentence shown after the code, e.g. "Kehtivad kampaaniatingimused" (Lightyear requires it).
 - `review` for the "Loe ülevaadet" link, `src` for the price list link in the Allikad row.
 - `verified`: date shown under the price list link.
 
