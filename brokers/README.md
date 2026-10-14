@@ -58,6 +58,10 @@ A broker in the JSON without a `CALC` entry is not shown. `TOP` sets the brokers
 The banks use the cheapest route the price list offers: LHV Kasvukonto and SEB mikroinvesteerimine
 (0,5% with no minimum) beat the 0,14% (min 5 €) securities account for small ETF purchases.
 Custody above 100 000 € includes VAT (`assumptions.VAT`, 24%).
+Luminor's figures are for Luminor Investor (the only route for non-private-banking clients). The
+formulas take the cheaper of its two plans (Standard 0,20%, min 3 € / 2 $; Valik 0,08%, min 10 € / 10 $),
+and custody is 0,01% a month + VAT with no minimum.
+Revolut's Standard plan has 1 free trade a month (then 0,25%, min 1 €), so a one-off purchase costs 0 €.
 
 ## Deploying a code change
 
@@ -75,16 +79,17 @@ From the repo root: `python3 -m http.server 8080`, then open
 
 ## Open points for v1
 
-- Luminor is missing: its price list sits behind a Cloudflare check.
-- SEB interest on the current account is not in the data (shows "Kinnitamata").
-- Revolut's commission for Estonia, Interactive Brokers' Baltic fee and Bitpanda as an
-  investeerimiskonto are marked "Kinnitamata".
+- Interactive Brokers' Baltic fee is marked "Kinnitamata".
+- Luminor Investor: no fractional shares or recurring purchases. Source: the Luminor Investor user guide
+  linked on luminor.ee (2021): stock and ETF orders take a number of shares, order types are market,
+  limit and stop. Recheck if Luminor publishes a newer guide.
 - Affiliate links: Trade Republic and eToro use the same tracking links as the Rahatarkus articles.
   DEGIRO and Interactive Brokers use the EU Personal Finance tracking links (`/kulasta/ib` lands on
   IBKR with no tracking code).
 - Sign-up offers left out on purpose: DEGIRO's fee refund (sign-ups until 31.10.2026) and XTB's free
   share. Neither is confirmed for Estonian residents. Trade Republic has no sign-up offer.
-- Trading 212: the data shows both entities (EU GmbH and Markets Ltd). Check which one serves Estonian clients.
+- Trading 212: Estonian clients are with Trading 212 Markets Ltd (CySEC). Trading 212 EU GmbH is not in
+  Finantsinspektsioon's register of cross-border providers, so the data shows only Markets Ltd.
 
 ## Logo files
 

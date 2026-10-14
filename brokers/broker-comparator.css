@@ -21,13 +21,21 @@
 #rt-bc .cc-panel{background:#fff;border:1px solid var(--g200);border-radius:16px;padding:24px}
 #rt-bc .cc-step{font-size:16px;font-weight:600;line-height:24px;margin:0 0 4px;color:var(--g900)}
 #rt-bc .cc-hint{font-size:13px;line-height:18px;color:var(--g500);margin:0 0 14px}
-#rt-bc .cc-picker{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+#rt-bc .cc-picker{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px}
 #rt-bc .cc-pick{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px 10px;border:1px solid var(--g300);border-radius:12px;background:#fff;font-size:12.5px;font-weight:500;line-height:16px;color:var(--g700);text-align:center;position:relative;transition:border-color .15s ease,box-shadow .15s ease}
 #rt-bc .cc-pick:hover{border-color:var(--blue300);background:var(--brand50)}
 #rt-bc .cc-pick:focus-visible,#rt-bc .cc-btn:focus-visible,#rt-bc .cc-sec-h:focus-visible,#rt-bc .cc-pill:focus-visible,#rt-bc .cc-switch:focus-visible,#rt-bc .cc-more:focus-visible,#rt-bc .cc-scen-toggle:focus-visible{outline:none;box-shadow:0 0 0 4px var(--blue100)}
 #rt-bc .cc-pick.is-on{border-color:var(--brand500);box-shadow:inset 0 0 0 1px var(--brand500);background:var(--brand50)}
 #rt-bc .cc-pick.is-on::after{content:"";position:absolute;top:6px;right:6px;width:16px;height:16px;border-radius:50%;background:var(--brand500) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") no-repeat center/10px}
 #rt-bc .cc-pick-t{font-size:11.5px;font-weight:400;color:var(--g500)}
+/* Desktop: a name too long for its card (Interactive Brokers) gets a smaller font so it stays on one line
+   and its row is not taller than the others. --n is the name's length, set in the script; the other names
+   stay at 12.5px. Never below 10.5px: on a very narrow screen the name wraps as before.
+   Older browsers ignore the max() line. */
+@media (min-width:768px){
+ #rt-bc .cc-pick{container-type:inline-size}
+ #rt-bc .cc-pick-n{font-size:12.5px;font-size:max(10.5px,min(12.5px,calc(200cqi / var(--n,10))))}
+}
 #rt-bc .cc-more{display:none}
 #rt-bc .cc-logo{width:36px;height:36px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;letter-spacing:0;color:#fff;flex-shrink:0;overflow:hidden}
 /* Every logo sits in the same white frame with the same inner margin, so app icons with their own
@@ -110,7 +118,7 @@
 #rt-bc .cc-pair:hover{border-color:var(--g700)}
 #rt-bc .cc-pair b{font-weight:600}
 #rt-bc .cc-pair span:last-child{color:var(--brand600);font-weight:500;white-space:nowrap}
-#rt-bc .cc-notes{margin:20px 0 0;max-width:760px;font-size:13px;line-height:20px;color:var(--g600)}
+#rt-bc .cc-notes{margin:20px 0 0;font-size:13px;line-height:20px;color:var(--g600)}
 #rt-bc .cc-notes p{margin:0 0 8px}
 #rt-bc .cc-notes b{font-weight:600;color:var(--g700)}
 #rt-bc .cc-notes a{color:var(--brand600);text-decoration:underline;text-underline-offset:2px}

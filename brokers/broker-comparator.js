@@ -90,10 +90,10 @@
       etf: function(a){ return {v:Math.max(3.9,a*0.0014), s:'Internetipangas 0,14% (min 3,90€)'}; },
       us: function(a){ return {v:Math.max(3.9,a*0.0014), s:'0,14% (min 3,90€). Valuuta vahetatakse panga kursiga', extra:FX}; },
       plan: function(m){ return {v:12*Math.max(3.9,m*0.0014), s:'ETF-ide püsiostu ei ole: 12 käsitsi ostu (min 3,90€). Swedbanki fondides on regulaarne märkimine tasuta'}; },
-      custody: function(p){ return {v:Math.min(8,Math.max(0,p-100000)*0.00008)*12*(1+VAT), s:'0€ kuni 100 000€. Üle selle 0,008% kuus (max 8€) + KM'}; }
+      custody: function(p){ return {v:Math.min(8,Math.max(0,p-100000)*0.00008)*12*(1+VAT), s:'0€ kuni 100 000€. Üle selle 0,008% kuus (max 8€) + KM. Ainult fondide ja ETF-ide puhul KM-i ei lisandu'}; }
     },
     /* SEB hinnakiri: Euroopa aktsiad 0,14% (min 5€), USA 0,14% (min 5€, vähemalt 0,015$ aktsia kohta).
-       Mikroinvesteerimine: 13 euro-ETF-i, 0,5% ilma miinimumtasuta, ühekordselt või kord kuus. Hoiutasu eraisikule 0€. */
+       Mikroinvesteerimine: 13 ETF-i, 0,5% ilma miinimumtasuta, ühekordselt või kord kuus. Hoiutasu eraisikule 0€. */
     'seb': {
       etf: function(a){ var vp=Math.max(5,a*0.0014), mi=a*0.005;
           return mi<vp ? {v:mi, s:'Mikroinvesteerimises 0,5% ilma miinimumtasuta (13 ETF-i valikust)'} : {v:vp, s:'Internetipangas 0,14% (min 5€)'}; },
@@ -101,6 +101,17 @@
       plan: function(m){ var vp=Math.max(5,m*0.0014), mi=m*0.005;
           return mi<vp ? {v:12*mi, s:'Mikroinvesteerimine kord kuus: 0,5% ilma miinimumtasuta'} : {v:12*vp, s:'12 ostu internetipangas, 0,14% (min 5€)'}; },
       custody: function(p){ return {v:0, s:'Eraisikule tasuta'}; }
+    },
+    /* Luminor hinnakiri (01.10.2026), Luminor Investor: Euroopa börsid Standardpakett 0,20% (min 3€), Valikpakett 0,08% (min 10€);
+       USA börsid Standardpakett 0,20% (min 2$), Valikpakett 0,08% (min 10$). Hoiutasu 0,01% kuus + KM, aktsiatel ja ETF-idel miinimumita. */
+    'luminor': {
+      etf: function(a){ var st=Math.max(3,a*0.002), va=Math.max(10,a*0.0008);
+          return va<st ? {v:va, s:'Luminor Investoris Valikpaketiga 0,08% (min 10€)'} : {v:st, s:'Luminor Investoris Standardpaketiga 0,20% (min 3€)'}; },
+      us: function(a){ var st=Math.max(2*USD_EUR,a*0.002), va=Math.max(10*USD_EUR,a*0.0008);
+          return va<st ? {v:va, s:'Valikpaketiga 0,08% (min 10$). Valuutavahetuse marginaali hinnakiri ei avalda', extra:FX} : {v:st, s:'Standardpaketiga 0,20% (min 2$). Valuutavahetuse marginaali hinnakiri ei avalda', extra:FX}; },
+      plan: function(m){ var st=Math.max(3,m*0.002), va=Math.max(10,m*0.0008);
+          return va<st ? {v:12*va, s:'Püsiostu ei ole: 12 käsitsi ostu Valikpaketiga, 0,08% (min 10€)'} : {v:12*st, s:'Püsiostu ei ole: 12 käsitsi ostu Standardpaketiga, 0,20% (min 3€)'}; },
+      custody: function(p){ return {v:p*0.0001*12*(1+VAT), s:'0,01% kuus + KM, miinimumtasu ei ole'}; }
     },
     'bitpanda': {
       etf: function(a){ return {v:1, s:'1€ orderi kohta. Lisanduda võib hinnavahe'}; },
@@ -144,9 +155,10 @@
       plan: function(m){ return {v:0, s:'ETF-ide plaanid ilma vahendustasuta'}; },
       custody: function(p){ return {v:0}; }
     },
+    /* Revolut Standard: 1 tehing kuus tasuta, seejärel 0,25% (min 1€). Stsenaarium eeldab, et ost on kuu ainus tehing. */
     'revolut': {
-      etf: function(a){ return {v:1, s:'1€ orderi kohta Standard plaanis. Vahendustasu sõltub riigist', c:true}; },
-      us: function(a){ var fx=Math.max(0,a-1000)*0.01; return {v:1+fx, s:'1€ + tasuta valuutavahetus kuni 1000€ kuus (üle selle 1%), tööpäevadel', c:true}; },
+      etf: function(a){ return {v:0, s:'Standard plaanis 1 tehing kuus tasuta, seejärel 0,25% (min 1€)'}; },
+      us: function(a){ var fx=Math.max(0,a-1000)*0.01; return {v:fx, s:'1 tehing kuus tasuta. Valuutavahetus tasuta kuni 1000€ kuus (üle selle 1%), tööpäevadel'}; },
       plan: function(m){ return {v:0, s:'Valitud ETF-ide plaanid ilma vahendustasuta'}; },
       custody: function(p){ return {v:0}; }
     },
@@ -398,7 +410,7 @@
       pk.classList.toggle('is-open',S.more);
       pk.innerHTML = B.map(function(b,i){
         var on=S.sel.indexOf(b.id)>-1;
-        return '<button type="button" class="cc-pick'+(on?' is-on':'')+(i>=SHORT&&!on?' is-extra':'')+'" data-id="'+b.id+'" aria-pressed="'+on+'">'+logo(b)+'<span>'+esc(b.name)+'</span><span class="cc-pick-t">'+esc(b.type)+'</span></button>';
+        return '<button type="button" class="cc-pick'+(on?' is-on':'')+(i>=SHORT&&!on?' is-extra':'')+'" data-id="'+b.id+'" aria-pressed="'+on+'">'+logo(b)+'<span class="cc-pick-n" style="--n:'+b.name.length+'">'+esc(b.name)+'</span><span class="cc-pick-t">'+esc(b.type)+'</span></button>';
       }).join('');
       var mb=document.getElementById('cc-more');
       mb.textContent=S.more?T.showFewer:T.showAll1+B.length+T.showAll2;
@@ -562,7 +574,8 @@
       var has=function(ids){ return sel.some(function(b){ return ids.indexOf(b.id)>-1; }); };
       return ''+
         '<p><b>Kuidas me kulud arvutame:</b> iga stsenaarium kasutab odavaimat viisi, mida pakkuja selle toote jaoks pakub, koos vahendustasu, fikseeritud tasude ja valuutavahetuse kuluga. Dollaritasud arvestame kursiga 1$ = '+String(USD_EUR).replace('.',',')+'€. Tükitasude puhul eeldame, et ETF-i osak maksab '+ETF_PRICE+'€ ja USA aktsia '+US_PRICE_USD+'$. Turu hinnavahet (spread), ETF-i enda kulusid (TER) ega makse ei ole arvestatud. Välismaakleritel võivad tasud elukohariigiti erineda: tabel näitab pakkumist enamikule ELi klientidele.</p>'+
-        (has(['lhv','swedbank','seb'])?'<p><b>Eesti pangad:</b> LHV, Swedbank ja SEB vahetavad valuutat panga kursiga ega avalda hinnakirjas marginaali. Seepärast on nende USA aktsiate kulul märge „+ valuutavahetus” ja neid ei arvestata „Odavaim” märgi juures. Väikeste ETF-i ostude puhul on odavaim viis LHV Kasvukonto või SEB mikroinvesteerimine (0,5% ilma miinimumtasuta). Pankade hoiutasudele lisandub käibemaks '+Math.round(VAT*100)+'%.</p>':'')+
+        (has(['lhv','swedbank','seb','luminor'])?'<p><b>Eesti pangad:</b> LHV, Swedbank, SEB ja Luminor ei avalda hinnakirjas aktsiatehingute valuutavahetuse marginaali. Seepärast on nende USA aktsiate kulul märge „+ valuutavahetus” ja neid ei arvestata „Odavaim” märgi juures. Väikeste ETF-i ostude puhul on odavaim viis LHV Kasvukonto või SEB mikroinvesteerimine (0,5% ilma miinimumtasuta). Pankade hoiutasudele lisandub käibemaks '+Math.round(VAT*100)+'%.</p>':'')+
+        (has(['luminor'])?'<p><b>Luminor:</b> tasud kehtivad Luminor Investori platvormil, mille kasutamiseks on vaja Luminori arvelduskontot. Arvutus kasutab odavamat kahest hinnapaketist: Standardpakett kehtib vaikimisi, Valikpaketi saad avaldusega ja paketti saab vahetada kord nelja kuu jooksul.</p>':'')+
         '<p><b>Investeerimiskonto:</b> „Jah” tähendab, et pakkuja avab sulle investeerimiskonto. „Võimalik” tähendab, et konto võib vastata Maksu- ja Tolliameti tingimustele, kui ostad finantsvara ainult selle konto rahaga ja deklareerid konto tuludeklaratsiooni tabelis 6.5. Loe '+a(EMTA,'Maksu- ja Tolliameti juhendit')+' ja meie artiklit '+a(SITE+'/artiklid/investeerimiskonto-deklareerimine','investeerimiskonto deklareerimisest')+'.</p>'+
         (has(['ibkr'])?'<p><b>Interactive Brokers:</b> kasuta veeru ülaosas valikut Fixed/Tiered. Tiered puhul lisame Interactive Brokersi tabelist kliiringu- ja regulatiivsed tasud. Xetras ei võeta börsitasu jaeinvestorite orderitelt, mis suunatakse SmartRoutingu kaudu. USA aktsiate puhul eeldame turuorderit, millele börsitasu lisandub.</p>':'')+
         (has(['trading212'])?'<p><b>Trading 212:</b> sponsitud link. Investeerides on sinu kapital riskis ja võid tagasi saada vähem, kui investeerisid. Varasem tootlus ei taga tulevast tootlust. Kehtida võivad muud tasud, vaata '+a('https://www.trading212.com/terms/invest','tingimusi ja tasusid')+'. Kui lülitad intressi sisse, hoiab Trading 212 sinu raha nõuetele vastavates rahaturufondides ja pankades. Muul juhul hoitakse sinu raha ainult pankades. Intress kehtib Trading 212 Invest-kontol oleval rahal. Kehtivad tingimused. Näidatud määrad ei pruugi olla enam ajakohased: vaata kehtivaid määrasid tingimuste ja tasude lehelt.</p>':'')+
