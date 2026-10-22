@@ -17,7 +17,12 @@
       "taxNote": "Tulumaksu ei peeta kinni - pead intressitulu ise Eesti tuludeklaratsioonis (vorm A) deklareerima.",
       "sourceUrl": "https://traderepublic.com/en-de/interest",
       "linkUrl": "https://traderepublicbank.sjv.io/c/2822659/2134424/23226?productName=BROKERAGE&countryCode=IE",
-      "notes": "Intress koguneb iga päev, makstakse kord kuus. Investeerimata jääk võib minna panga likviidsusfondi. Rate loetakse lehe <title>-sildist, kuna ülejäänud sisu renderdub kliendipoolselt."
+      "partnerLink": true,
+      "notes": "Intress koguneb iga päev, makstakse kord kuus. Investeerimata jääk võib minna panga likviidsusfondi. Rate loetakse lehe <title>-sildist, kuna ülejäänud sisu renderdub kliendipoolselt.",
+      "promo": {
+        "text": "Uutele klientidele 3,04% kuni 50 000 €",
+        "tip": "Kehtib, kui avad uue konto meie lingi kaudu. Investeerimine on seotud riskiga. See sisu on ettevõtte Trade Republic Bank GmbH reklaamteade."
+      }
     },
     {
       "platform": "N26",
@@ -34,6 +39,7 @@
       "taxNote": "Tulumaksu ei peeta kinni - pead intressitulu ise deklareerima.",
       "sourceUrl": "https://n26.com/en-eu/savings-account",
       "linkUrl": "https://n26-eu.c2nwa3.net/jRBRGb",
+      "partnerLink": true,
       "notes": "Intressi arvestatakse iga päev, makstakse kord kuus. Kõrgemad määrad eeldavad tasulist paketti (N26 Go või Metal). Lehel on eraldi ka 'flexible cash fund' toode (rahaturufond) - see kirje käsitleb ainult Instant Savingsit.",
       "tiers": [
         {
@@ -67,6 +73,7 @@
       "taxWithheldAbroad": "Leedus 15%",
       "sourceUrl": "https://www.revolut.com/en-EE/legal/pre-contractual-information-instant-access-savings-account/",
       "linkUrl": "https://revolut.ngih.net/mOAZg7",
+      "partnerLink": true,
       "notes": "Intressi arvestatakse ja makstakse iga päev jäägi pealt. Määrad loetakse Revoluti Eesti hoiuse infolehelt (Deposit Information Sheet). Leht blokeerib lihtsa fetch() päringu (HTTP 403) ja GitHubi IP-d, scraper vajab Playwrighti ja jookseb ainult kohalikult (npm run update:local).",
       "promo": {
         "text": "3 kuud Premium tasuta",

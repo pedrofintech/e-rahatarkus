@@ -260,11 +260,10 @@ const selfHtml = `<!DOCTYPE html>
 </head>
 <body>
 <div class="wrap">
-<div class="note">Test: andmed koodi sees, serverit pole vaja. Reklaamikaart on näha ainult siin, live-lehel on see peidetud.</div>
+<div class="note">Test: andmed koodi sees, serverit pole vaja.</div>
 <header class="hero"><h1>Parim tähtajaline hoius ja kogumiskonto</h1><p>Näe ühest kohast kõigi Eesti pankade, kogumiskontode ja usaldusväärsete platvormide intressimäärasid, filtreeri sulle sobivate tingimuste järgi ja arvuta kalkulaatoriga, kui palju sinu raha tegelikult teeniks.</p></header>
 <div id="rt-hoius"></div>
 <script>
-window.RT_PREVIEW_SPONSORED = true;
 ${header}${selfScript}</script>
 </div>
 </body>
