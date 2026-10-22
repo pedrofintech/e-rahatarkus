@@ -45,27 +45,6 @@
       }
     },
     {
-      "platform": "Lightyear",
-      "product": "Kasvufond (Savings Vaults)",
-      "status": "confirmed",
-      "consecutiveFailures": 0,
-      "checkedOn": "2026-10-19",
-      "ratesEffectiveFrom": null,
-      "scrapeMethod": "fetch",
-      "rateEur": 2.45,
-      "rateNote": "Tootlus järgib EKP määra ja BlackRocki rahaturufondi 1-päeva tootlust, mis võib päevast päeva veidi kõikuda.",
-      "protectionScheme": "Eesti investorikaitse osafond kuni 20 000 €",
-      "guaranteeCountry": null,
-      "taxNote": "Tulumaksu ei peeta kinni, kuid Lightyear saadab tehinguandmed automaatselt e-MTA-sse.",
-      "sourceUrl": "https://lightyear.com/en-eu/vaults",
-      "linkUrl": "https://www.e-rahatarkus.ee/kulasta/lightyear",
-      "notes": "Lightyeari 0,10% aastane haldustasu EUR-fondi puhul on juba näidatud tootluses arvestatud. Reguleeritud Eesti Finantsinspektsiooni poolt (tegevusluba 4.1-1/31, 4.1-1/147).",
-      "promo": {
-        "text": "Kuni 100 € tasuta murdaktsiat/ETFi",
-        "tip": "Saa kuni 100 € väärtuses tasuta murdaktsiat või ETFi koodiga RAHATARKUS. Investeerimisega kaasnevad riskid. Tootlus ei ole garanteeritud. Tegemist ei ole investeerimissoovitusega. Kehtivad kampaaniatingimused."
-      }
-    },
-    {
       "platform": "Wise",
       "product": "Interest",
       "status": "confirmed",
