@@ -709,7 +709,9 @@
   // The card shows the partner's advertised headline rate with its date and
   // its terms visible next to it, not behind a tooltip, and no earnings
   // projection: a variable rate is not a promise of what the reader earns.
-  var SPONSORED_ID = 'fintech:Trade Republic:Cash interest';
+  // No sponsored placement for now: null hides the section. To bring the
+  // Trade Republic card back, set this to 'fintech:Trade Republic:Cash interest'.
+  var SPONSORED_ID = null;
   var SPONSORED_COPY = {
     name: 'Intress investeerimata rahale',
     note: 'Intress on muutuv ja järgib EKP hoiustamise määra. Pakkuja: Trade Republic Bank GmbH (Saksamaa).'
