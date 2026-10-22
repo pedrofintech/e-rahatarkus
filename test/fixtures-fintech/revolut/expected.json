@@ -1,5 +1,26 @@
 {
-  "rateEur": 2.5,
-  "rateEurMin": 2,
+  "rateEur": 1.18,
+  "tiers": [
+    {
+      "plan": "Standard",
+      "rateEur": 1.18
+    },
+    {
+      "plan": "Plus",
+      "rateEur": 1.18
+    },
+    {
+      "plan": "Premium",
+      "rateEur": 1.48
+    },
+    {
+      "plan": "Metal",
+      "rateEur": 1.77
+    },
+    {
+      "plan": "Ultra (kuni 100 000 €)",
+      "rateEur": 2.36
+    }
+  ],
   "ratesEffectiveFrom": null
 }

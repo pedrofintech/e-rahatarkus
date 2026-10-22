@@ -1,82 +1,40 @@
 {
-  "lastUpdated": "2026-10-19",
+  "lastUpdated": "2026-10-22",
   "accounts": [
     {
       "platform": "Trade Republic",
       "product": "Cash interest",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-19",
+      "checkedOn": "2026-10-22",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "fetch",
       "rateEur": 2.5,
-      "rateNote": "Uutele klientidele 3,00% kuni 50 000 €, sellest suuremale osale ja olemasolevatele klientidele 2,50%. Määr järgib EKP hoiustamise püsivõimaluse intressimäära.",
+      "rateNote": "Muutuv määr, järgib EKP hoiustamise püsivõimaluse intressimäära.",
+      "cardNote": "Suuremad summad võivad minna rahaturufondidesse, millele hoiuste tagamine ei kehti.",
       "protectionScheme": "Tagatisfondi kaitse (Saksamaa, kuni 100 000 €)",
       "guaranteeCountry": "DE",
       "taxNote": "Tulumaksu ei peeta kinni - pead intressitulu ise Eesti tuludeklaratsioonis (vorm A) deklareerima.",
       "sourceUrl": "https://traderepublic.com/en-de/interest",
       "linkUrl": "https://traderepublicbank.sjv.io/c/2822659/2134424/23226?productName=BROKERAGE&countryCode=IE",
-      "notes": "Intress koguneb iga päev, makstakse kord kuus. Investeerimata jääk võib minna panga likviidsusfondi. Rate loetakse lehe <title>-sildist, kuna ülejäänud sisu renderdub kliendipoolselt.",
-      "promo": {
-        "text": "Uutele klientidele 3,04% kuni 50 000 €",
-        "tip": "Ava Trade Republicu konto meie lingi kaudu ja teeni uue kliendina 3,04% intressi summadelt kuni 50 000 €, sellest suuremale osale ja olemasolevatele klientidele 2,50%. Igakuised maksed sinu kontole, täielik paindlikkus raha kasutamiseks. Investeerimine on seotud riskiga. See sisu on ettevõtte Trade Republic Bank GmbH reklaamteade."
-      }
-    },
-    {
-      "platform": "Trading 212",
-      "product": "Interest on cash",
-      "status": "confirmed",
-      "consecutiveFailures": 0,
-      "checkedOn": "2026-10-12",
-      "ratesEffectiveFrom": null,
-      "scrapeMethod": "playwright",
-      "scrapeLocalOnly": true,
-      "rateEur": 2.5,
-      "rateNote": "Muutuv määr, järgib EKP hoiustamise püsivõimaluse intressimäära. Trading 212 EU GmbH klientidele kehtib mõnikord ajutine kõrgem sooduspakkumine.",
-      "protectionScheme": "Tagatisfondi kaitse puudub (saadaval ainult Saksamaal); Saksa investorite hüvitamise skeem kuni 20 000 €",
-      "guaranteeCountry": null,
-      "taxNote": "Tulumaksu ei peeta kinni - pead intressitulu ise deklareerima.",
-      "sourceUrl": "https://www.trading212.com/interest-on-cash",
-      "linkUrl": "https://www.trading212.com/join/IITW",
-      "notes": "Intressi arvestatakse ja liidetakse iga päev. Miinimum- ja maksimumsummat pole. Leht blokeerib lihtsa fetch() päringu (HTTP 403), scraper vajab Playwrighti.",
-      "promo": {
-        "text": "Tasuta osaaktsia kuni 100 €",
-        "tip": "Tasuta osaaktsia väärtusega kuni 100 eurot koodiga IITW. Kehtivad tingimused."
-      }
-    },
-    {
-      "platform": "Wise",
-      "product": "Interest",
-      "status": "confirmed",
-      "consecutiveFailures": 0,
-      "checkedOn": "2026-10-19",
-      "ratesEffectiveFrom": "2026-09-23",
-      "scrapeMethod": "fetch",
-      "rateEur": 2.25,
-      "rateNote": "Näidatud määr on juba pärast Wise 0,26% aastatasu mahaarvamist. Põhineb BlackRock ICS Euro Government Liquidity Fundi tootlusel.",
-      "protectionScheme": "Eesti investorikaitse osafond kuni 20 000 €",
-      "guaranteeCountry": null,
-      "taxNote": "Tulumaksu ei peeta kinni - pead intressitulu ise deklareerima.",
-      "sourceUrl": "https://wise.com/ee/interest",
-      "linkUrl": "https://wise.com/ee/interest/",
-      "notes": "Tootlus pole garanteeritud ja põhineb fondi viimase 7 päeva keskmisel tulususel; raha on igal ajal kasutatav."
+      "notes": "Intress koguneb iga päev, makstakse kord kuus. Investeerimata jääk võib minna panga likviidsusfondi. Rate loetakse lehe <title>-sildist, kuna ülejäänud sisu renderdub kliendipoolselt."
     },
     {
       "platform": "N26",
       "product": "Instant Savings",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-19",
+      "checkedOn": "2026-10-22",
       "ratesEffectiveFrom": "2025-06-11",
       "scrapeMethod": "fetch",
-      "rateEur": 1.5,
-      "rateNote": "Sõltub N26 paketist: 0,30% Standard/Smart, 0,50% N26 Go, 1,50% Metal (kõrgeim määr, mida artikkel tsiteerib).",
+      "rateEur": 0.3,
+      "rateNote": "Sõltub N26 paketist: 0,30% Standard ja Smart, 0,50% N26 Go, 1,50% Metal. Järjestus ja arvutus kasutavad tasuta paketi määra.",
       "protectionScheme": "Tagatisfondi kaitse (Saksamaa, kuni 100 000 €)",
       "guaranteeCountry": "DE",
       "taxNote": "Tulumaksu ei peeta kinni - pead intressitulu ise deklareerima.",
       "sourceUrl": "https://n26.com/en-eu/savings-account",
       "linkUrl": "https://n26-eu.c2nwa3.net/jRBRGb",
-      "notes": "Intressi arvestatakse iga päev, makstakse kord kuus. Nõuab tasulist N26 Metal paketti kõrgeima määra saamiseks. Lehel on eraldi ka 'flexible cash fund' toode kuni 2,49% - see kirje käsitleb ainult Instant Savingsit.",
+      "notes": "Intressi arvestatakse iga päev, makstakse kord kuus. Kõrgemad määrad eeldavad tasulist paketti (N26 Go või Metal). Lehel on eraldi ka 'flexible cash fund' toode (rahaturufond) - see kirje käsitleb ainult Instant Savingsit.",
       "tiers": [
         {
           "plan": "Standard & Smart",
@@ -97,30 +55,52 @@
       "product": "Instant Access Savings",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-12",
+      "checkedOn": "2026-10-22",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "playwright",
       "scrapeLocalOnly": true,
-      "rateEur": 2.75,
-      "rateEurMin": 2,
-      "rateNote": "Sõltub Revoluti paketist - kaardil on näidatud vahemik. Täpne vahemik ja madalaim tase võivad riigiti ja paketiti erineda (kasutatud on Iirimaa lehte).",
+      "rateEur": 1.18,
+      "rateNote": "Sõltub Revoluti paketist. Järjestus ja arvutus kasutavad tasuta paketi (Standard) määra. Määrad on bruto, Revoluti Eesti hoiuse infolehelt.",
       "protectionScheme": "Tagatisfondi kaitse (Leedu, kuni 100 000 €)",
       "guaranteeCountry": "LT",
-      "taxNote": "Tulumaksu ei peeta kinni - pead intressitulu ise deklareerima.",
-      "sourceUrl": "https://www.revolut.com/en-IE/instant-access-savings/",
+      "taxNote": "Revolut Bank UAB peab Leedus intressilt kinni 15% mitteresidendi tulumaksu (äpis näed intressi pärast seda maksu). Eestis tuleb intress tuludeklaratsioonis deklareerida.",
+      "taxWithheldAbroad": "Leedus 15%",
+      "sourceUrl": "https://www.revolut.com/en-EE/legal/pre-contractual-information-instant-access-savings-account/",
       "linkUrl": "https://revolut.ngih.net/mOAZg7",
-      "notes": "Intressi arvestatakse ja makstakse iga päev jäägi pealt. Leht blokeerib lihtsa fetch() päringu (HTTP 403), scraper vajab Playwrighti. Lehe sisu on riigipõhine (kasutatud Iirimaa lehte).",
+      "notes": "Intressi arvestatakse ja makstakse iga päev jäägi pealt. Määrad loetakse Revoluti Eesti hoiuse infolehelt (Deposit Information Sheet). Leht blokeerib lihtsa fetch() päringu (HTTP 403) ja GitHubi IP-d, scraper vajab Playwrighti ja jookseb ainult kohalikult (npm run update:local).",
       "promo": {
         "text": "3 kuud Premium tasuta",
         "tip": "Kui avad konto meie lingi kaudu, saad 3 kuud Premium-plaani tasuta. Kehtivad tingimused."
-      }
+      },
+      "tiers": [
+        {
+          "plan": "Standard",
+          "rateEur": 1.18
+        },
+        {
+          "plan": "Plus",
+          "rateEur": 1.18
+        },
+        {
+          "plan": "Premium",
+          "rateEur": 1.48
+        },
+        {
+          "plan": "Metal",
+          "rateEur": 1.77
+        },
+        {
+          "plan": "Ultra (kuni 100 000 €)",
+          "rateEur": 2.36
+        }
+      ]
     },
     {
       "platform": "bunq",
       "product": "Easy Savings",
       "status": "confirmed",
       "consecutiveFailures": 0,
-      "checkedOn": "2026-10-19",
+      "checkedOn": "2026-10-22",
       "ratesEffectiveFrom": null,
       "scrapeMethod": "fetch",
       "rateEur": 1.51,
@@ -132,23 +112,6 @@
       "sourceUrl": "https://www.bunq.com/savings",
       "linkUrl": "https://www.bunq.com/personal-account/banking-features/savings-account",
       "notes": "Intressi makstakse iganädalaselt (liitintress). Kuni kaks tasuta väljamakset kuus (kolm pärast esimest aastat kliendina)."
-    },
-    {
-      "platform": "Interactive Brokers",
-      "product": "Interest on credit balances",
-      "status": "confirmed",
-      "consecutiveFailures": 0,
-      "checkedOn": "2026-10-19",
-      "ratesEffectiveFrom": null,
-      "scrapeMethod": "fetch",
-      "rateEur": 1.989,
-      "rateNote": "Astmeline määr: esimeselt 10 000 EUR-lt intressi ei maksta, sellest suuremale jäägile makstakse kaardil näidatud määra (IBKR Pro konto; IBKR Lite kontodel on määr madalam).",
-      "protectionScheme": "Klientide raha hoitakse panga enda varadest eraldi; investorite hüvitamise skeem kuni 20 000 €",
-      "guaranteeCountry": null,
-      "taxNote": "Tulumaksu ei peeta kinni - pead intressitulu ise deklareerima.",
-      "sourceUrl": "https://www.interactivebrokers.com/en/accounts/fees/pricing-interest-rates.php",
-      "linkUrl": "https://www.interactivebrokers.ie/mkt/?src=iitww1&url=%2Fen%2Fwhyib%2Foverview.php",
-      "notes": "Määr põhineb pankadevahelisel rahaturu intressimääral (benchmark) ja muutub sellega kaasa. Rakendub ainult väärtpaberikonto positiivsele sularahajäägile."
     }
   ]
 }

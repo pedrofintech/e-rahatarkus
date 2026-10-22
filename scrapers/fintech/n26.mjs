@@ -1,9 +1,9 @@
 // N26 (Instant Savings) - unlike the other platforms here, N26 publishes a
 // genuine plan-tiered rate table in plain text: "from 11/06/2025 onwards,
 // 0.30% p.a. for Standard and Smart, 0.50% p.a. for N26 Go, and 1.50% p.a.
-// for Metal". rateEur is the highest tier (Metal), matching what the article
-// quotes for this product; the full breakdown is kept in `tiers` so a caller
-// that cares which plan applies is not stuck with just the headline number.
+// for Metal". rateEur is the lowest tier (Standard & Smart), the rate a
+// customer on the free plan gets - the comparator ranks by it. The paid-plan
+// rates are kept in `tiers` and shown next to it.
 
 import { fetchText } from '../../lib/http.mjs';
 import { assertPlausibleRate, parseRate } from '../../lib/parse.mjs';
@@ -25,7 +25,7 @@ export function parseRates({ html }) {
   ];
 
   return {
-    rateEur: Math.max(...tiers.map((t) => t.rateEur)),
+    rateEur: Math.min(...tiers.map((t) => t.rateEur)),
     tiers,
     ratesEffectiveFrom: `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`,
   };

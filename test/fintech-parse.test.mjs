@@ -59,8 +59,10 @@ for (const slug of slugs) {
       assert.ok(tiers.length > 0, 'tiers must not be empty when present');
       for (const tier of tiers) {
         assert.equal(typeof tier.plan, 'string');
-        assert.ok(tier.rateEur >= 0 && tier.rateEur <= rateEur, `tier rate exceeds headline rate: ${tier.rateEur}`);
+        assert.ok(tier.rateEur >= 0 && tier.rateEur <= 10, `implausible tier rate: ${tier.rateEur}`);
       }
+      // The headline is the free plan's base rate: the lowest tier.
+      assert.equal(rateEur, Math.min(...tiers.map((t) => t.rateEur)), 'headline rate must be the lowest (free plan) tier');
     }
     // Platforms that publish no effective date report null rather than omitting it.
     assert.ok(ratesEffectiveFrom === null || /^\d{4}-\d{2}-\d{2}$/.test(ratesEffectiveFrom));

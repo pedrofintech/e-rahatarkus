@@ -20,7 +20,8 @@
 // rate that actually applies to a typical balance - letting the scraper
 // overwrite rateEur with that ceiling would misrepresent it as the realistic
 // headline number again. The scraper still runs and any drift is logged for
-// a human to review; it just isn't written automatically.
+// a human to review; it just isn't written automatically. The same applies to
+// rateEurMin and tiers, so a hand-maintained account keeps its own breakdown.
 
 import { appendFile, readFile, writeFile } from 'node:fs/promises';
 import { SCRAPERS, slugFor } from '../scrapers/fintech/index.mjs';
@@ -88,10 +89,10 @@ for (const account of data.accounts) {
       log(`${account.platform} ${account.product}: NOTE - scraped rate is ${scraped.rateEur}% but rateEur (${account.rateEur}%) is hand-maintained (rateAutoUpdate: false) - review manually.`);
     }
   }
-  if (scraped.rateEurMin !== undefined && account.rateEurMin !== scraped.rateEurMin) {
+  if (autoUpdateRate && scraped.rateEurMin !== undefined && account.rateEurMin !== scraped.rateEurMin) {
     changes.push(`~ rateEurMin: ${account.rateEurMin} -> ${scraped.rateEurMin}`);
   }
-  if (scraped.tiers !== undefined && JSON.stringify(account.tiers) !== JSON.stringify(scraped.tiers)) {
+  if (autoUpdateRate && scraped.tiers !== undefined && JSON.stringify(account.tiers) !== JSON.stringify(scraped.tiers)) {
     changes.push(`~ tiers: ${JSON.stringify(account.tiers)} -> ${JSON.stringify(scraped.tiers)}`);
   }
   const scrapedEffectiveFrom = scraped.ratesEffectiveFrom ?? null;
@@ -116,8 +117,8 @@ for (const account of data.accounts) {
 
   if (autoUpdateRate) account.rateEur = scraped.rateEur;
   account.ratesEffectiveFrom = scrapedEffectiveFrom;
-  if (scraped.rateEurMin !== undefined) account.rateEurMin = scraped.rateEurMin;
-  if (scraped.tiers !== undefined) account.tiers = scraped.tiers;
+  if (autoUpdateRate && scraped.rateEurMin !== undefined) account.rateEurMin = scraped.rateEurMin;
+  if (autoUpdateRate && scraped.tiers !== undefined) account.tiers = scraped.tiers;
 
   updatedCount += 1;
   log(`${account.platform} ${account.product}: UPDATED`);

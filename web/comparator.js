@@ -108,10 +108,17 @@
     return a.kind === 'term' && a.tiers.length > 1 &&
       a.tiers.every(function (t) { return t.rateEur === a.tiers[0].rateEur; });
   }
-  // A rate that depends on the user's plan (Revolut, N26): rateEur is the top
-  // of the range, rateEurMin the bottom, and the headline must not pass the top
-  // off as what everyone gets.
+  // A rate that depends on the user's plan (Revolut, N26): rateEur is the
+  // free plan's base rate, which is what the list ranks by. A higher rate
+  // that needs a paid plan (the top of `tiers`) is only mentioned next to it.
+  function paidPlanRate(a) {
+    if (a.kind === 'term' || !a.tiers || !a.tiers.length) return null;
+    var max = a.tiers.reduce(function (m, t) { return Math.max(m, t.rateEur); }, 0);
+    return max > a.rateEur ? max : null;
+  }
   function planSub(a) {
+    var paid = paidPlanRate(a);
+    if (paid != null) return 'baasmäär · tasulise paketiga kuni ' + pct(paid) + ' · brutointress';
     return a.rateEurMin != null
       ? 'sõltub paketist, alates ' + pct(a.rateEurMin) + ' · brutointress'
       : 'praegune muutuv määr · brutointress';
@@ -509,7 +516,12 @@
     return '<table class="rt-tiertable"><thead><tr><th>Pakett</th><th>Intress aastas</th></tr></thead><tbody>' + rows + '</tbody></table>';
   }
   function isTaxSelfDeclared(a) { return /ei peeta kinni/i.test(a.taxNote || ''); }
+  // taxWithheldAbroad (e.g. "Leedus 15%"): the bank's home country withholds
+  // tax on the interest, and the interest is still declared in Estonia.
   function taxRow(a) {
+    if (a.taxWithheldAbroad) {
+      return row('Tulumaks', esc(a.taxWithheldAbroad) + '<span class="rt-soft">kinni peetud, deklareeri Eestis</span>', a.taxNote);
+    }
     var selfDeclared = isTaxSelfDeclared(a);
     return row(
       'Tulumaks',
@@ -530,6 +542,7 @@
   // a foreign platform; the full withdrawal-fee sentence still lives in the
   // expanded card (detailsFlexible()).
   function thirdMetric(a) {
+    if (a.taxWithheldAbroad) return metric('Tulumaks', esc(a.taxWithheldAbroad) + ' kinni');
     return metric('Tulumaks', isTaxSelfDeclared(a) ? 'Ise deklareeritav' : 'Kinnipeetud');
   }
   function detailsTerm(a) {
@@ -576,7 +589,7 @@
     }
     var rateLabel = a.rateEurMin != null ? pct(a.rateEurMin) + '\u2013' + pct(a.rateEur) : pct(a.rateEur);
     h += row('Praegune intress (bruto)', rateLabel, a.rateNote);
-    h += row(netLabel('Netointress kohe pärast maksu', 'Intress ilma tulumaksuta'), pct(a.rateEur * (1 - taxRate())), 'Kõrgeima avaldatud määra põhjal, kui tulumaks tasutakse kohe.');
+    h += row(netLabel('Netointress kohe pärast maksu', 'Intress ilma tulumaksuta'), pct(a.rateEur * (1 - taxRate())), 'Baasmäära põhjal, kui tulumaks tasutakse kohe.');
     h += '<div class="rt-dgroup">Tingimused</div>';
     h += row('Miinimumsumma', a.minDeposit === 0 ? 'Miinimumita' : eur(a.minDeposit));
     h += row('Raha kättesaadavus', esc(a.withdrawalSpeed || 'Kohe'), 'Välismaised platvormid ei ole tähtajalised hoiused - raha ei ole lukku pandud.');
@@ -627,6 +640,9 @@
       ? '<p class="rt-sim rt-sim--warn">Avamiseks on vaja ' + eur(a.minDeposit) + ', sinu sisestatud summa ei sobi.</p>' : '';
     var alertText = termAlert(s, pf);
     var al = alertText ? '<div class="rt-alert">' + INFO + '<span>' + esc(alertText) + '</span></div>' : '';
+    // cardNote: a caveat that must be visible on the card itself, not only in
+    // the expanded details (e.g. part of the money not under deposit guarantee).
+    if (a.cardNote) al += '<div class="rt-alert">' + INFO + '<span>' + esc(a.cardNote) + '</span></div>';
     var promoHtml = promo(a);
     var heroSide = (promoHtml || heroNet) ? '<div class="rt-hero-side">' + promoHtml + heroNet + '</div>' : '';
 
@@ -709,9 +725,12 @@
   // The card shows the partner's advertised headline rate with its date and
   // its terms visible next to it, not behind a tooltip, and no earnings
   // projection: a variable rate is not a promise of what the reader earns.
-  // No sponsored placement for now: null hides the section. To bring the
-  // Trade Republic card back, set this to 'fintech:Trade Republic:Cash interest'.
+  // No sponsored placement live for now: null hides the section. To bring
+  // the card back, set SPONSORED_ID to SPONSORED_PREVIEW_ID. Test pages that
+  // set window.RT_PREVIEW_SPONSORED (self-contained-test.html) show it anyway.
+  var SPONSORED_PREVIEW_ID = 'fintech:Trade Republic:Cash interest';
   var SPONSORED_ID = null;
+  if (typeof window !== 'undefined' && window.RT_PREVIEW_SPONSORED) SPONSORED_ID = SPONSORED_PREVIEW_ID;
   var SPONSORED_COPY = {
     name: 'Intress investeerimata rahale',
     note: 'Intress on muutuv ja järgib EKP hoiustamise määra. Pakkuja: Trade Republic Bank GmbH (Saksamaa).'

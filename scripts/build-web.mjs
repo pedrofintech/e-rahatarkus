@@ -23,8 +23,9 @@ const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const web = (p) => path.join(ROOT, 'web', p);
 const dataFile = (p) => path.join(ROOT, 'data', p);
 
-const css = fs.readFileSync(web('comparator.css'), 'utf8').trim();
-let appJs = fs.readFileSync(web('comparator.js'), 'utf8');
+// Windows checkouts (core.autocrlf) have CRLF; every pattern below expects LF.
+const css = fs.readFileSync(web('comparator.css'), 'utf8').replace(/\r\n/g, '\n').trim();
+let appJs = fs.readFileSync(web('comparator.js'), 'utf8').replace(/\r\n/g, '\n');
 const data = JSON.parse(fs.readFileSync(dataFile('data.json'), 'utf8'));
 const flexibleData = JSON.parse(fs.readFileSync(dataFile('flexible-accounts.json'), 'utf8'));
 const fintechData = JSON.parse(fs.readFileSync(dataFile('fintech-accounts.json'), 'utf8'));
@@ -259,10 +260,11 @@ const selfHtml = `<!DOCTYPE html>
 </head>
 <body>
 <div class="wrap">
-<div class="note">Test: andmed koodi sees, serverit pole vaja.</div>
+<div class="note">Test: andmed koodi sees, serverit pole vaja. Reklaamikaart on näha ainult siin, live-lehel on see peidetud.</div>
 <header class="hero"><h1>Parim tähtajaline hoius ja kogumiskonto</h1><p>Näe ühest kohast kõigi Eesti pankade, kogumiskontode ja usaldusväärsete platvormide intressimäärasid, filtreeri sulle sobivate tingimuste järgi ja arvuta kalkulaatoriga, kui palju sinu raha tegelikult teeniks.</p></header>
 <div id="rt-hoius"></div>
 <script>
+window.RT_PREVIEW_SPONSORED = true;
 ${header}${selfScript}</script>
 </div>
 </body>
