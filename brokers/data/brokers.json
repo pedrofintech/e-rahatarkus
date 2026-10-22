@@ -262,7 +262,7 @@
     "plans": {"v": "Ei", "s": "Iga ost tehakse käsitsi"},
     "bonds": {"v": "Jah"}
    }},
-  {"id": "etoro", "name": "eToro", "short": "eT", "color": "#13C636", "type": "Maakler", "verified": "02.10.2026",
+  {"id": "etoro", "name": "eToro", "short": "eT", "color": "#13C636", "type": "Maakler", "verified": "22.10.2026",
    "cta": {"href": "https://med.etoro.com/aw.aspx?A=96559&Task=Click&TargetURL=https%3A%2F%2Fgo.etoro.com%2Fen%2Fdeposit%2Ftiered-bonus&SubAffiliateID=HelpMeChoose"},
    "risk": "55% jaeinvestorite kontodest kaotab selle teenusepakkujaga CFD-dega kaubeldes raha.",
    "review": "https://www.e-rahatarkus.ee/artiklid/etoro-eesti-ulevaade",
