@@ -111,7 +111,7 @@
     "custodyTxt": {"v": "0€"},
     "inact": {"v": "0€"},
     "transfer": {"v": "0€", "s": "Iga positsioon vähemalt 1000€. Murdosasid üle kanda ei saa"},
-    "interest": {"v": "0%", "s": "Investeerimata eurodelt intressi ei maksta. Rahaturufondi kaudu kuni 2,44% aastas"},
+    "interest": {"v": "0%", "s": "Investeerimata eurodelt intressi ei maksta."},
     "entity": {"v": "Lightyear Europe AS"},
     "regulator": {"v": "Finantsinspektsioon (Eesti)"},
     "protInv": {"v": "Kuni 20 000€", "s": "Tagatisfondi investeeringute tagamine"},
