@@ -206,7 +206,7 @@
     "custodyTxt": {"v": "0€"},
     "inact": {"v": "0€"},
     "transfer": {"v": "0€", "s": "Trade Republic tasu ei võta, kuid kolmandate osapoolte tasud võivad lisanduda. Murdosasid üle kanda ei saa"},
-    "interest": {"v": "2,50%", "s": "EKP hoiustamise määr, makstakse kord kuus. Uued kliendid saavad enamikus riikides 3% kuni 50 000€ pealt"},
+    "interest": {"v": "2,50%", "s": "EKP hoiustamise määr, makstakse kord kuus. Uued kliendid saavad 4% kuni 20 000€ pealt kuni 01.03.2027"},
     "entity": {"v": "Trade Republic Bank GmbH", "s": "Sama Saksa pank teenindab kõiki riike"},
     "regulator": {"v": "BaFin ja Bundesbank (Saksamaa)"},
     "protInv": {"v": "Kuni 20 000€", "s": "Saksa investorikaitse skeem, 90% tagastamata varast"},
